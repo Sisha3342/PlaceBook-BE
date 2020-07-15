@@ -21,6 +21,8 @@
                 </sql>
                 <sql>
                         ALTER TABLE `user` ADD CONSTRAINT `user_fk0` FOREIGN KEY (`hr_id`) REFERENCES `user`(`id`);
+                        create unique index user_email_uindex
+                        on user (email);
                 </sql>
         </changeSet>
 </databaseChangeLog>
