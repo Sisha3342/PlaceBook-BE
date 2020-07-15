@@ -14,7 +14,7 @@
                         `name` varchar(255) NOT NULL,
                         `surname` varchar(255) NOT NULL,
                         `hr_id` INT(255) NOT NULL,
-                        `role` ENUM('User', 'HR','Admin','Editor') NOT NULL,
+                        `role` ENUM('USER', 'HR','ADMIN','EDITOR') NOT NULL,
                         `photo_url` varchar(255) NOT NULL,
                         PRIMARY KEY (`id`)
                         );
