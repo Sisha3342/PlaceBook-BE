@@ -1,32 +1,17 @@
 package com.exadel.placebook.model.dto;
 
+import com.exadel.placebook.model.enums.Role;
+import lombok.Data;
+
+@Data
 public class UserDto {
 
-    private Long id;
+    private long id;
     private String name;
+    private String email;
+    private String password;
     private String surname;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
+    private UserDto hr;
+    private Role role;
+    private String photoUrl;
 }

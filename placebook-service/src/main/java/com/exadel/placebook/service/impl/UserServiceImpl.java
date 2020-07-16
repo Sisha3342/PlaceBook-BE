@@ -22,8 +22,14 @@ public class UserServiceImpl implements UserService {
     private UserConverter userConverter;
 
     @Override
-    public UserDto findById(Long id) {
-        Optional<User> p = userDao.findById(id);
-        return p.map(user -> userConverter.convert(user)).orElse(null);
+    public Optional<UserDto> findById(Long id) {
+        Optional<User> user = userDao.findById(id);
+        return user.map(usr -> userConverter.convert(usr));
+    }
+
+    @Override
+    public Optional<UserDto> findByEmail(String email) {
+        Optional<User> user = userDao.findByEmail(email);
+        return user.map(usr -> userConverter.convert(usr));
     }
 }
