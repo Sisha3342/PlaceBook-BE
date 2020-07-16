@@ -5,24 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-        <!--<include file="db/2019_07_10_modify_Person_table.xml"/>-->
-        <changeSet runOnChange="true" id="2020_07_15_user_table.xml" author="Maksim Lapo">
-                <sql> CREATE TABLE `user` (
-                        `id` INT NOT NULL AUTO_INCREMENT UNIQUE,
-                        `email` varchar(255) NOT NULL,
-                        `password` varchar(255) NOT NULL,
-                        `name` varchar(255) NOT NULL,
-                        `surname` varchar(255) NOT NULL,
-                        `hr_id` INT(255) NOT NULL,
-                        `role` ENUM('USER', 'HR','ADMIN','EDITOR') NOT NULL,
-                        `photo_url` varchar(255) NOT NULL,
-                        PRIMARY KEY (`id`)
-                        );
-                </sql>
-                <sql>
-                        ALTER TABLE `user` ADD CONSTRAINT `user_fk0` FOREIGN KEY (`hr_id`) REFERENCES `user`(`id`);
-                        create unique index user_email_uindex
-                        on user (email);
-                </sql>
-        </changeSet>
+        <include file="db/2020_07_15_create_user_table.xml"/>
+
 </databaseChangeLog>
