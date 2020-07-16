@@ -27,11 +27,11 @@ public class User {
     private String password;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne
-    @JoinColumn(name = "hr_id")
-    private User hr_id;
+    @Column(name = "hr_id")
+    private Long hrId;
 
     @Column(name = "photo_url")
     private String photoUrl;
@@ -76,12 +76,12 @@ public class User {
         this.surname = surname;
     }
 
-    public User getHr_id() {
-        return hr_id;
+    public Long getHrId() {
+        return hrId;
     }
 
-    public void setHr_id(User hr_id) {
-        this.hr_id = hr_id;
+    public void setHrId(Long hr_id) {
+        this.hrId = hr_id;
     }
 
     public Role getRole() {

@@ -1,6 +1,5 @@
 package com.exadel.placebook.model.dto;
 
-import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.model.enums.Role;
 
 public class UserDto {
@@ -11,7 +10,7 @@ public class UserDto {
     private String email;
     private String password;
     private Role role;
-    private User hr_id;
+    private Long hrId;
     private String photoUrl;
 
     public Long getId() {
@@ -54,12 +53,12 @@ public class UserDto {
         this.surname = surname;
     }
 
-    public User getHr_id() {
-        return hr_id;
+    public Long getHrId() {
+        return hrId;
     }
 
-    public void setHr_id(User hr_id) {
-        this.hr_id = hr_id;
+    public void setHrId(Long hrId) {
+        this.hrId = hrId;
     }
 
     public Role getRole() {

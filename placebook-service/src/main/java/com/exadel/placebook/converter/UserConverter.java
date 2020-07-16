@@ -15,7 +15,7 @@ public class UserConverter {
         pd.setPassword(p.getPassword());
         pd.setName(p.getName());
         pd.setSurname(p.getSurname());
-        pd.setHr_id(p.getHr_id());
+        pd.setHrId(p.getHrId());
         pd.setRole(p.getRole());
         pd.setPhotoUrl(p.getPhotoUrl());
         return pd;
@@ -28,7 +28,7 @@ public class UserConverter {
         p.setPassword(pd.getPassword());
         p.setName(pd.getName());
         p.setSurname(pd.getSurname());
-        p.setHr_id(pd.getHr_id());
+        p.setHrId(pd.getHrId());
         p.setRole(pd.getRole());
         p.setPhotoUrl(pd.getPhotoUrl());
         return p;
