@@ -29,9 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findUserByEmail(String email) {
-        Optional<User> p = userDao.findUserByEmail(email);
-        return p.map(user -> userConverter.convert(user)).orElse(null);
+        User p = userDao.findUserByEmail(email);
+        return userConverter.convert(p);
     }
-
-
 }
