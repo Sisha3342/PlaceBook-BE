@@ -1,5 +1,6 @@
 package com.exadel.placebook.service;
 
+import com.exadel.placebook.model.dto.AdminDto;
 import com.exadel.placebook.model.dto.UserDto;
 
 public interface UserService {
@@ -7,4 +8,6 @@ public interface UserService {
     UserDto findById(Long id);
 
     UserDto findUserByEmail(String email);
+
+    AdminDto findAllByIdBetweenAndNameContainingAndSurnameContaining(Long offset, Long limitAndOffset, String name, String surname);
 }
