@@ -1,12 +1,9 @@
 package com.exadel.placebook.model.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.exadel.placebook.model.enums.Role;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -26,8 +23,26 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(name = "hr_id")
+    private Long hrId;
+
     @Column(name = "photo_url")
     private String photoUrl;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -37,20 +52,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -68,4 +75,29 @@ public class User {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    public Long getHrId() {
+        return hrId;
+    }
+
+    public void setHrId(Long hr_id) {
+        this.hrId = hr_id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
 }
