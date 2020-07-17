@@ -35,6 +35,9 @@
         <jackson.version>2.9.8</jackson.version>
         <liquibase.version>3.6.3</liquibase.version>
         <mysql.version>8.0.18</mysql.version>
+        <spring-boot-starter-security.version>2.3.1.RELEASE</spring-boot-starter-security.version>
+        <spring-security-web.version>5.3.3.RELEASE</spring-security-web.version>
+        <lombok.version>1.18.12</lombok.version>
 
     </properties>
 
@@ -72,11 +75,26 @@
                 <artifactId>placebook-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring-boot-starter-security.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${spring-security-web.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
