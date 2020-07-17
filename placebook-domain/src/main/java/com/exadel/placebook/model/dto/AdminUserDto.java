@@ -11,8 +11,6 @@ public class AdminUserDto {
     private String name;
     private String surname;
     private String email;
-    private String password;
     private Role role;
-    private Long hrId;
     private String photoUrl;
 }

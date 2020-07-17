@@ -1,8 +1,6 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.converter.AdminUserConverter;
-import com.exadel.placebook.model.dto.UserDto;
-import com.exadel.placebook.model.entity.User;
+import com.exadel.placebook.model.dto.AdminUserDto;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 import com.exadel.placebook.service.PageValidation;
 import com.exadel.placebook.service.UserService;
@@ -18,7 +16,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<UserDto> getUsers(AdminUserFilter adminUserFilter) throws Exception {
+    public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) throws Exception {
         PageValidation.validate(adminUserFilter);
         return userService.findUsers(adminUserFilter);
     }
