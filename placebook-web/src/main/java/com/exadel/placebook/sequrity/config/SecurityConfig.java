@@ -1,7 +1,6 @@
 package com.exadel.placebook.sequrity.config;
 
-import com.exadel.placebook.sequrity.handler_impl.AuthFailureHandlerImpl;
-import com.exadel.placebook.sequrity.handler_impl.AuthSuccessHandlerImpl;
+import com.exadel.placebook.model.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -57,8 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/hello").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/hello").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginProcessingUrl("/login").usernameParameter("email").passwordParameter("password")
