@@ -8,3 +8,4 @@ public class ApplicationRuntimeException extends RuntimeException{
         super(message,cause);
     }
 }
+
