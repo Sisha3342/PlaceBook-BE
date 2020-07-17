@@ -37,7 +37,6 @@
         <mysql.version>8.0.18</mysql.version>
         <spring-boot-starter-security.version>2.3.1.RELEASE</spring-boot-starter-security.version>
         <spring-security-web.version>5.3.3.RELEASE</spring-security-web.version>
-        <model-mapper.version>2.3.8</model-mapper.version>
         <lombok.version>1.18.12</lombok.version>
 
     </properties>
@@ -87,12 +86,6 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
                 <version>${spring-security-web.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.modelmapper.extensions</groupId>
-                <artifactId>modelmapper-spring</artifactId>
-                <version>${model-mapper.version}</version>
             </dependency>
 
             <dependency>

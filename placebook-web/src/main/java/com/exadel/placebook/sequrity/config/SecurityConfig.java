@@ -15,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationFailureHandler failureHandler;
+
+    @Autowired
+    private AuthenticationSuccessHandler successHandler;
 
     @Override
     @Bean
@@ -54,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginProcessingUrl("/login").usernameParameter("email").passwordParameter("password")
-                .failureHandler(new AuthFailureHandlerImpl())
-                .successHandler(new AuthSuccessHandlerImpl())
+                .failureHandler(failureHandler)
+                .successHandler(successHandler)
                 .and().logout()
                 .permitAll()
                 .deleteCookies("JSESSIONID");

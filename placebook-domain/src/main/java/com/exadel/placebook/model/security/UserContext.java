@@ -18,7 +18,7 @@ public class UserContext implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(userDto.getRole().toString()));
+        return Collections.singletonList(new SimpleGrantedAuthority(userDto.getRole().name()));
     }
 
     @Override
