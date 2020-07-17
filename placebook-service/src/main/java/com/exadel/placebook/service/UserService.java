@@ -1,13 +1,12 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.AdminDto;
 import com.exadel.placebook.model.dto.UserDto;
+
+import java.util.Optional;
 
 public interface UserService {
 
-    UserDto findById(Long id);
+    Optional<UserDto> findById(Long id);
 
-    UserDto findUserByEmail(String email);
-
-    AdminDto findAllByIdBetweenAndNameContainingAndSurnameContaining(Long offset, Long limitAndOffset, String name, String surname);
+    Optional<UserDto> findByEmail(String email);
 }
