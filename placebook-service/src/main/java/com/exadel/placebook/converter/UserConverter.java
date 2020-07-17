@@ -1,13 +1,10 @@
 package com.exadel.placebook.converter;
 
 
-import com.exadel.placebook.model.dto.AdminDto;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.entity.User;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class UserConverter {
@@ -38,11 +35,4 @@ public class UserConverter {
         return p;
     }
 
-    public AdminDto convert(List<User> users) {
-        List<UserDto> userDto = new ArrayList<>();
-        for (User user : users) {
-            userDto.add(convert(user));
-        }
-        return new AdminDto(userDto);
-    }
 }

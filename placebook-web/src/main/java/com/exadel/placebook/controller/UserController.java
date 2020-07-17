@@ -1,23 +1,25 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.dao.UserDao;
+import com.exadel.placebook.converter.AdminUserConverter;
+import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.entity.User;
+import com.exadel.placebook.model.filters.AdminUserFilter;
 import com.exadel.placebook.service.PageValidation;
+import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("/users")
 public class UserController {
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/users", params = {"limit", "offset", "name", "surname"})
-    public List<User> getUsers(@RequestParam long limit, long offset, String name, String surname) {
-        if (PageValidation.validation(offset, limit)) {
-            return userDao.findAllByIdBetweenAndNameContainingAndSurnameContaining(offset, offset + limit - 1, name, surname);
-        } else return null;
+    @GetMapping
+    public List<UserDto> getUsers(AdminUserFilter adminUserFilter) throws Exception {
+        PageValidation.validate(adminUserFilter);
+        return userService.findUsers(adminUserFilter);
     }
 }
