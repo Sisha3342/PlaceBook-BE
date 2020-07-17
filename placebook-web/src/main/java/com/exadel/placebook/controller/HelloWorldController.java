@@ -12,4 +12,9 @@ public class HelloWorldController {
     public String helloWorld(String name) {
         return "Hello world!";
     }
+    @GetMapping("/status")
+    public String StatusController (String name) {
+        return "Application is Running!";
+    }
+
 }
