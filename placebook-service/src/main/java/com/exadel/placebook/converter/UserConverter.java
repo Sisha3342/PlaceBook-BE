@@ -3,34 +3,17 @@ package com.exadel.placebook.converter;
 
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.entity.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
 
-    public UserDto convert(User p) {
-        UserDto pd = new UserDto();
-        pd.setId(p.getId());
-        pd.setEmail(p.getEmail());
-        pd.setPassword(p.getPassword());
-        pd.setName(p.getName());
-        pd.setSurname(p.getSurname());
-        pd.setHrId(p.getHrId());
-        pd.setRole(p.getRole());
-        pd.setPhotoUrl(p.getPhotoUrl());
-        return pd;
+    public UserDto convert(User user) {
+        return new ModelMapper().map(user, UserDto.class);
     }
 
-    public User convert(UserDto pd) {
-        User p = new User();
-        p.setId(pd.getId());
-        p.setEmail(pd.getEmail());
-        p.setPassword(pd.getPassword());
-        p.setName(pd.getName());
-        p.setSurname(pd.getSurname());
-        p.setHrId(pd.getHrId());
-        p.setRole(pd.getRole());
-        p.setPhotoUrl(pd.getPhotoUrl());
-        return p;
+    public User convert(UserDto userDto) {
+        return new ModelMapper().map(userDto, User.class);
     }
 }
