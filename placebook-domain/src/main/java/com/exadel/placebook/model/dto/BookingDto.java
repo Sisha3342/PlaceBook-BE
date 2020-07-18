@@ -3,16 +3,15 @@ package com.exadel.placebook.model.dto;
 import com.exadel.placebook.model.enums.Status;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
-
 public class BookingDto {
+
     private Long id;
     private Long placeId;
     private Long userId;
-    private LocalDateTime timeStart;
-    private LocalDateTime timeEnd;
+    private Timestamp timeStart;
+    private Timestamp timeEnd;
     private Status status;
-
 }

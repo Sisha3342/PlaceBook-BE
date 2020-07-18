@@ -17,5 +17,4 @@ public interface UserService {
     UserStatusDto getUserStatus();
 
     List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter);
-
 }

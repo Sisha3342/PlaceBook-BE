@@ -17,6 +17,4 @@ public class AdminUserConverter {
         aud.setPhotoUrl(user.getPhotoUrl());
         return aud;
     }
-
-
 }

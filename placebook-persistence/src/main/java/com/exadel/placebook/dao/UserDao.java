@@ -15,6 +15,5 @@ public interface UserDao {
     Optional<User> findByEmail(String email);
 
     List<User> findUsers(AdminUserFilter adminUserFilter);
-
 }
 
