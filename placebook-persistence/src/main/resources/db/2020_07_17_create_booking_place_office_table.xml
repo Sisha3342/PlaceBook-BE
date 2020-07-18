@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet runOnChange="true" id="2020_07_17_booking_place_office_table.xml" author="Alena Galygo">
+
+        <sql>
+            CREATE TABLE `place` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `floor_id` INT NOT NULL,
+            `place_number` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+        <sql>
+            CREATE TABLE `country` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `country` varchar(255) NOT NULL UNIQUE,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+        <sql>
+            CREATE TABLE `сity` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `city` varchar(255) NOT NULL UNIQUE,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+        <sql>
+            CREATE TABLE `address` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `address` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+
+        <sql>
+            CREATE TABLE `booking` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `place_id` INT NOT NULL,
+            `user_id` INT NOT NULL,
+            `time_start` TIMESTAMP NOT NULL,
+            `time_end` TIMESTAMP NOT NULL,
+            `status` ENUM('ACTIVE', 'COMPLETED', 'CANCELED') NOT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+
+        <sql>
+            CREATE TABLE `floors` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `office_id` INT NOT NULL,
+            `floor_configuration` varchar(255) NOT NULL,
+            PRIMARY KEY (`id`)
+            );
+        </sql>
+        <sql>
+
+            CREATE TABLE `office` (
+            `id` INT NOT NULL AUTO_INCREMENT,
+            `country_id` INT NOT NULL,
+            `city_id` INT NOT NULL,
+            `address_id` INT NOT NULL,
+            `worktime_start` TIME NOT NULL,
+            `worktime_end` TIME NOT NULL,
+            `floor_number` INT NOT NULL,
+            PRIMARY KEY (`id`)
+            );
+
+        </sql>
+        <sql>
+
+            ALTER TABLE `place` ADD CONSTRAINT `place_fk0` FOREIGN KEY (`floor_id`) REFERENCES `floors`(`id`);
+
+            ALTER TABLE `booking` ADD CONSTRAINT `booking_fk0` FOREIGN KEY (`place_id`) REFERENCES `place`(`id`);
+
+            ALTER TABLE `booking` ADD CONSTRAINT `booking_fk1` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`);
+
+            ALTER TABLE `office` ADD CONSTRAINT `office_fk0` FOREIGN KEY (`country_id`) REFERENCES `country`(`id`);
+
+            ALTER TABLE `office` ADD CONSTRAINT `office_fk1` FOREIGN KEY (`city_id`) REFERENCES `сity`(`id`);
+
+            ALTER TABLE `office` ADD CONSTRAINT `office_fk2` FOREIGN KEY (`address_id`) REFERENCES `address`(`id`);
+
+            ALTER TABLE `floors` ADD CONSTRAINT `floors_fk0` FOREIGN KEY (`office_id`) REFERENCES `office`(`id`);
+        </sql>
+
+    </changeSet>
+</databaseChangeLog>
