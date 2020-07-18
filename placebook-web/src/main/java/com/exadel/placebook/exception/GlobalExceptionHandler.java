@@ -17,6 +17,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+    @ExceptionHandler(value={AdminValidatorException.class})
+    public ResponseEntity<?>  handleRestException(AdminValidatorException e){
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
     @ExceptionHandler(value={Exception.class})
     public ResponseEntity<?>  handleRestException(Exception e){
         final HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;

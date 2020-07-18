@@ -1,4 +1,4 @@
-package com.exadel.placebook.sequrity.handler_impl;
+package com.exadel.placebook.seсurity.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

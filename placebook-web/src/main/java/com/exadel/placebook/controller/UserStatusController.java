@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserStatusController {
+
     @Autowired
     private UserService userService;
-@GetMapping("/user/status")
-public UserStatusDto getUserStatus () {
-    return userService.getUserStatus();
-}
+
+    @GetMapping("/user/status")
+    public UserStatusDto getUserStatus() {
+        return userService.getUserStatus();
+    }
 }
