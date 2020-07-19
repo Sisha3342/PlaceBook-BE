@@ -35,10 +35,10 @@ public class BookingServiceImpl implements BookingService {
     public Map<String, Integer> statistics(Long id) {
         List<BookingDto> list = findBookings(id);
         Map<String, Integer> statistic = new HashMap<>();
-        statistic.put("ACTIVE",0);
-        statistic.put("COMPLETED",0);
-        statistic.put("CANCELED",0);
-        list.stream().forEach((p)->statistic.put(p.getStatus().toString(),statistic.get(p.getStatus().toString())));
+        statistic.put("ACTIVE", 0);
+        statistic.put("COMPLETED", 0);
+        statistic.put("CANCELED", 0);
+        list.stream().forEach((p) -> statistic.put(p.getStatus().toString(), statistic.get(p.getStatus().toString()) + 1));
         return statistic;
     }
 

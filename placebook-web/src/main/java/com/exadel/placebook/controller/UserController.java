@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) throws Exception {
+    public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) {
         PageValidation.validate(adminUserFilter);
         return userService.findUsers(adminUserFilter);
     }
