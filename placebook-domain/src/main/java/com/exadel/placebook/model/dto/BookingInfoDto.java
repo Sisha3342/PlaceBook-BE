@@ -1,5 +1,8 @@
 package com.exadel.placebook.model.dto;
 
+import com.exadel.placebook.model.entity.Address;
+import com.exadel.placebook.model.entity.City;
+import com.exadel.placebook.model.entity.Country;
 import com.exadel.placebook.model.enums.Status;
 import lombok.Data;
 
@@ -10,7 +13,11 @@ public class BookingInfoDto {
 
     private Long id;
     private String placeInfo;
-    private UserDto userDto;
+    private String userName;
+    private String userSurname;
+    private String country;
+    private String city;
+    private String address;
     private Timestamp timeStart;
     private Timestamp timeEnd;
     private Status status;

@@ -13,7 +13,7 @@ public class BookingInfoController {
     @Autowired
     private BookingInfoService bookingInfoService;
 
-    @GetMapping("/book")
+    @GetMapping("/bookingInfo")
     public BookingInfoDto findBookingInfo(@RequestParam Long id) {
         return bookingInfoService.findBookingInfo(id);
     }

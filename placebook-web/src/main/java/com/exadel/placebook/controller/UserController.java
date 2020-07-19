@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/admin")
+@RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) {
         PageValidation.validate(adminUserFilter);
         return userService.findUsers(adminUserFilter);

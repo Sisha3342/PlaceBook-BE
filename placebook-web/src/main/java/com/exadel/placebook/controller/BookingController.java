@@ -18,16 +18,16 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping
+    @GetMapping("/booking/active")
     public List<BookingDto> findUserBookingsActive(@RequestParam Long id, @RequestParam Status status) {
         return bookingService.findByStatus(id, status);
     }
 
-    @GetMapping("/statistics")
+    @GetMapping("/booking/statistics")
     public Map<String, Integer> statistics(@RequestParam Long id) {
         return bookingService.statistics(id);
     }
-    @GetMapping("/info")
+    @GetMapping("/booking/info")
     public List<BookingDto> getBookingInfo(@RequestParam Long id) {
         return bookingService.findBookings(id);
     }
