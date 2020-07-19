@@ -5,6 +5,7 @@ import com.exadel.placebook.model.enums.Status;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookingDao {
@@ -12,4 +13,6 @@ public interface BookingDao {
     List<Booking> findBookings(Long userId);
 
     List<Booking> findUserBookingsByStatus(Long userId, Status status);
+
+    Optional<Booking> findById(Long id);
 }

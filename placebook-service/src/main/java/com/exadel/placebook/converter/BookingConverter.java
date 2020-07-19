@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookingConverter {
-    public com.exadel.placebook.model.dto.BookingDto convert(Booking booking) {
+    public BookingDto convert(Booking booking) {
         com.exadel.placebook.model.dto.BookingDto bookingDto = new com.exadel.placebook.model.dto.BookingDto();
         bookingDto.setId(booking.getId());
         bookingDto.setPlaceId(booking.getPlaceId());

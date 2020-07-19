@@ -3,6 +3,7 @@ package com.exadel.placebook.service.impl;
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.model.dto.BookingDto;
+import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,5 +48,10 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> findByStatus(Long id, Status status) {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
         return bookingList.stream().map((p) -> bookingConverter.convert(p)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<BookingInfoDto> findBookingInfo(Long id) {
+        return Optional.empty();
     }
 }

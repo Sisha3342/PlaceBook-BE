@@ -28,7 +28,7 @@ public class BookingController {
         return bookingService.statistics(id);
     }
     @GetMapping("/info")
-    public List<BookingDto> getBookingInfo(@RequestParam Long userId) {
-        return bookingService.findBookings(userId);
+    public List<BookingDto> getBookingInfo(@RequestParam Long id) {
+        return bookingService.findBookings(id);
     }
 }
