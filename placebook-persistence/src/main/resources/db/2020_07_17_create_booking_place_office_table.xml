@@ -21,7 +21,7 @@
             );
         </sql>
         <sql>
-            CREATE TABLE `сity` (
+            CREATE TABLE `city` (
             `id` INT NOT NULL AUTO_INCREMENT,
             `city` varchar(255) NOT NULL UNIQUE,
             PRIMARY KEY (`id`)
@@ -79,7 +79,7 @@
 
             ALTER TABLE `office` ADD CONSTRAINT `office_fk0` FOREIGN KEY (`country_id`) REFERENCES `country`(`id`);
 
-            ALTER TABLE `office` ADD CONSTRAINT `office_fk1` FOREIGN KEY (`city_id`) REFERENCES `сity`(`id`);
+            ALTER TABLE `office` ADD CONSTRAINT `office_fk1` FOREIGN KEY (`city_id`) REFERENCES `city`(`id`);
 
             ALTER TABLE `office` ADD CONSTRAINT `office_fk2` FOREIGN KEY (`address_id`) REFERENCES `address`(`id`);
 
