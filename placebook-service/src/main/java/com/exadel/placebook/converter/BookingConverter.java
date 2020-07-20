@@ -32,11 +32,4 @@ public class BookingConverter {
         return b;
     }
 
-    public  List<BookingDto> convert(List<Booking> bookingList) {
-        List<BookingDto> bookings = new ArrayList<>();
-        for(Booking booking : bookingList ) {
-            bookings.add(convert(booking));
-        }
-        return bookings;
-    }
 }

@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookingDao extends CrudRepository<Booking, Long> {
-    Optional<Booking> findById(Long id);
-    List<Booking> findBookingsByUserIdAndStatus(long id, Status status);
+public interface BookingDao{
+
+    List<Booking> findBookings(Long userId);
+    List<Booking> findUserBookingsByStatus(Long id, Status status);
 }
