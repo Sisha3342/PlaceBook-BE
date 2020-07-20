@@ -12,8 +12,6 @@ public class BookingInfoDto {
     private String placeInfo;
     private String userName;
     private String userSurname;
-    private String country;
-    private String city;
     private String address;
     private Timestamp timeStart;
     private Timestamp timeEnd;

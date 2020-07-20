@@ -13,10 +13,10 @@ public class Place {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "floor_id")
-    private Long floorId;
+    @ManyToOne
+    @JoinColumn(name = "floor_id")
+    private Floors floor;
 
     @Column(name = "place_number")
     private String placeNumber;
-
 }

@@ -13,8 +13,9 @@ public class Floors {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "office_id")
-    private Long officeId;
+    @ManyToOne
+    @JoinColumn(name = "office_id")
+    private Office office;
 
     @Column(name = "floor_configuration")
     private String floorConfiguration;

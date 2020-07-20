@@ -16,4 +16,10 @@ public class Address {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "country")
+    private String country;
 }

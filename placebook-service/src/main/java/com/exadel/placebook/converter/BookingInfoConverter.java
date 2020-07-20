@@ -6,15 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookingInfoConverter {
-    public BookingInfoDto convert(Booking booking, User user, Place place, Country country, City city, Address address) {
+    public BookingInfoDto convert(Booking booking) {
         BookingInfoDto bookingInfoDto = new BookingInfoDto();
         bookingInfoDto.setId(booking.getId());
-        bookingInfoDto.setUserName(user.getName());
-        bookingInfoDto.setUserSurname(user.getSurname());
-        bookingInfoDto.setPlaceInfo(place.getPlaceNumber());
-        bookingInfoDto.setCountry(country.getCountry());
-        bookingInfoDto.setCity(city.getCity());
-        bookingInfoDto.setAddress(address.getAddress());
+        bookingInfoDto.setUserName(booking.getUser().getName());
+        bookingInfoDto.setUserSurname(booking.getUser().getSurname());
+        bookingInfoDto.setPlaceInfo(booking.getPlace().getPlaceNumber());
+        bookingInfoDto.setAddress(booking.getPlace().getFloor().getOffice().getAddress().getAddress());
         bookingInfoDto.setTimeStart(booking.getTimeStart());
         bookingInfoDto.setTimeEnd(booking.getTimeEnd());
         bookingInfoDto.setStatus(booking.getStatus());
