@@ -5,6 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-        <include file="db/2020_07_15_create_user_table.xml"/>
+    <include file="db/2020_07_15_create_user_table.xml"/>
+    <include file="db/2020_07_17_create_booking_place_office_table.xml"/>
 
 </databaseChangeLog>
