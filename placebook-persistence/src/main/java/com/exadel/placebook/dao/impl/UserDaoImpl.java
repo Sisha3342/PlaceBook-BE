@@ -17,7 +17,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public Optional<User> findById(Long id) {
         Session session = getSession();
         return Optional.ofNullable(session
-                .createQuery("from User p where p.id = :id", User.class)
+                .createQuery("from User u where u.id = :id", User.class)
                 .setParameter("id", id)
                 .uniqueResult());
     }
@@ -26,7 +26,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
         Session session = getSession();
         return Optional.ofNullable(session
-                .createQuery("from User p where p.email = :email", User.class)
+                .createQuery("from User u where u.email = :email", User.class)
                 .setParameter("email", email)
                 .uniqueResult());
     }
@@ -35,9 +35,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public List<User> findUsers(AdminUserFilter adminUserFilter) {
         Session session = getSession();
         Query<User> query = session
-                .createQuery("from User p where p.name LIKE CONCAT('%', :name, '%') and p.surname LIKE CONCAT('%', :surname, '%')", User.class)
-                .setParameter("name", adminUserFilter.getName())
-                .setParameter("surname", adminUserFilter.getSurname())
+                .createQuery("from User u where concat_ws(u.name,'  ',u.surname) like :text", User.class)
+                .setParameter("text", "%" + adminUserFilter.getText() + "%")
                 .setMaxResults(adminUserFilter.getLimit())
                 .setFirstResult(adminUserFilter.getOffset());
         return query.list();

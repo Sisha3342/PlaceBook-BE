@@ -1,6 +1,6 @@
 package com.exadel.placebook.exception;
 
-import com.exadel.placebook.model.exception.AdminValidatorException;
+import com.exadel.placebook.model.exception.AdminValidationException;
 import com.exadel.placebook.model.exception.ApplicationRuntimeException;
 import com.exadel.placebook.model.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
-    @ExceptionHandler(value={AdminValidatorException.class})
-    public ResponseEntity<?>  handleRestException(AdminValidatorException e){
+    @ExceptionHandler(value={AdminValidationException.class})
+    public ResponseEntity<?>  handleRestException(AdminValidationException e){
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ErrorResponse errorResponse =new ErrorResponse(
                 e.getMessage(),

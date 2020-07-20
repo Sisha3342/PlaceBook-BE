@@ -4,8 +4,7 @@ package com.exadel.placebook.model.filters;
 public class AdminUserFilter {
     private int offset;
     private int limit;
-    private String name;
-    private String surname;
+    private String text;
 
     public int getOffset() {
         return offset;
@@ -23,19 +22,11 @@ public class AdminUserFilter {
         this.limit = limit;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setText(String text) {
+        this.text = text;
     }
 }
