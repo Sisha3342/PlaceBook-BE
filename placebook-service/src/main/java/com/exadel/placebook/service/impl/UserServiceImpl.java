@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserConverter userConverter;
+
     @Autowired
     private UserStatusConverter userStatusConverter;
 
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
         return userOptional.map(user -> userConverter.convert(user));
     }
 
+    @Override
     public UserStatusDto getUserStatus() {
         UserContext context = (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (context == null) throw new RuntimeException();
@@ -57,6 +59,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter) {
         List<User> users = userDao.findUsers(adminUserFilter);
-        return users.stream().map((s) -> adminUserConverter.convert(s)).collect(Collectors.toList());
+        return users.stream().map(adminUserConverter::convert).collect(Collectors.toList());
     }
 }

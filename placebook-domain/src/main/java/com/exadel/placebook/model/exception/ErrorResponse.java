@@ -1,4 +1,4 @@
-package com.exadel.placebook.exception;
+package com.exadel.placebook.model.exception;
 
 import org.springframework.http.HttpStatus;
 

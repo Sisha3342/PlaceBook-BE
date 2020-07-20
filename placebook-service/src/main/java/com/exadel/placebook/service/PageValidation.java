@@ -1,6 +1,6 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.exception.AdminValidatorException;
+import com.exadel.placebook.model.exception.AdminValidatorException;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 
 

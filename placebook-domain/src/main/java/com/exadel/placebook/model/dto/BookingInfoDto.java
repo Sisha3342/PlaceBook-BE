@@ -1,8 +1,5 @@
 package com.exadel.placebook.model.dto;
 
-import com.exadel.placebook.model.entity.Address;
-import com.exadel.placebook.model.entity.City;
-import com.exadel.placebook.model.entity.Country;
 import com.exadel.placebook.model.enums.Status;
 import lombok.Data;
 

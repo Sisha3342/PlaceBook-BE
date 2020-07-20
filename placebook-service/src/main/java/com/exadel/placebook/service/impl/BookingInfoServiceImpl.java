@@ -19,6 +19,7 @@ public class BookingInfoServiceImpl implements BookingInfoService {
 
     @Autowired
     private UserDao userDao;
+
     @Autowired
     private PlaceDao placeDao;
 
@@ -40,7 +41,6 @@ public class BookingInfoServiceImpl implements BookingInfoService {
     @Autowired
     private BookingInfoConverter bookingInfoConverter;
 
-
     @Override
     public BookingInfoDto findBookingInfo(Long id) {
         Optional<Booking> booking = bookingDao.findById(id);
@@ -52,5 +52,9 @@ public class BookingInfoServiceImpl implements BookingInfoService {
         Optional<City> city = cityDao.findById(office.get().getCityId());
         Optional<Address> address = addressDao.findById(office.get().getAddressId());
         return bookingInfoConverter.convert(booking.get(), user.get(), place.get(), country.get(), city.get(), address.get());
+    }
+
+    public BookingInfoDto findBookingInfoTest(Long id){
+        return null;
     }
 }

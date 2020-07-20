@@ -1,5 +1,8 @@
 package com.exadel.placebook.exception;
 
+import com.exadel.placebook.model.exception.AdminValidatorException;
+import com.exadel.placebook.model.exception.ApplicationRuntimeException;
+import com.exadel.placebook.model.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

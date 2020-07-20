@@ -1,4 +1,4 @@
-package com.exadel.placebook.exception;
+package com.exadel.placebook.model.exception;
 
 public class ApplicationRuntimeException extends RuntimeException{
     public ApplicationRuntimeException(String message){

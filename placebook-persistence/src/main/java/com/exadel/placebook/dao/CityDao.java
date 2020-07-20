@@ -9,5 +9,6 @@ import java.util.Optional;
 
 public interface CityDao extends CrudRepository<City, Long> {
     Optional<City> findById(Long id);
+
     List<City> findAll();
 }
