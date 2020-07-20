@@ -15,13 +15,16 @@ import java.io.IOException;
 public class AuthSuccessHandlerImpl implements AuthenticationSuccessHandler {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException {
 
-        httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(userService.getUserStatus()));
+        httpServletResponse.getWriter().write(objectMapper.writeValueAsString(userService.getUserStatus()));
     }
 }
