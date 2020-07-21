@@ -24,7 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(!userDto.isPresent()) {
             throw new UsernameNotFoundException("user not found");
         }
-
         return new UserContext(userDto.get());
     }
 

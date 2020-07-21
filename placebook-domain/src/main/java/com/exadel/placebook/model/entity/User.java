@@ -1,20 +1,15 @@
 package com.exadel.placebook.model.entity;
 
-
 import com.exadel.placebook.model.enums.Role;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
 @Data
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class User extends BaseEntity {
 
     @Column(name = "name")
     private String name;
@@ -37,4 +32,7 @@ public class User {
 
     @Column(name = "photo_url")
     private String photoUrl;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Booking> bookings;
 }

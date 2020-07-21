@@ -1,4 +1,4 @@
-package com.exadel.placebook.sequrity.config;
+package com.exadel.placebook.seсurity.config;
 
 import com.exadel.placebook.model.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
