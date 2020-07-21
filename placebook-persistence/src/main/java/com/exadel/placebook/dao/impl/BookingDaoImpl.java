@@ -49,7 +49,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
 
     @Override
     @SuppressWarnings({"unchecked", "deprecation"})
-    public Optional<MarkDto> findByMarksByPlaceId(Long id) {
+    public Optional<MarkDto> findMarksByPlaceId(Long id) {
         Session session = getSession();
         return session
                 .createQuery("select avg(pr.markLightning) as markLightning, avg(pr.markAir) as markAir, " +

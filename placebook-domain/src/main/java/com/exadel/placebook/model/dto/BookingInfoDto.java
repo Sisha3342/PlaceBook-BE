@@ -12,8 +12,8 @@ public class BookingInfoDto {
     private String placeInfo;
     private String userName;
     private String userSurname;
-    private MarkDto markDto;
-    private String address;
+    private MarkDto marks;
+    private AddressDto address;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Status status;
