@@ -17,10 +17,10 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         Session session = getSession();
-        return Optional.ofNullable(session
+        return session
                 .createQuery("from User u where u.email = :email", User.class)
                 .setParameter("email", email)
-                .uniqueResult());
+                .uniqueResultOptional();
     }
 
     @Override

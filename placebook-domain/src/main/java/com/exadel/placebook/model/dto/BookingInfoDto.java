@@ -13,7 +13,7 @@ public class BookingInfoDto {
     private String userName;
     private String userSurname;
     private MarkDto marks;
-    private String address;
+    private AddressDto address;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Status status;
