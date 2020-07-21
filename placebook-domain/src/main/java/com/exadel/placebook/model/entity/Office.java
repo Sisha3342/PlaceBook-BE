@@ -23,4 +23,4 @@ public class Office {
 
     @Column(name = "worktime_end")
     private LocalTime workTimeEnd;
-}
+
