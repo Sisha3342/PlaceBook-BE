@@ -41,8 +41,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingInfoDto findBookingInfoModalPage(Long id) {
         Optional<MarkDto> markDto = bookingDao.findByMarksByPlaceId(id);
-        Optional<Booking> booking = bookingDao.findById(id);
-        return bookingInfoConverter.convert(booking.get(), markDto.get());
+        Booking booking = bookingDao.find(id);
+        return bookingInfoConverter.convert(booking, markDto.get());
     }
 
     public List<BookingDto> findByStatus(Long id, Status status) {

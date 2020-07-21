@@ -37,9 +37,9 @@ public class UserServiceImpl implements UserService {
     private AdminUserConverter adminUserConverter;
 
     @Override
-    public Optional<UserDto> findById(Long id) {
-        Optional<User> userOptional = userDao.findById(id);
-        return userOptional.map(user -> userConverter.convert(user));
+    public UserDto findById(Long id) {
+        User user = userDao.find(id);
+        return userConverter.convert(user);
     }
 
     @Override

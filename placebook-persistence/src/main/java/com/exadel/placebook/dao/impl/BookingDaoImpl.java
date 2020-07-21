@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 @Repository
-public class BookingDaoImpl extends BaseDaoImpl implements BookingDao {
+public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
 
     @Override
     public List<Booking> findUserBookingsByStatus(Long userId, Status status) {
@@ -45,14 +45,6 @@ public class BookingDaoImpl extends BaseDaoImpl implements BookingDao {
                 "select b.status as status, count(b.id) from Booking b where b.user.id = :userId group by b.status", Object[].class)
                 .setParameter("userId", userId)
                 .stream().collect(Collectors.toMap(o -> (Status) o[0], o -> (Long) o[1]));
-    }
-    @Override
-    public Optional<Booking> findById(Long id) {
-        Session session = getSession();
-        return session
-                .createQuery("from Booking b where b.id = :id", Booking.class)
-                .setParameter("id", id)
-                .uniqueResultOptional();
     }
 
     @Override

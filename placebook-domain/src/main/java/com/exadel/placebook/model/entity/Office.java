@@ -8,7 +8,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "office")
 @Data
-public class Office {
+public class Office extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

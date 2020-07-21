@@ -10,15 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public interface BookingDao {
+public interface BookingDao extends BaseDao<Booking> {
 
     List<Booking> findBookings(Long userId);
 
     List<Booking> findUserBookingsByStatus(Long id, Status status);
 
     Map<Status, Long> getStatistics(Long userId);
-
-    Optional<Booking> findById(Long id);
 
     Optional<MarkDto> findByMarksByPlaceId(Long id);
 }

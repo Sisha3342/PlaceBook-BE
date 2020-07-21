@@ -12,16 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl extends BaseDaoImpl implements UserDao {
-
-    @Override
-    public Optional<User> findById(Long id) {
-        Session session = getSession();
-        return Optional.ofNullable(session
-                .createQuery("from User u where u.id = :id", User.class)
-                .setParameter("id", id)
-                .uniqueResult());
-    }
+public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
