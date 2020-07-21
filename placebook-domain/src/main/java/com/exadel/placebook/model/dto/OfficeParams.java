@@ -1,8 +1,7 @@
-package com.exadel.placebook.model;
+package com.exadel.placebook.model.dto;
 
 import lombok.Data;
 
-import java.sql.Time;
 import java.time.LocalTime;
 
 @Data

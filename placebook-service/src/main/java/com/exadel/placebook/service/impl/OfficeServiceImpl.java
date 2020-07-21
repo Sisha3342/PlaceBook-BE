@@ -2,7 +2,7 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.dao.OfficeDao;
-import com.exadel.placebook.model.OfficeParams;
+import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Office;

@@ -1,6 +1,6 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.OfficeParams;
+import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
 
 public interface OfficeService {
