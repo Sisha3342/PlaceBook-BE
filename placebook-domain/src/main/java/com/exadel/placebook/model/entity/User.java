@@ -1,6 +1,5 @@
 package com.exadel.placebook.model.entity;
 
-
 import com.exadel.placebook.model.enums.Role;
 import lombok.Data;
 

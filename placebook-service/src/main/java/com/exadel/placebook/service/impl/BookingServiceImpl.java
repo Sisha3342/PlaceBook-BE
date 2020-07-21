@@ -47,7 +47,7 @@ public class BookingServiceImpl implements BookingService {
 
     public List<BookingDto> findByStatus(Long id, Status status) {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
-        return bookingList.stream().map((p) -> bookingConverter.convert(p)).collect(Collectors.toList());//почитать про это все
+        return bookingList.stream().map((p) -> bookingConverter.convert(p)).collect(Collectors.toList());
     }
 
     @Override

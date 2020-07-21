@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class BookingDaoImpl extends BaseDaoImpl implements BookingDao {
+
     @Override
     public List<Booking> findUserBookingsByStatus(Long userId, Status status) {
         Session session = getSession();

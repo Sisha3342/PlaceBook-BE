@@ -1,6 +1,5 @@
 package com.exadel.placebook.dao;
 
-
 import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 import org.springframework.stereotype.Repository;

@@ -3,7 +3,6 @@ package com.exadel.placebook.dao;
 import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public interface BookingDao extends CrudRepository<Booking, Long> {
+public interface BookingDao {
 
     List<Booking> findBookings(Long userId);
 
