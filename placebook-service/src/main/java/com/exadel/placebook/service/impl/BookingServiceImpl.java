@@ -2,10 +2,13 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
+import com.exadel.placebook.dao.AddressDao;
 import com.exadel.placebook.dao.BookingDao;
+import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.service.BookingService;
@@ -28,6 +31,11 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingConverter bookingConverter;
 
+    @Autowired
+    private AddressDao addressDao;
+
+    @Autowired
+    private OfficeDao officeDao;
 
     @Autowired
     private BookingInfoConverter bookingInfoConverter;
@@ -43,6 +51,21 @@ public class BookingServiceImpl implements BookingService {
         Optional<MarkDto> markDto = bookingDao.findByMarksByPlaceId(id);
         Booking booking = bookingDao.find(id);
         return bookingInfoConverter.convert(booking, markDto.get());
+    }
+
+    @Override
+    public List<String> getAllCountries() {
+        return addressDao.findAllCountries();
+    }
+
+    @Override
+    public List<String> getAllCitiesByCountry(String country) {
+        return addressDao.findAllCitiesByCountry(country);
+    }
+
+    @Override
+    public List<Office> getAllOfficesByCity(String city) {
+        return officeDao.findAllOfficesByCity(city);
     }
 
     public List<BookingDto> findByStatus(Long id, Status status) {

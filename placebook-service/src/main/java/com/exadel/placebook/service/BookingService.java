@@ -2,6 +2,7 @@ package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface BookingService {
     List<BookingDto> findBookings(Long userId);
     Map<Status, Long> getStatistics(Long id);
     BookingInfoDto findBookingInfoModalPage(Long id);
-
+    List<String> getAllCountries();
+    List<String> getAllCitiesByCountry(String country);
+    List<Office> getAllOfficesByCity(String city);
 }
