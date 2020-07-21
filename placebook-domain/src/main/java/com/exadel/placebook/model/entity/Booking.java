@@ -5,12 +5,12 @@ import com.exadel.placebook.model.enums.Status;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "booking")
 @Data
-public class Booking {
+public class Booking extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -25,10 +25,10 @@ public class Booking {
     private User user;
 
     @Column(name = "time_start")
-    private Timestamp timeStart;
+    private LocalDateTime timeStart;
 
     @Column(name = "time_end")
-    private Timestamp timeEnd;
+    private LocalDateTime timeEnd;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

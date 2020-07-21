@@ -1,6 +1,5 @@
 package com.exadel.placebook.model.entity;
 
-
 import com.exadel.placebook.model.enums.Role;
 import lombok.Data;
 
@@ -10,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Data
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

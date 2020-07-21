@@ -3,19 +3,18 @@ package com.exadel.placebook.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "office")
 @Data
-public class Office {
+public class Office extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
 

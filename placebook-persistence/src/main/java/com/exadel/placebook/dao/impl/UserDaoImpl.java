@@ -3,6 +3,7 @@ package com.exadel.placebook.dao.impl;
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.model.filters.AdminUserFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -11,16 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl extends BaseDaoImpl implements UserDao {
-
-    @Override
-    public Optional<User> findById(Long id) {
-        Session session = getSession();
-        return Optional.ofNullable(session
-                .createQuery("from User u where u.id = :id", User.class)
-                .setParameter("id", id)
-                .uniqueResult());
-    }
+public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -35,8 +27,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     public List<User> findUsers(AdminUserFilter adminUserFilter) {
         Session session = getSession();
         Query<User> query = session
-                .createQuery("from User u where concat_ws(u.name,'  ',u.surname) like :text", User.class)
-                .setParameter("text", "%" + adminUserFilter.getText() + "%")
+                .createQuery("from User u where concat_ws(' ', u.name, u.surname) like :text", User.class)
+                .setParameter("text", StringUtils.wrap(adminUserFilter.getText(), "%"))
                 .setMaxResults(adminUserFilter.getLimit())
                 .setFirstResult(adminUserFilter.getOffset());
         return query.list();
