@@ -9,12 +9,12 @@ import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.exadel.placebook.model.enums.Status.*;
-
 @Service
+@Transactional
 
 public class BookingServiceImpl implements BookingService {
 
@@ -35,19 +35,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> findByStatus(Long id, Status status) {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
-        return bookingList.stream().map((p) -> bookingConverter.convert(p)).collect(Collectors.toList());//почитать про это все
+        return bookingList.stream().map((p) -> bookingConverter.convert(p)).collect(Collectors.toList());
     }
-
-
-//    @Override
-//    public Map<String, Integer> statistics(Long id) {
-//       Map<String, Integer> statistic=new HashMap<>();
-//        statistic.put("ACTIVE", bookingDao.findUserBookingsByStatus(id, ACTIVE).size());
-//        statistic.put("COMPLETED", bookingDao.findUserBookingsByStatus(id, COMPLETED).size());
-//        statistic.put("CANCELLED", bookingDao.findUserBookingsByStatus(id, CANCELED).size());
-//        return (HashMap<String, Integer>) statistic;
-//    }
-
 
     @Override
     public Map<Status, Long> getStatistics(Long id) {

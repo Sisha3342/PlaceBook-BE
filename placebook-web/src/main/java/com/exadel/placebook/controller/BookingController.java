@@ -19,12 +19,12 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping("/user/{userId}/{status}/bookings")
-    public List<BookingDto> findUserBookingsActive(@PathVariable Long userId, @PathVariable Status status) {
+    @GetMapping("/user/{userId}/bookings")
+    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam Status status) {
         return bookingService.findByStatus(userId, status);
     }
 
-    @GetMapping("/bookings/{userId}/statistics")
+    @GetMapping("/user/{userId}/bookings/statistics")
     public Map<Status, Long> getStatistics(@PathVariable Long userId) {
         return bookingService.getStatistics(userId);
     }

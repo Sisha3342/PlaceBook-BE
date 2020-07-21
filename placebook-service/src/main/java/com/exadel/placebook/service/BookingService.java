@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface BookingService {
 
-    List<BookingDto> findByStatus(Long Id, Status status);
+    List<BookingDto> findByStatus(Long userId, Status status);
     List<BookingDto> findBookings(Long userId);
-    Map<Status, Long> getStatistics(Long id);
+    Map<Status, Long> getStatistics(Long userId);
 }

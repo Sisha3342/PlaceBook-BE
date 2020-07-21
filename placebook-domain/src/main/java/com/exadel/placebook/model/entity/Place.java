@@ -15,7 +15,7 @@ public class Place {
 
     @ManyToOne
     @JoinColumn(name = "floor_id")
-    private Floors floor;
+    private Floor floor;
 
     @Column(name = "place_number")
     private String placeNumber;
