@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 
 public class BookingDto {
     private Long id;
-    private Long placeId;
-    private User user;
+    private String placeNumber;
+    private String userName;
+    private String userSurname;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Status status;

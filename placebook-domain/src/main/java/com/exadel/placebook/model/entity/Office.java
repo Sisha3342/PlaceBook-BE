@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "office")
@@ -19,8 +20,8 @@ public class Office {
     private Address address;
 
     @Column(name = "worktime_start")
-    private Time workTimeStart;
+    private LocalTime workTimeStart;
 
     @Column(name = "worktime_end")
-    private Time workTimeEnd;
+    private LocalTime workTimeEnd;
 }
