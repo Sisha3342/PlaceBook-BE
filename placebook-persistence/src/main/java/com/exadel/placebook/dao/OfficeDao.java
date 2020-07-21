@@ -1,11 +1,8 @@
 package com.exadel.placebook.dao;
 
 import com.exadel.placebook.model.entity.Office;
-import org.springframework.data.repository.CrudRepository;
 
-import java.util.Optional;
-
-public interface OfficeDao {
+public interface OfficeDao extends BaseDao<Office>{
     Office findById(Long id);
     Office update(Office office);
     Office save(Office office);

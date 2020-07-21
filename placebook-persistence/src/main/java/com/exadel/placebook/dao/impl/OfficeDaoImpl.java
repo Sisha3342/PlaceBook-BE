@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class OfficeDaoImpl extends BaseDaoImpl implements OfficeDao {
+public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
 
 
     @Override

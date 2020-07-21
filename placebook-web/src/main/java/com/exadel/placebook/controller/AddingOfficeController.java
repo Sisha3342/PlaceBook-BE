@@ -13,13 +13,13 @@ public class AddingOfficeController {
     @Autowired
     private OfficeService officeService;
 
-    @GetMapping("/office")
+    @PutMapping("/office")
     public OfficeDto addOffice(OfficeParams officeParams) {
         OfficeParamsValidator.validate(officeParams);
        return officeService.addOffice(officeParams);
     }
 
-     @GetMapping("/office/{officeId}")
+     @PostMapping("/office/{officeId}")
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId, OfficeParams officeParams) {
         OfficeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId,officeParams);
