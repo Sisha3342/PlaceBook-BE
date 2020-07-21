@@ -5,6 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface OfficeDao extends CrudRepository<Office, Long> {
-    Optional<Office> findById(Long id);
+public interface OfficeDao {
+    Office findById(Long id);
+    Office update(Office office);
+    Office save(Office office);
 }

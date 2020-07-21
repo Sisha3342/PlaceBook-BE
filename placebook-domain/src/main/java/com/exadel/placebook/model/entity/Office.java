@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "office")
@@ -14,13 +15,13 @@ public class Office {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
     @Column(name = "worktime_start")
-    private Time workTimeStart;
+    private LocalTime workTimeStart;
 
     @Column(name = "worktime_end")
-    private Time workTimeEnd;
+    private LocalTime workTimeEnd;
 }
