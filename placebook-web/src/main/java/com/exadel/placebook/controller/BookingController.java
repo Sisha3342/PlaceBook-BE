@@ -6,6 +6,7 @@ import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,19 +17,16 @@ import java.util.Map;
 @RestController
 public class BookingController {
     @Autowired
-    private BookingDao bookingDao;
-
-    @Autowired
     private BookingService bookingService;
 
-    @GetMapping("/bookings")
-    public List<BookingDto> findUserBookingsActive(@RequestParam Long id, @RequestParam Status status) {
-        return bookingService.findByStatus(id, status);
+    @GetMapping("/user/{userId}/{status}/bookings")
+    public List<BookingDto> findUserBookingsActive(@PathVariable Long userId, @PathVariable Status status) {
+        return bookingService.findByStatus(userId, status);
     }
 
-    @GetMapping("/statistics")
-    public Map<String, Integer> statistics(@RequestParam Long id) {
-        return bookingService.statistics(id);
+    @GetMapping("/bookings/{userId}/statistics")
+    public Map<Status, Long> getStatistics(@PathVariable Long userId) {
+        return bookingService.getStatistics(userId);
     }
 
 

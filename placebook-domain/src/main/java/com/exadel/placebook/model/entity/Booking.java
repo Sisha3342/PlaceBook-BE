@@ -16,11 +16,13 @@ public class Booking {
     @Column(name = "id")
     private Long id;
 
-    @Column(name="place_id")
-    private Long placeId;
+    @ManyToOne
+    @JoinColumn(name = "place_id")
+    private Place place;
 
-    @Column(name="user_id")
-    private Long userId;
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name="time_start")
     private LocalDateTime timeStart;

@@ -7,7 +7,6 @@ import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 import static com.exadel.placebook.model.enums.Status.*;
 
 @Service
-@Component
 
 public class BookingServiceImpl implements BookingService {
 
@@ -52,14 +50,8 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public Map<String, Integer> statistics(Long id) {
-        List<BookingDto> list = findBookings(id);
-        Map<String, Integer> statistic = new HashMap<>();
-        statistic.put("ACTIVE", 0);
-        statistic.put("COMPLETED", 0);
-        statistic.put("CANCELED", 0);
-        list.stream().forEach((p) -> statistic.put(p.getStatus().toString(), statistic.get(p.getStatus().toString()) + 1));
-        return statistic;
+    public Map<Status, Long> getStatistics(Long id) {
+        return bookingDao.getStatistics(id);
     }
 
 }

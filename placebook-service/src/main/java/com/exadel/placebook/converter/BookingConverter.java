@@ -2,34 +2,29 @@ package com.exadel.placebook.converter;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.entity.Booking;
-import com.exadel.placebook.model.enums.Status;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class BookingConverter {
-    public BookingDto convert(Booking b) {
-        BookingDto bd = new BookingDto();
-        bd.setId(b.getId());
-        bd.setPlaceId(b.getPlaceId());
-        bd.setUserId(b.getUserId());
-        bd.setTimeStart(b.getTimeStart());
-        bd.setTimeEnd(b.getTimeEnd());
-        bd.setStatus(b.getStatus());
-        return bd;
+    public BookingDto convert(Booking booking) {
+        com.exadel.placebook.model.dto.BookingDto bookingDto = new com.exadel.placebook.model.dto.BookingDto();
+        bookingDto.setId(booking.getId());
+        bookingDto.setPlaceId(booking.getPlace().getId());
+        bookingDto.setUser(booking.getUser());
+        bookingDto.setTimeStart(booking.getTimeStart());
+        bookingDto.setTimeEnd(booking.getTimeEnd());
+        bookingDto.setStatus(booking.getStatus());
+        return bookingDto;
     }
 
-    public Booking convert(BookingDto bd) {
-        Booking b = new Booking();
-        b.setId(bd.getId());
-        b.setPlaceId(bd.getPlaceId());
-        b.setUserId(bd.getUserId());
-        b.setTimeStart(bd.getTimeStart());
-        b.setTimeEnd(bd.getTimeEnd());
-        b.setStatus((Status) bd.getStatus());
-        return b;
+    public Booking convert(BookingDto bookingDto) {
+        Booking booking = new Booking();
+        booking.setId(booking.getId());
+        //booking.setPlaceId(bookingDto.getPlaceId());
+        booking.setUser(bookingDto.getUser());
+        booking.setTimeStart(bookingDto.getTimeStart());
+        booking.setTimeEnd(bookingDto.getTimeEnd());
+        booking.setStatus(bookingDto.getStatus());
+        return booking;
     }
-
 }
