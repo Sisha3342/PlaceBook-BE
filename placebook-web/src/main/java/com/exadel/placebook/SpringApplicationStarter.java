@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 
+import java.text.SimpleDateFormat;
+
 @SpringBootApplication
 @EntityScan(basePackages = {"com.exadel.placebook"})
 //@ComponentScan(basePackages = {"com.exadel.placebook"})
@@ -16,6 +18,9 @@ public class SpringApplicationStarter {
 
     @Bean
     public ObjectMapper getObjectMapper(){
-        return new ObjectMapper();
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss z"));
+        return mapper;
     }
 }
