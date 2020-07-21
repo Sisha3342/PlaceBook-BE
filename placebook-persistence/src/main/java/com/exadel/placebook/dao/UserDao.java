@@ -1,16 +1,15 @@
 package com.exadel.placebook.dao;
 
-
 import com.exadel.placebook.model.entity.User;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import com.exadel.placebook.model.filters.AdminUserFilter;
 
+import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface UserDao extends CrudRepository<User, Long> {
-    Optional<User> findById(Long id);
+public interface UserDao extends BaseDao<User> {
 
     Optional<User> findByEmail(String email);
+
+    List<User> findUsers(AdminUserFilter adminUserFilter);
 }
 

@@ -1,4 +1,4 @@
-package com.exadel.placebook.sequrity.handler_impl;
+package com.exadel.placebook.seсurity.handler;
 
 import com.exadel.placebook.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
