@@ -9,10 +9,7 @@ import javax.persistence.*;
 @Entity
 
 public class Address extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+
 
     @Column(name = "address")
     private String address;

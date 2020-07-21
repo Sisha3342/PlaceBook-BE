@@ -1,14 +1,10 @@
 package com.exadel.placebook.dao;
 
 import com.exadel.placebook.model.entity.Address;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface AddressDao extends CrudRepository<Address, Long> {
-
-    Optional<Address> findById(Long id);
-
-    List<Address> findAll();
+public interface AddressDao extends BaseDao<Address> {
+    List<String> findAllCountries();
+    List<String> findAllCitiesByCountry(String country);
 }

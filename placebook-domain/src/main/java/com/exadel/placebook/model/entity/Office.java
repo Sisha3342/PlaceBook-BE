@@ -9,10 +9,6 @@ import java.time.LocalTime;
 @Table(name = "office")
 @Data
 public class Office extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
 
     @OneToOne
     @JoinColumn(name = "address_id")

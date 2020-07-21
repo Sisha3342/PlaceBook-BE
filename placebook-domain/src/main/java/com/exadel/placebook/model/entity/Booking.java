@@ -11,10 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "booking")
 @Data
 public class Booking extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "place_id")

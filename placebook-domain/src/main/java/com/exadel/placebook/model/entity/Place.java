@@ -8,10 +8,6 @@ import javax.persistence.*;
 @Table(name = "place")
 @Data
 public class Place extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "floor_id")

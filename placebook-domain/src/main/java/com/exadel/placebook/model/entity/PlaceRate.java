@@ -8,10 +8,6 @@ import javax.persistence.*;
 @Table(name = "place_rate")
 @Data
 public class PlaceRate extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
 
     @OneToOne
     @JoinColumn(name = "booking_id")

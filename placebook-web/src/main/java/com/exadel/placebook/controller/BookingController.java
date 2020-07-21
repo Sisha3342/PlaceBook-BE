@@ -2,6 +2,7 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,24 @@ public class BookingController {
     public Map<Status, Long> getStatistics(@PathVariable Long userId) {
         return bookingService.getStatistics(userId);
     }
+
     @GetMapping("/booking/{id}/info")
     public BookingInfoDto findBookingInfo(@PathVariable Long id) {
         return bookingService.findBookingInfoModalPage(id);
+    }
+
+    @GetMapping("/booking/countries")
+    public List<String> getAllCountries() {
+        return bookingService.getAllCountries();
+    }
+
+    @GetMapping("booking/{country}/cities")
+    public List<String> getAllCities(@PathVariable String country) {
+        return bookingService.getAllCitiesByCountry(country);
+    }
+
+    @GetMapping("booking/{city}/offices")
+    public List<Office> getAllOffices(@PathVariable String city) {
+        return bookingService.getAllOfficesByCity(city);
     }
 }
