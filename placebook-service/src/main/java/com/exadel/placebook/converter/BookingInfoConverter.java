@@ -17,7 +17,7 @@ public class BookingInfoConverter {
         bookingInfoDto.setTimeStart(booking.getTimeStart());
         bookingInfoDto.setTimeEnd(booking.getTimeEnd());
         bookingInfoDto.setStatus(booking.getStatus());
-        bookingInfoDto.setMarkDto(markDto);
+        bookingInfoDto.setMarks(markDto);
         return bookingInfoDto;
     }
 }
