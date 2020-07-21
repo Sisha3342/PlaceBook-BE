@@ -1,6 +1,6 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.exception.ParamsValidatorException;
+import com.exadel.placebook.model.exception.ParamsValidatorException;
 import com.exadel.placebook.model.OfficeParams;
 import org.springframework.stereotype.Component;
 
