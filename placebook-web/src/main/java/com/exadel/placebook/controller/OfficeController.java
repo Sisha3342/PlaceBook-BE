@@ -8,20 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class AddingOfficeController {
+public class OfficeController {
 
     @Autowired
     private OfficeService officeService;
-
+@Autowired
+private OfficeParamsValidator officeParamsValidator;
     @PutMapping("/office")
     public OfficeDto addOffice(OfficeParams officeParams) {
-        OfficeParamsValidator.validate(officeParams);
+        officeParamsValidator.validate(officeParams);
        return officeService.addOffice(officeParams);
     }
 
      @PostMapping("/office/{officeId}")
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId, OfficeParams officeParams) {
-        OfficeParamsValidator.validate(officeParams);
+        officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId,officeParams);
     }
 }
