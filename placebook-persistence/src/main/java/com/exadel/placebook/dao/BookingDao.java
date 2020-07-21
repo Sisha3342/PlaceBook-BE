@@ -1,5 +1,6 @@
 package com.exadel.placebook.dao;
 
+import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,7 @@ public interface BookingDao {
     List<Booking> findUserBookingsByStatus(Long userId, Status status);
 
     Optional<Booking> findById(Long id);
+
+    Optional<MarkDto> findByMarksByPlaceId(Long id);
+
 }

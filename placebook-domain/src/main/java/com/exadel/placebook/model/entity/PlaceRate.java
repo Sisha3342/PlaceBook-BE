@@ -13,8 +13,9 @@ public class PlaceRate {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "booking_id")
-    private Long bookingId;
+    @OneToOne
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 
     @Column(name = "mark_lightning")
     private Long markLightning;
@@ -32,5 +33,5 @@ public class PlaceRate {
     private Long markLocation;
 
     @Column(name = "feedback")
-    private Long feedback;
+    private String feedback;
 }

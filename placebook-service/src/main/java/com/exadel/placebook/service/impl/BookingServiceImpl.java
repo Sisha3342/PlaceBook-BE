@@ -1,9 +1,11 @@
 package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
+import com.exadel.placebook.converter.BookingInfoConverter;
 import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
@@ -26,6 +28,11 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingConverter bookingConverter;
+
+
+    @Autowired
+    private BookingInfoConverter bookingInfoConverter;
+
 
     @Override
     public List<BookingDto> findBookings(Long userId) {
@@ -54,4 +61,12 @@ public class BookingServiceImpl implements BookingService {
     public Optional<BookingInfoDto> findBookingInfo(Long id) {
         return Optional.empty();
     }
+
+    @Override
+    public BookingInfoDto findBookingInfoModalPage(Long id) {
+        Optional<MarkDto> markDto = bookingDao.findByMarksByPlaceId(id);
+        Optional<Booking> booking = bookingDao.findById(id);
+        return bookingInfoConverter.convert(booking.get(), markDto.get());
+    }
+
 }

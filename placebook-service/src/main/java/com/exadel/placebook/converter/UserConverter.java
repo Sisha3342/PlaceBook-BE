@@ -2,7 +2,6 @@ package com.exadel.placebook.converter;
 
 
 import com.exadel.placebook.model.dto.UserDto;
-import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.User;
 import org.springframework.stereotype.Component;
 

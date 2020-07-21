@@ -18,4 +18,7 @@ public interface BookingService {
     List<BookingDto> findByStatus(Long id, Status status);
 
     Optional<BookingInfoDto> findBookingInfo(Long id);
+
+    BookingInfoDto findBookingInfoModalPage(Long id);
+
 }
