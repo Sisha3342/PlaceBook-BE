@@ -17,7 +17,7 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping("/user/{userId}/bookings/{status}")
+    @GetMapping("/user/{userId}/bookings")
     public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam Status status) {
         return bookingService.findByStatus(userId, status);
     }
