@@ -2,6 +2,7 @@ package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.entity.User;
+import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
@@ -32,5 +33,15 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
                 .setMaxResults(adminUserFilter.getLimit())
                 .setFirstResult(adminUserFilter.getOffset());
         return query.list();
+    }
+
+    @Override
+    public int update(Long userId, Role role) {
+        Session session = getSession();
+        Query query = session.createQuery("update User u set u.role = :role " +
+                "where u.id = :userId")
+                .setParameter("userId", userId)
+                .setParameter("role", role);
+        return query.executeUpdate();
     }
 }
