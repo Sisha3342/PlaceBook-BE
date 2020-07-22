@@ -4,7 +4,6 @@ import com.exadel.placebook.model.dto.AddBookingDto;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 
 import java.util.List;
