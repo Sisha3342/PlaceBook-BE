@@ -33,16 +33,7 @@ public class BookingServiceImpl implements BookingService {
     private BookingConverter bookingConverter;
 
     @Autowired
-    private AddressDao addressDao;
-
-    @Autowired
-    private OfficeDao officeDao;
-
-    @Autowired
     private BookingInfoConverter bookingInfoConverter;
-
-    @Autowired
-    private OfficeConverter officeConverter;
 
     @Autowired
     private UserDao userDao;
@@ -64,22 +55,6 @@ public class BookingServiceImpl implements BookingService {
         Optional<MarkDto> markDto = bookingDao.findMarksByPlaceId(id);
         Booking booking = bookingDao.find(id);
         return bookingInfoConverter.convert(booking, markDto.get());
-    }
-
-    @Override
-    public List<String> getAllCountries() {
-        return addressDao.findAllCountries();
-    }
-
-    @Override
-    public List<String> getAllCitiesByCountry(String country) {
-        return addressDao.findAllCitiesByCountry(country);
-    }
-
-    @Override
-    public List<OfficeDto> getAllOfficesByCity(String city) {
-        List<Office> list = officeDao.findAllOfficesByCity(city);
-        return list.stream().map(officeConverter::convert).collect(Collectors.toList());
     }
 
     public List<BookingDto> findByStatus(Long id, Status status) {

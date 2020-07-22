@@ -33,21 +33,6 @@ public class BookingController {
         return bookingService.getBookingInfo(bookingId);
     }
 
-    @GetMapping("/countries")
-    public List<String> getAllCountries() {
-        return bookingService.getAllCountries();
-    }
-
-    @GetMapping("/countries/{country}/cities")
-    public List<String> getAllCities(@PathVariable("country") String country) {
-        return bookingService.getAllCitiesByCountry(country);
-    }
-
-    @GetMapping("/countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
-        return bookingService.getAllOfficesByCity(city);
-    }
-
     @PutMapping("/user/{userId}/booking")
     public BookingDto addBooking(@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId) {
         return bookingService.addBooking(bookingRequest, userId);
