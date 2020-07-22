@@ -1,6 +1,6 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.AddBookingDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.OfficeDto;
@@ -48,8 +48,15 @@ public class BookingController {
         return bookingService.getAllOfficesByCity(city);
     }
 
-    @PostMapping("/booking/add")
-    public BookingDto addBooking(@RequestBody AddBookingDto addBookingDto) {
-        return bookingService.addBooking(addBookingDto);
+    @PutMapping("/user/{userId}/booking")
+    public BookingDto addBooking(@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId) {
+        return bookingService.addBooking(bookingRequest, userId);
+    }
+
+    @PostMapping("/user/{userId}/{bookingId}/edit")
+    public BookingDto editBooking(@RequestBody BookingRequest bookingRequest,
+                                  @PathVariable("userId") Long userId,
+                                  @PathVariable("bookingId") Long bookingId) {
+        return bookingService.editBooking(bookingRequest, userId, bookingId);
     }
 }
