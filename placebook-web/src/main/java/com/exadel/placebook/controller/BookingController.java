@@ -30,7 +30,7 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}/booking/{bookingId}/info")
-    public BookingInfoDto findBookingInfo(@PathVariable("bookingId") Long bookingId) {
+    public BookingInfoDto findBookingInfo(@PathVariable("userId") Long userId, @PathVariable("bookingId") Long bookingId) {
         return bookingService.getBookingInfo(bookingId);
     }
 
@@ -45,7 +45,7 @@ public class BookingController {
     }
 
     @GetMapping("countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getAllOffices(@PathVariable("city") String city) {
+    public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
         return bookingService.getAllOfficesByCity(city);
     }
 }
