@@ -19,18 +19,18 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping("/user/{userId}/bookings")
-    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, Status status) {
+    @GetMapping("/user/{userId}/bookings/{status}")
+    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @PathVariable("status") Status status) {
         return bookingService.findByStatus(userId, status);
     }
 
     @GetMapping("/user/{userId}/booking/statistics")
-    public Map<Status, Long> getStatistics(@PathVariable Long userId) {
+    public Map<Status, Long> getStatistics(@PathVariable("userId") Long userId) {
         return bookingService.getStatistics(userId);
     }
 
     @GetMapping("/user/{userId}/booking/{bookingId}/info")
-    public BookingInfoDto findBookingInfo(@PathVariable Long bookingId) {
+    public BookingInfoDto findBookingInfo(@PathVariable("bookingId") Long bookingId) {
         return bookingService.getBookingInfo(bookingId);
     }
 
@@ -40,12 +40,12 @@ public class BookingController {
     }
 
     @GetMapping("/countries/{country}/cities")
-    public List<String> getAllCities(@PathVariable String country) {
+    public List<String> getAllCities(@PathVariable("country") String country) {
         return bookingService.getAllCitiesByCountry(country);
     }
 
     @GetMapping("countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getAllOffices(@PathVariable String city) {
+    public List<OfficeDto> getAllOffices(@PathVariable("city") String city) {
         return bookingService.getAllOfficesByCity(city);
     }
 }
