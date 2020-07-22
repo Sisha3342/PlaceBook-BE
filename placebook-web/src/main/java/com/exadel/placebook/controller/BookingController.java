@@ -20,7 +20,7 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping("/user/{userId}/bookings")
-    public List<BookingDto> findUserBookingsActive(@PathVariable Long userId, Status status) {
+    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, Status status) {
         return bookingService.findByStatus(userId, status);
     }
 
@@ -29,7 +29,7 @@ public class BookingController {
         return bookingService.getStatistics(userId);
     }
 
-    @GetMapping("/user/booking/{bookingId}/info")
+    @GetMapping("/user/{userId}/booking/{bookingId}/info")
     public BookingInfoDto findBookingInfo(@PathVariable Long bookingId) {
         return bookingService.getBookingInfo(bookingId);
     }
