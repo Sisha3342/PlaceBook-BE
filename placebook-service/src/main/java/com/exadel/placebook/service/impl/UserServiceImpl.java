@@ -5,6 +5,7 @@ import com.exadel.placebook.converter.UserConverter;
 import com.exadel.placebook.converter.UserStatusConverter;
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.dto.AdminUserDto;
+import com.exadel.placebook.model.dto.RoleDto;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.User;
@@ -58,8 +59,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int updateUserRole(Long id, Role role) {
-        return userDao.update(id, role);
+    public AdminUserDto updateUserRole(Long id, RoleDto roleDto) {
+        User user = userDao.find(id);
+        user.setRole(roleDto.getRole());
+        return adminUserConverter.convert(userDao.update(user));
     }
 
     @Override

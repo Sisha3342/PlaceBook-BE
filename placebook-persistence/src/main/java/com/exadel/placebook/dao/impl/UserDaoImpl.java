@@ -28,20 +28,9 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     public List<User> findUsers(AdminUserFilter adminUserFilter) {
         Session session = getSession();
         Query<User> query = session
-                .createQuery("from User u where concat_ws(' ', u.name, u.surname) like :text", User.class)
-                .setParameter("text", StringUtils.wrap(adminUserFilter.getText(), "%"))
+        .createQuery("from User u where trim(coalesce(:text, '')) = '' or concat_ws(' ', u.name, u.surname) like :text", User.class)                .setParameter("text", StringUtils.wrap(adminUserFilter.getText(), "%"))
                 .setMaxResults(adminUserFilter.getLimit())
                 .setFirstResult(adminUserFilter.getOffset());
         return query.list();
-    }
-
-    @Override
-    public int update(Long userId, Role role) {
-        Session session = getSession();
-        Query query = session.createQuery("update User u set u.role = :role " +
-                "where u.id = :userId")
-                .setParameter("userId", userId)
-                .setParameter("role", role);
-        return query.executeUpdate();
     }
 }

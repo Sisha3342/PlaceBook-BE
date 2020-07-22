@@ -12,7 +12,5 @@ public interface UserDao extends BaseDao<User> {
     Optional<User> findByEmail(String email);
 
     List<User> findUsers(AdminUserFilter adminUserFilter);
-
-    int update(Long userId, Role role);
 }
 
