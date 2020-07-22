@@ -1,23 +1,21 @@
 package com.exadel.placebook.service.impl;
 
+import com.exadel.placebook.converter.AddBookingConverter;
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
 import com.exadel.placebook.converter.OfficeConverter;
-import com.exadel.placebook.dao.AddressDao;
-import com.exadel.placebook.dao.BookingDao;
-import com.exadel.placebook.dao.OfficeDao;
-import com.exadel.placebook.model.dto.BookingDto;
-import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.dao.*;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.service.BookingService;
+import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,6 +42,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private OfficeConverter officeConverter;
+
+    @Autowired
+    private AddBookingConverter addBookingConverter;
 
     @Override
     public List<BookingDto> findBookings(Long userId) {
@@ -82,5 +83,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Map<Status, Long> getStatistics(Long id) {
         return bookingDao.getStatistics(id);
+    }
+
+    @Override
+    public BookingDto addBooking(AddBookingDto addBookingDto) {
+        Booking booking = addBookingConverter.convert(addBookingDto);
+
+        return bookingConverter.convert(bookingDao.save(booking));
     }
 }

@@ -1,14 +1,13 @@
 package com.exadel.placebook.controller;
 
+import com.exadel.placebook.model.dto.AddBookingDto;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -47,5 +46,10 @@ public class BookingController {
     @GetMapping("countries/{country}/cities/{city}/offices")
     public List<OfficeDto> getAllOffices(@PathVariable String city) {
         return bookingService.getAllOfficesByCity(city);
+    }
+
+    @PostMapping("/booking/add")
+    public BookingDto addBooking(@RequestBody AddBookingDto addBookingDto) {
+        return bookingService.addBooking(addBookingDto);
     }
 }
