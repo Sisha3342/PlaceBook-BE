@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfficeParamsValidator {
     private  boolean isValid(OfficeParams officeParams) {
-        return (officeParams.getWorktimeStart().compareTo(officeParams.getWorktimeEnd())>=0)&&
+        return (officeParams.getWorktimeStart().compareTo(officeParams.getWorktimeEnd())<0)&&
                 ( StringUtils.isNotBlank(officeParams.getCountry()))&&
                 ( StringUtils.isNotBlank(officeParams.getCity()));
     }

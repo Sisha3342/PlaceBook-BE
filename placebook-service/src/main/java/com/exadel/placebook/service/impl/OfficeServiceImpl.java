@@ -1,6 +1,7 @@
 package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.OfficeConverter;
+import com.exadel.placebook.dao.BaseDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
@@ -37,13 +38,13 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public OfficeDto editOffice(Long officeId, OfficeParams officeParams) {
-        Office office = officeDao.findById(officeId);
+        Office office = officeDao.find(officeId);
         Address address = office.getAddress();
         address.setCity(officeParams.getCity());
         address.setCountry(officeParams.getCountry());
         address.setAddress(officeParams.getAddress());
         office.setWorkTimeEnd(officeParams.getWorktimeEnd());
-        office.setWorkTimeStart(officeParams.getWorktimeEnd());
+        office.setWorkTimeStart(officeParams.getWorktimeStart());
         officeDao.update(office);
         return officeConverter.convert(office);
     }

@@ -5,6 +5,8 @@ import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,13 +20,13 @@ public class OfficeController {
     private OfficeParamsValidator officeParamsValidator;
 
     @PutMapping("/office")
-    public OfficeDto addOffice(@Valid OfficeParams officeParams) {
+    public OfficeDto addOffice(@RequestBody OfficeParams officeParams) {
         officeParamsValidator.validate(officeParams);
         return officeService.addOffice(officeParams);
     }
 
     @PostMapping("/office/{officeId}")
-    public OfficeDto editOffice(@PathVariable("officeId") Long officeId, OfficeParams officeParams) {
+    public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@RequestBody OfficeParams officeParams) {
         officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId, officeParams);
     }
