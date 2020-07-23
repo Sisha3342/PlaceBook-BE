@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PlaceConverter {
     public PlaceDto convert(Place place) {
         PlaceDto placeDto = new PlaceDto();
-        placeDto.setIsActive(place.getPlaceStatus().equals(PlaceStatus.ACTIVE));
+        placeDto.setActive(place.getPlaceStatus().equals(PlaceStatus.ACTIVE));
         placeDto.setPlaceId(place.getId());
         place.setPlaceNumber(place.getPlaceNumber());
 
