@@ -25,13 +25,21 @@ public class SecurityValidationServiceImpl implements SecurityValidationService 
         UserStatusDto currentUserStatus = userService.getUserStatus();
         UserDto userDto = userService.findById(userId);
 
-        if(!(currentUserStatus.getRole().equals(Role.ADMIN) ||
-                (currentUserStatus.getRole().equals(Role.HR) &&
-                userDto.getHrId().equals(currentUserStatus.getId())) ||
-                ((currentUserStatus.getRole().equals(Role.USER) ||
-                        currentUserStatus.getRole().equals(Role.EDITOR)) &&
-                        currentUserStatus.getId().equals(userId)))) {
-            throw new SecurityValidationException(String.format("user with id %d cant book place", userId));
+        if(currentUserStatus.getRole().equals(Role.HR) &&
+                !userDto.getHrId().equals(currentUserStatus.getId()) ||
+                !currentUserStatus.getId().equals(userId)) {
+            throw new SecurityValidationException(String
+                    .format("hr with id %d cant book place for user with id %d",
+                    currentUserStatus.getId(),
+                    userId));
+        }
+
+        if(currentUserStatus.getRole().in(Role.USER, Role.EDITOR) &&
+                !currentUserStatus.getId().equals(userId)) {
+            throw new SecurityValidationException(String
+                    .format("user with id %d cant book place, using session of user %d",
+                            userId,
+                            currentUserStatus.getId()));
         }
     }
 
@@ -41,12 +49,20 @@ public class SecurityValidationServiceImpl implements SecurityValidationService 
         UserDto userDto = userService.findById(userId);
         Booking booking = bookingDao.find(bookingId);
 
-        if(!(currentUserStatus.getRole().equals(Role.ADMIN) ||
-                (currentUserStatus.getRole().equals(Role.HR) &&
-                        (booking.getUser().getHrId().equals(currentUserStatus.getId()) &&
-                        userDto.getHrId().equals(currentUserStatus.getId()))) ||
-                                booking.getUser().getId().equals(currentUserStatus.getId()))) {
-            throw new SecurityValidationException(String.format("user with id %d cant edit booking with id %d",userId, bookingId));
+        if(currentUserStatus.getRole().equals(Role.HR) &&
+                !(userDto.getHrId().equals(currentUserStatus.getId()) &&
+                booking.getUser().getHrId().equals(currentUserStatus.getId())) ||
+                !booking.getUser().getId().equals(currentUserStatus.getId())) {
+            throw new SecurityValidationException(String
+                    .format("hr with id %d cant edit booking %d for user with id %d",
+                            currentUserStatus.getId(),
+                            bookingId,
+                            userId));
+        }
+
+        if(currentUserStatus.getRole().in(Role.USER, Role.EDITOR) &&
+                !booking.getUser().getId().equals(currentUserStatus.getId())) {
+            throw new SecurityValidationException(String.format("user with id %d cant edit booking with id %d", userId, bookingId));
         }
     }
 

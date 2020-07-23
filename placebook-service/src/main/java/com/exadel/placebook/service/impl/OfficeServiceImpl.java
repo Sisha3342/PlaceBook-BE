@@ -55,7 +55,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public List<OfficeDto> getOfficesByCityAndCountry(String city, String country) {
-        List<Office> list = officeDao.findOfficesByCityAndCountry(city, country);
+        List<Office> list = officeDao.countActiveBookingsByPlaceIdAndTime(city, country);
         return list.stream().map(officeConverter::convert).collect(Collectors.toList());
     }
 }
