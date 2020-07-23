@@ -2,6 +2,7 @@ package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.entity.User;
+import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
@@ -27,8 +28,7 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     public List<User> findUsers(AdminUserFilter adminUserFilter) {
         Session session = getSession();
         Query<User> query = session
-                .createQuery("from User u where concat_ws(' ', u.name, u.surname) like :text", User.class)
-                .setParameter("text", StringUtils.wrap(adminUserFilter.getText(), "%"))
+        .createQuery("from User u where trim(coalesce(:text, '')) = '' or concat_ws(' ', u.name, u.surname) like :text", User.class)                .setParameter("text", StringUtils.wrap(adminUserFilter.getText(), "%"))
                 .setMaxResults(adminUserFilter.getLimit())
                 .setFirstResult(adminUserFilter.getOffset());
         return query.list();

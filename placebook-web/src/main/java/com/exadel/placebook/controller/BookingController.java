@@ -1,6 +1,5 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.AddBookingDto;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.OfficeDto;
@@ -19,17 +18,17 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping("/user/{userId}/bookings")
-    public List<BookingDto> findUserBookingsActive(@PathVariable Long userId, Status status) {
+    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam Status status) {
         return bookingService.findByStatus(userId, status);
     }
 
     @GetMapping("/user/{userId}/booking/statistics")
-    public Map<Status, Long> getStatistics(@PathVariable Long userId) {
+    public Map<Status, Long> getStatistics(@PathVariable("userId") Long userId) {
         return bookingService.getStatistics(userId);
     }
 
-    @GetMapping("/user/booking/{bookingId}/info")
-    public BookingInfoDto findBookingInfo(@PathVariable Long bookingId) {
+    @GetMapping("/user/{userId}/booking/{bookingId}/info")
+    public BookingInfoDto findBookingInfo(@PathVariable("userId") Long userId, @PathVariable("bookingId") Long bookingId) {
         return bookingService.getBookingInfo(bookingId);
     }
 
@@ -39,17 +38,12 @@ public class BookingController {
     }
 
     @GetMapping("/countries/{country}/cities")
-    public List<String> getAllCities(@PathVariable String country) {
+    public List<String> getAllCities(@PathVariable("country") String country) {
         return bookingService.getAllCitiesByCountry(country);
     }
 
-    @GetMapping("countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getAllOffices(@PathVariable String city) {
+    @GetMapping("/countries/{country}/cities/{city}/offices")
+    public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
         return bookingService.getAllOfficesByCity(city);
-    }
-
-    @PostMapping("/booking/add")
-    public BookingDto addBooking(@RequestBody AddBookingDto addBookingDto) {
-        return bookingService.addBooking(addBookingDto);
     }
 }
