@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Data
 public class Office extends BaseEntity {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
