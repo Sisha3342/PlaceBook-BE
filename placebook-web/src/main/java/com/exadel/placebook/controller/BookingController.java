@@ -38,10 +38,15 @@ public class BookingController {
         return bookingService.addBooking(bookingRequest, userId);
     }
 
-    @PostMapping("/user/{userId}/{bookingId}/edit")
+    @PostMapping("/user/{userId}/{bookingId}")
     public BookingDto editBooking(@RequestBody BookingRequest bookingRequest,
                                   @PathVariable("userId") Long userId,
                                   @PathVariable("bookingId") Long bookingId) {
         return bookingService.editBooking(bookingRequest, userId, bookingId);
+    }
+
+    @DeleteMapping("/user/{bookingId}")
+    public BookingDto deleteBooking(@PathVariable("bookingId") Long bookingId) {
+        return bookingService.deleteBooking(bookingId);
     }
 }

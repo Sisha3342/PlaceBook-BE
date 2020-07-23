@@ -18,7 +18,6 @@ public class SpringApplicationStarter {
 
     @Bean
     public ObjectMapper getObjectMapper(){
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

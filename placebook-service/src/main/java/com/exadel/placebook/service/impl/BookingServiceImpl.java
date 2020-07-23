@@ -2,11 +2,9 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
-import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.dao.*;
 import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.*;
-import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
@@ -108,5 +106,12 @@ public class BookingServiceImpl implements BookingService {
         booking.setUser(userDao.load(userId));
 
         return bookingConverter.convert(bookingDao.update(booking));
+    }
+
+    @Override
+    public BookingDto deleteBooking(Long id) {
+        Booking booking = bookingDao.load(id);
+        booking.setStatus(Status.CANCELED);
+        return bookingConverter.convert(bookingDao.save(booking));
     }
 }

@@ -1,9 +1,8 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.enums.Status;
 
 import java.util.List;
@@ -21,4 +20,5 @@ public interface BookingService {
 
     BookingDto addBooking(BookingRequest bookingRequest, Long userId);
     BookingDto editBooking(BookingRequest bookingRequest, Long userId, Long bookingId);
+    BookingDto deleteBooking(Long id);
 }
