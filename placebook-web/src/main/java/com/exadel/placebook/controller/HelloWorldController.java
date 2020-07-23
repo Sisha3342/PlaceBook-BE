@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloWorldController {
 
     @GetMapping("/hello")
-    public String helloWorld(String name) {
+    public String helloWorld() {
         return "Hello world!";
     }
     @GetMapping("/status")
-    public String StatusController (String name) {
+    public String StatusController () {
         return "Application is Running!";
     }
 
