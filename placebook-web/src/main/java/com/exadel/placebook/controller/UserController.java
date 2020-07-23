@@ -7,8 +7,10 @@ import com.exadel.placebook.model.filters.AdminUserFilter;
 import com.exadel.placebook.service.AdminUserFilterValidator;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,8 +23,7 @@ public class UserController {
     private AdminUserFilterValidator adminUserFilterValidator;
 
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) {
-        adminUserFilterValidator.validate(adminUserFilter);
+    public List<AdminUserDto> getUsers(@Valid AdminUserFilter adminUserFilter) {
         return userService.findUsers(adminUserFilter);
     }
 

@@ -2,6 +2,7 @@ package com.exadel.placebook.model.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalTime;
 
 @Data

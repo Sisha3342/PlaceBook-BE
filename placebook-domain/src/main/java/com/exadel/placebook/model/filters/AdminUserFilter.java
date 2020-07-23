@@ -1,8 +1,14 @@
 package com.exadel.placebook.model.filters;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 public class AdminUserFilter {
+    @Min(0)
+    @NotBlank
     private int offset;
+    @Min(1)
+    @NotBlank
     private int limit;
     private String text;
 

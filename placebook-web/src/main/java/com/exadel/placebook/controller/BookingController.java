@@ -41,7 +41,6 @@ public class BookingController {
     public List<String> getAllCities(@PathVariable("country") String country) {
         return bookingService.getAllCitiesByCountry(country);
     }
-
     @GetMapping("/countries/{country}/cities/{city}/offices")
     public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
         return bookingService.getAllOfficesByCity(city);
