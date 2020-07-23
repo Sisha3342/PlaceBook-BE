@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
-    PlaceDao placeDao;
+    private PlaceDao placeDao;
 
     @Autowired
-    PlaceConverter placeConverter;
+    private PlaceConverter placeConverter;
 
     @Autowired
     private OfficeConverter officeConverter;

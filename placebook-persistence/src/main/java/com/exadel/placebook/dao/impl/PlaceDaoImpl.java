@@ -16,4 +16,11 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
         return session.createQuery("select p from Place p where p.floor.id = :id", Place.class)
                 .setParameter("id", floorId).list();
     }
+
+    @Override
+    public long countBookingsByPlaceId(Long placeId) {
+        Session session = getSession();
+        return session.createQuery("select count (b) from Booking b where b.place.id = :id", Long.class)
+                .setParameter("id", placeId).getSingleResult();
+    }
 }

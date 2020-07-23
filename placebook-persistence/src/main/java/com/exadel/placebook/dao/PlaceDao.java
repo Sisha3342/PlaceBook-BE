@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface PlaceDao extends BaseDao<Place> {
     List<Place> findPlacesByFloorId(Long floorId);
+    long countBookingsByPlaceId(Long placeId);
 }
 

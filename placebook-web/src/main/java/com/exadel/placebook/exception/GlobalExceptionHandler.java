@@ -43,7 +43,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = BookingException.class)
     public ResponseEntity<?> handleRestException(BookingException e) {
-        final HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+    @ExceptionHandler(value = SecurityValidationException.class)
+    public ResponseEntity<?> handleRestException(SecurityValidationException e) {
+        final HttpStatus badRequest = HttpStatus.FORBIDDEN;
         ErrorResponse errorResponse = new ErrorResponse(
                 e.getMessage(),
                 badRequest

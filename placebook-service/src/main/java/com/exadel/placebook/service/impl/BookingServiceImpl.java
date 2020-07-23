@@ -2,15 +2,18 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
-import com.exadel.placebook.dao.*;
+import com.exadel.placebook.dao.BookingDao;
+import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.exception.BookingException;
-import com.exadel.placebook.model.dto.*;
-import com.exadel.placebook.model.entity.Place;
-import com.exadel.placebook.model.enums.PlaceStatus;
-import com.exadel.placebook.model.enums.Status;
+import com.exadel.placebook.model.dto.BookingDto;
+import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.dto.BookingRequest;
+import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
+import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
-import com.exadel.placebook.service.SecurityValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +41,6 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private PlaceDao placeDao;
-
-    @Autowired
-    private SecurityValidationService securityValidationService;
 
     @Override
     public List<BookingDto> findBookings(Long userId) {
@@ -74,17 +74,12 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
 
-        if(!securityValidationService.isUserCanAddBooking(userId)) {
-            throw new BookingException(String.format("user with id %d cant book place %s",userId, place.getPlaceNumber()));
-        }
-
-        if (!place.getPlaceStatus().equals(PlaceStatus.ACTIVE)) {
-            throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
+        if (placeDao.countBookingsByPlaceId(bookingRequest.getPlaceId()) != 0) {
+            throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
         }
 
         Booking booking = new Booking();
         booking.setPlace(place);
-        place.setPlaceStatus(PlaceStatus.INACTIVE);
         booking.setStatus(Status.ACTIVE);
         booking.setTimeStart(bookingRequest.getTimeStart());
         booking.setTimeEnd(bookingRequest.getTimeEnd());
@@ -97,12 +92,8 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto editBooking(BookingRequest bookingRequest, Long userId, Long bookingId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
 
-        if(!securityValidationService.isUserCanEditBooking(userId, bookingId)) {
-            throw new BookingException(String.format("user with id %d cant edit booking with id %d",userId, bookingId));
-        }
-
-        if (!place.getPlaceStatus().equals(PlaceStatus.ACTIVE)) {
-            throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
+        if (placeDao.countBookingsByPlaceId(bookingRequest.getPlaceId()) != 0) {
+            throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
         }
 
         Booking booking = bookingDao.load(bookingId);
@@ -116,12 +107,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto deleteBooking(Long id) {
-        if(!securityValidationService.isUserCanDeleteBooking(id)) {
-            throw new BookingException(String.format("you cant delete booking with id %d", id));
-        }
-
         Booking booking = bookingDao.load(id);
         booking.setStatus(Status.CANCELED);
+
         return bookingConverter.convert(bookingDao.save(booking));
     }
 }

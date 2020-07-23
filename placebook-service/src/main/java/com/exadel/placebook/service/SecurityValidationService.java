@@ -2,10 +2,10 @@ package com.exadel.placebook.service;
 
 public interface SecurityValidationService {
 
-    boolean isUserCanAddBooking(Long userId);
-    boolean isUserCanEditBooking(Long userId, Long bookingId);
+    void validateUserCanAddBooking(Long userId);
+    void validateUserCanEditBooking(Long userId, Long bookingId);
 
-    boolean isUserCanDeleteBooking(Long bookingId);
+    void validateUserCanDeleteBooking(Long bookingId);
 
-    boolean isAdminCanChangeUserRole(Long userId);
+    void validateAdminCanChangeUserRole(Long userId);
 }

@@ -1,11 +1,11 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
+import com.exadel.placebook.service.SecurityValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +17,9 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private SecurityValidationService securityValidationService;
 
     @GetMapping("/user/{userId}/bookings")
     public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam Status status) {
@@ -35,6 +38,8 @@ public class BookingController {
 
     @PutMapping("/user/{userId}/booking")
     public BookingDto addBooking(@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId) {
+        securityValidationService.validateUserCanAddBooking(userId);
+
         return bookingService.addBooking(bookingRequest, userId);
     }
 
@@ -42,11 +47,15 @@ public class BookingController {
     public BookingDto editBooking(@RequestBody BookingRequest bookingRequest,
                                   @PathVariable("userId") Long userId,
                                   @PathVariable("bookingId") Long bookingId) {
+        securityValidationService.validateUserCanEditBooking(userId, bookingId);
+
         return bookingService.editBooking(bookingRequest, userId, bookingId);
     }
 
-    @DeleteMapping("/user/{bookingId}")
+    @DeleteMapping("/user/booking/{bookingId}")
     public BookingDto deleteBooking(@PathVariable("bookingId") Long bookingId) {
+        securityValidationService.validateUserCanDeleteBooking(bookingId);
+
         return bookingService.deleteBooking(bookingId);
     }
 }

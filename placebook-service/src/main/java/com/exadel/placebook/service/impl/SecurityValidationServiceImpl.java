@@ -1,6 +1,7 @@
 package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.dao.BookingDao;
+import com.exadel.placebook.exception.SecurityValidationException;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.Booking;
@@ -14,46 +15,52 @@ import org.springframework.stereotype.Service;
 public class SecurityValidationServiceImpl implements SecurityValidationService {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    BookingDao bookingDao;
+    private BookingDao bookingDao;
 
     @Override
-    public boolean isUserCanAddBooking(Long userId) {
+    public void validateUserCanAddBooking(Long userId) {
         UserStatusDto currentUserStatus = userService.getUserStatus();
         UserDto userDto = userService.findById(userId);
 
-        return currentUserStatus.getRole().equals(Role.ADMIN) ||
+        if(!currentUserStatus.getRole().equals(Role.ADMIN) ||
                 (currentUserStatus.getRole().equals(Role.HR) &&
                 userDto.getHrId().equals(currentUserStatus.getId())) ||
                 ((currentUserStatus.getRole().equals(Role.USER) ||
                         currentUserStatus.getRole().equals(Role.EDITOR)) &&
-                        currentUserStatus.getId().equals(userId));
+                        currentUserStatus.getId().equals(userId))) {
+            throw new SecurityValidationException(String.format("user with id %d cant book place", userId));
+        }
     }
 
     @Override
-    public boolean isUserCanEditBooking(Long userId, Long bookingId) {
+    public void validateUserCanEditBooking(Long userId, Long bookingId) {
         UserStatusDto currentUserStatus = userService.getUserStatus();
         UserDto userDto = userService.findById(userId);
         Booking booking = bookingDao.find(bookingId);
 
-        return currentUserStatus.getRole().equals(Role.ADMIN) ||
+        if(!currentUserStatus.getRole().equals(Role.ADMIN) ||
                 (currentUserStatus.getRole().equals(Role.HR) &&
                         (booking.getUser().getHrId().equals(currentUserStatus.getId()) &&
                         userDto.getHrId().equals(currentUserStatus.getId()))) ||
-                                booking.getUser().getId().equals(currentUserStatus.getId());
+                                booking.getUser().getId().equals(currentUserStatus.getId())) {
+            throw new SecurityValidationException(String.format("user with id %d cant edit booking with id %d",userId, bookingId));
+        }
     }
 
     @Override
-    public boolean isUserCanDeleteBooking(Long bookingId) {
+    public void validateUserCanDeleteBooking(Long bookingId) {
         UserStatusDto currentUserStatus = userService.getUserStatus();
 
-        return isUserCanEditBooking(currentUserStatus.getId(), bookingId);
+        validateUserCanEditBooking(currentUserStatus.getId(), bookingId);
     }
 
     @Override
-    public boolean isAdminCanChangeUserRole(Long userId) {
-        return !userService.getUserStatus().getId().equals(userId);
+    public void validateAdminCanChangeUserRole(Long userId) {
+        if(!userService.getUserStatus().getId().equals(userId)) {
+            throw new SecurityValidationException("admin cant change his own status");
+        }
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class OfficeController {
 
     @Autowired
-    OfficeService officeService;
+    private OfficeService officeService;
 
     @GetMapping("/floor/{floorId}/places")
     public List<PlaceDto> getPlacesByFloorId(@PathVariable("floorId") Long floorId) {

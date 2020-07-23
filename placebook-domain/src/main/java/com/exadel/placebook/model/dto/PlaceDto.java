@@ -6,5 +6,5 @@ import lombok.Data;
 public class PlaceDto {
     private Long placeId;
     private String placeNumber;
-    private Boolean isActive;
+    private boolean active;
 }
