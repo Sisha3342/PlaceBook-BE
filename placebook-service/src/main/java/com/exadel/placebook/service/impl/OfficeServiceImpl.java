@@ -48,4 +48,15 @@ public class OfficeServiceImpl implements OfficeService {
         officeDao.update(office);
         return officeConverter.convert(office);
     }
+    @Override
+    public boolean deleteOffice(Long officeId) {
+        Office office = officeDao.find(officeId);
+        if(office!=null) {
+            office.setDeleted(true);
+            officeDao.update(office);
+            return true;
+        }
+        return false;
+
+    }
 }

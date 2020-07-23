@@ -18,7 +18,7 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
     public List<Office> findAllOfficesByCity(String city) {
         Session session = getSession();
         Query<Office> query = session
-                .createQuery("select o from Office o join o.address a where a.city = :city", Office.class)
+                .createQuery("select o from Office o join o.address a where a.city = :city and o.deleted = false", Office.class)
                 .setParameter("city", city);
         return query.list();
     }
