@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
 @EnableAsync
-public class ScheduledBooking {
+public class BookingProcessor {
     @Autowired
     private BookingService bookingService;
 
