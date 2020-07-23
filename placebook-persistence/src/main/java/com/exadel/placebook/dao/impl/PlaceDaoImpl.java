@@ -23,8 +23,8 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
         Session session = getSession();
         return session.createQuery("select count (b) from Booking b " +
                 "where b.place.id = :id and " +
-                "(b.timeStart <= :timeStart and b.timeEnd >= :timeStart) or " +
-                "(b.timeStart <= :timeEnd and b.timeEnd >= :timeEnd)", Long.class)
+                "(:timeStart between b.timeStart and b.timeEnd) or" +
+                "(:timeEnd between b.timeStart and b.timeEnd)", Long.class)
                 .setParameter("id", placeId)
                 .setParameter("timeStart", start)
                 .setParameter("timeEnd", end)
