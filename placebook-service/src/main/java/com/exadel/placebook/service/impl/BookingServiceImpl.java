@@ -70,8 +70,6 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.find(id));
     }
 
-    //TODO добавить логгер и спросить на счет проверки по времени
-
     @Override
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
