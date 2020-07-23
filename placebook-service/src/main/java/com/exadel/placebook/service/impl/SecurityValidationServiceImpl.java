@@ -26,7 +26,7 @@ public class SecurityValidationServiceImpl implements SecurityValidationService 
         UserDto userDto = userService.findById(userId);
 
         if(currentUserStatus.getRole().equals(Role.HR) &&
-                !userDto.getHrId().equals(currentUserStatus.getId()) ||
+                !userDto.getHrId().equals(currentUserStatus.getId()) &&
                 !currentUserStatus.getId().equals(userId)) {
             throw new SecurityValidationException(String
                     .format("hr with id %d cant book place for user with id %d",
@@ -51,7 +51,7 @@ public class SecurityValidationServiceImpl implements SecurityValidationService 
 
         if(currentUserStatus.getRole().equals(Role.HR) &&
                 !(userDto.getHrId().equals(currentUserStatus.getId()) &&
-                booking.getUser().getHrId().equals(currentUserStatus.getId())) ||
+                booking.getUser().getHrId().equals(currentUserStatus.getId())) &&
                 !booking.getUser().getId().equals(currentUserStatus.getId())) {
             throw new SecurityValidationException(String
                     .format("hr with id %d cant edit booking %d for user with id %d",
