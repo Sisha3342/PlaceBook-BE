@@ -70,11 +70,15 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.find(id));
     }
 
+    //TODO добавить логгер и спросить на счет проверки по времени
+
     @Override
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
 
-        if (placeDao.countBookingsByPlaceId(bookingRequest.getPlaceId()) != 0) {
+        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
+                bookingRequest.getTimeStart(),
+                bookingRequest.getTimeEnd()) != 0) {
             throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
         }
 
@@ -92,7 +96,9 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto editBooking(BookingRequest bookingRequest, Long userId, Long bookingId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
 
-        if (placeDao.countBookingsByPlaceId(bookingRequest.getPlaceId()) != 0) {
+        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
+                bookingRequest.getTimeStart(),
+                bookingRequest.getTimeEnd()) != 0) {
             throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
         }
 
