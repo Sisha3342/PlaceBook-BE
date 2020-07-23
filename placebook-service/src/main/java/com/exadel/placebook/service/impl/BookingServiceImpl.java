@@ -74,9 +74,12 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
 
-        if (!place.getPlaceStatus().equals(PlaceStatus.ACTIVE) &&
-                securityValidationService.isUserCanAddBooking(userId)) {
-            throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
+        if(!securityValidationService.isUserCanAddBooking(userId)) {
+            throw new BookingException(String.format("user with id %d cant book place %s",userId, place.getPlaceNumber()));
+        }
+
+        if (!place.getPlaceStatus().equals(PlaceStatus.ACTIVE)) {
+            throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
         }
 
         Booking booking = new Booking();
@@ -94,9 +97,12 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto editBooking(BookingRequest bookingRequest, Long userId, Long bookingId) {
         Place place = placeDao.find(bookingRequest.getPlaceId());
 
-        if (!place.getPlaceStatus().equals(PlaceStatus.ACTIVE)
-                && securityValidationService.isUserCanEditBooking(userId, bookingId)) {
-            throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
+        if(!securityValidationService.isUserCanEditBooking(userId, bookingId)) {
+            throw new BookingException(String.format("user with id %d cant edit booking with id %d",userId, bookingId));
+        }
+
+        if (!place.getPlaceStatus().equals(PlaceStatus.ACTIVE)) {
+            throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
         }
 
         Booking booking = bookingDao.load(bookingId);
@@ -110,6 +116,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto deleteBooking(Long id) {
+        if(!securityValidationService.isUserCanDeleteBooking(id)) {
+            throw new BookingException(String.format("you cant delete booking with id %d", id));
+        }
+
         Booking booking = bookingDao.load(id);
         booking.setStatus(Status.CANCELED);
         return bookingConverter.convert(bookingDao.save(booking));
