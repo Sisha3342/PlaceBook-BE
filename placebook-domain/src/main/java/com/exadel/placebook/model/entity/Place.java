@@ -18,5 +18,6 @@ public class Place extends BaseEntity {
     private String placeNumber;
 
     @Column(name="status")
+    @Enumerated(EnumType.STRING)
     private PlaceStatus placeStatus;
 }
