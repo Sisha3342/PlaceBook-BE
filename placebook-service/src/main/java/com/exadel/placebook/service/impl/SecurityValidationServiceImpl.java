@@ -5,7 +5,7 @@ import com.exadel.placebook.exception.SecurityValidationException;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.Booking;
-import com.exadel.placebook.model.enums.Role;
+import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.service.SecurityValidationService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,52 +25,60 @@ public class SecurityValidationServiceImpl implements SecurityValidationService 
         UserStatusDto currentUserStatus = userService.getUserStatus();
         UserDto userDto = userService.findById(userId);
 
-        if(currentUserStatus.getRole().equals(Role.HR) &&
-                !userDto.getHrId().equals(currentUserStatus.getId()) &&
-                !currentUserStatus.getId().equals(userId)) {
-            throw new SecurityValidationException(String
-                    .format("hr with id %d cant book place for user with id %d",
-                    currentUserStatus.getId(),
-                    userId));
-        }
+        Long currentUserId = currentUserStatus.getId();
 
-        if(currentUserStatus.getRole().in(Role.USER, Role.EDITOR) &&
-                !currentUserStatus.getId().equals(userId)) {
-            throw new SecurityValidationException(String
-                    .format("user with id %d cant book place, using session of user %d",
-                            userId,
-                            currentUserStatus.getId()));
+        switch (currentUserStatus.getRole()) {
+            case HR:
+                if(!userDto.getHrId().equals(currentUserId) &&
+                        !currentUserId.equals(userId)) {
+                    throw new SecurityValidationException(String
+                            .format("hr with id %d cant book place for user with id %d",
+                                    currentUserId,
+                                    userId));
+                }
+                break;
+            case USER:
+            case EDITOR:
+                if(!currentUserId.equals(userId)) {
+                    throw new SecurityValidationException(String
+                            .format("user with id %d cant book place, using session of user %d",
+                                    userId,
+                                    currentUserId));
+                }
         }
     }
 
     @Override
-    public void validateUserCanEditBooking(Long userId, Long bookingId) {
+    public void validateUserCanEditBooking(Long bookingId) {
         UserStatusDto currentUserStatus = userService.getUserStatus();
-        UserDto userDto = userService.findById(userId);
         Booking booking = bookingDao.find(bookingId);
 
-        if(currentUserStatus.getRole().equals(Role.HR) &&
-                !(userDto.getHrId().equals(currentUserStatus.getId()) &&
-                booking.getUser().getHrId().equals(currentUserStatus.getId())) &&
-                !booking.getUser().getId().equals(currentUserStatus.getId())) {
-            throw new SecurityValidationException(String
-                    .format("hr with id %d cant edit booking %d for user with id %d",
-                            currentUserStatus.getId(),
-                            bookingId,
-                            userId));
-        }
+        Long currentUserId = currentUserStatus.getId();
+        User bookingOwner = booking.getUser();
 
-        if(currentUserStatus.getRole().in(Role.USER, Role.EDITOR) &&
-                !booking.getUser().getId().equals(currentUserStatus.getId())) {
-            throw new SecurityValidationException(String.format("user with id %d cant edit booking with id %d", userId, bookingId));
+        switch(currentUserStatus.getRole()) {
+            case HR:
+                if(!bookingOwner.getHrId().equals(currentUserId) &&
+                        !bookingOwner.getId().equals(currentUserId)) {
+                    throw new SecurityValidationException(String
+                            .format("hr with id %d cant edit booking %d",
+                                    currentUserStatus.getId(),
+                                    bookingId));
+                }
+                break;
+            case EDITOR:
+            case USER:
+                if(!bookingOwner.getId().equals(currentUserId)) {
+                    throw new SecurityValidationException(String.format("user with id %d cant edit booking with id %d",
+                            currentUserId,
+                            bookingId));
+                }
         }
     }
 
     @Override
     public void validateUserCanDeleteBooking(Long bookingId) {
-        UserStatusDto currentUserStatus = userService.getUserStatus();
-
-        validateUserCanEditBooking(currentUserStatus.getId(), bookingId);
+        validateUserCanEditBooking(bookingId);
     }
 
     @Override

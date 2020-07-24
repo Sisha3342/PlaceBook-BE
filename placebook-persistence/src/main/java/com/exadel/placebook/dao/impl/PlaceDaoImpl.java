@@ -19,15 +19,17 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
     }
 
     @Override
-    public long countBookingsByPlaceIdAndTime(Long placeId, LocalDateTime start, LocalDateTime end) {
+    public long countBookingsByPlaceIdAndTime(Long placeId, LocalDateTime start, LocalDateTime end, Long userId) {
         Session session = getSession();
         return session.createQuery("select count (b) from Booking b " +
                 "where b.place.id = :id and " +
-                "(:timeStart between b.timeStart and b.timeEnd) or" +
-                "(:timeEnd between b.timeStart and b.timeEnd)", Long.class)
+                "((:timeStart between b.timeStart and b.timeEnd) or " +
+                "(:timeEnd between b.timeStart and b.timeEnd)) and " +
+                "b.user.id <> :userId", Long.class)
                 .setParameter("id", placeId)
                 .setParameter("timeStart", start)
                 .setParameter("timeEnd", end)
+                .setParameter("userId", userId)
                 .getSingleResult();
     }
 }

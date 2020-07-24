@@ -14,6 +14,7 @@ import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
+import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private PlaceDao placeDao;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<BookingDto> findBookings(Long userId) {
@@ -73,13 +77,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
-        Place place = placeDao.find(bookingRequest.getPlaceId());
-
-        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
-                bookingRequest.getTimeStart(),
-                bookingRequest.getTimeEnd()) != 0) {
-            throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
-        }
+        Place place = getAvailablePlace(bookingRequest, userId);
 
         Booking booking = new Booking();
         booking.setPlace(place);
@@ -92,20 +90,17 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto editBooking(BookingRequest bookingRequest, Long userId, Long bookingId) {
-        Place place = placeDao.find(bookingRequest.getPlaceId());
+    public BookingDto editBooking(BookingRequest bookingRequest, Long bookingId) {
+        Place place = getAvailablePlace(bookingRequest, userService.getUserStatus().getId());
+        Booking booking = bookingDao.load(bookingId);
 
-        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
-                bookingRequest.getTimeStart(),
-                bookingRequest.getTimeEnd()) != 0) {
-            throw new BookingException(String.format("place %s is occupied", place.getPlaceNumber()));
+        if(!booking.getStatus().equals(Status.ACTIVE)) {
+            throw new BookingException(String.format("booking %d is inactive", booking.getId()));
         }
 
-        Booking booking = bookingDao.load(bookingId);
         booking.setPlace(place);
         booking.setTimeStart(bookingRequest.getTimeStart());
         booking.setTimeEnd(bookingRequest.getTimeEnd());
-        booking.setUser(userDao.load(userId));
 
         return bookingConverter.convert(bookingDao.update(booking));
     }
@@ -116,5 +111,16 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(Status.CANCELED);
 
         return bookingConverter.convert(bookingDao.save(booking));
+    }
+
+    private Place getAvailablePlace(BookingRequest bookingRequest, Long userId) {
+        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
+                bookingRequest.getTimeStart(),
+                bookingRequest.getTimeEnd(),
+                userId) != 0) {
+            throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
+        }
+
+        return placeDao.load(bookingRequest.getPlaceId());
     }
 }

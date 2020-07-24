@@ -3,7 +3,7 @@ package com.exadel.placebook.service;
 public interface SecurityValidationService {
 
     void validateUserCanAddBooking(Long userId);
-    void validateUserCanEditBooking(Long userId, Long bookingId);
+    void validateUserCanEditBooking(Long bookingId);
 
     void validateUserCanDeleteBooking(Long bookingId);
 

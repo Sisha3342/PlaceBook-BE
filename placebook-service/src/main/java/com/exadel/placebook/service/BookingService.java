@@ -19,6 +19,6 @@ public interface BookingService {
     BookingDto findById(Long id);
 
     BookingDto addBooking(BookingRequest bookingRequest, Long userId);
-    BookingDto editBooking(BookingRequest bookingRequest, Long userId, Long bookingId);
+    BookingDto editBooking(BookingRequest bookingRequest, Long bookingId);
     BookingDto deleteBooking(Long id);
 }

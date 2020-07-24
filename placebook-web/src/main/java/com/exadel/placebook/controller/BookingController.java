@@ -43,13 +43,12 @@ public class BookingController {
         return bookingService.addBooking(bookingRequest, userId);
     }
 
-    @PostMapping("/user/{userId}/{bookingId}")
+    @PostMapping("/user/booking/{bookingId}")
     public BookingDto editBooking(@RequestBody BookingRequest bookingRequest,
-                                  @PathVariable("userId") Long userId,
                                   @PathVariable("bookingId") Long bookingId) {
-        securityValidationService.validateUserCanEditBooking(userId, bookingId);
+        securityValidationService.validateUserCanEditBooking(bookingId);
 
-        return bookingService.editBooking(bookingRequest, userId, bookingId);
+        return bookingService.editBooking(bookingRequest, bookingId);
     }
 
     @DeleteMapping("/user/booking/{bookingId}")
