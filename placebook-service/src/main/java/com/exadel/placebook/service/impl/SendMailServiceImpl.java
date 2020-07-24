@@ -25,44 +25,19 @@ public class SendMailServiceImpl implements SendMailService {
     @Autowired
     public JavaMailSender emailSender;
 
-    @Autowired
-    private Configuration freemarkerConfig;
 
     public void sendEmail(MailMessageDto messageDto) {
 
          try {
-             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
 
              MimeMessage message = emailSender.createMimeMessage();
              MimeMessageHelper helper = new MimeMessageHelper(message);
-             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
-             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
-
-             Map<String, Object> model = new HashMap<>();
-             model.put("name", messageDto.getUserName());
-             model.put("text", messageDto.getText());
-             model.put("country", messageDto.getCountry());
-             model.put("city", messageDto.getCity());
-             model.put("office", messageDto.getOffice());
-             model.put("placeNumber", messageDto.getPlaceNumber());
-             model.put("timeStart", messageDto.getTimeStart().format(formatter));
-             model.put("timeEnd", messageDto.getTimeEnd().format(formatter));
-
-             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
              helper.setTo(messageDto.getEmail());
-             helper.setText(text, true);
+             helper.setText(messageDto.getText(), true);
              helper.setSubject("Placebook notification");
-
              this.emailSender.send(message);
          }
 
-         catch (TemplateException e) {
-             throw new SendMessageException("Send email exception! TemplateException");
-         }
-         catch (IOException e) {
-             throw new SendMessageException("Send email exception! IOException");
-         }
          catch (MessagingException e) {
              throw new SendMessageException("Send email exception! MessagingException");
          }
