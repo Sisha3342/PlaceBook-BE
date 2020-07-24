@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class PlaceController {
 
@@ -24,8 +26,7 @@ public class PlaceController {
     }
 
     @GetMapping("/place/user/{userId}")
-    public PlaceDto getPlaceByUser(@PathVariable("userId") Long userId) {
+    public List<PlaceDto> getPlaceByUser(@PathVariable("userId") Long userId) {
         return placeService.getPlaceByUserNow(userId);
-        //Мы пока не исключили случай когда бронь одновременно только одна
     }
 }

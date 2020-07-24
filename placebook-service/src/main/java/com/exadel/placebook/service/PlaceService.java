@@ -2,6 +2,8 @@ package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.PlaceDto;
 
+import java.util.List;
+
 public interface PlaceService {
-    PlaceDto getPlaceByUserNow(Long userId);
+    List<PlaceDto> getPlaceByUserNow(Long userId);
 }

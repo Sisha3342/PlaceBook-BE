@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -19,11 +19,8 @@ public class PlaceServiceImpl implements PlaceService {
     private PlaceDao placeDao;
 
     @Override
-    public PlaceDto getPlaceByUserNow(Long userId) {
-        Optional<PlaceDto> place = placeDao.getPlaceByUserNow(userId);
-        if (!place.isPresent()) {
-            throw new PlaceNotFoundException("place is not found");
-        }
-        return place.get();
+    public List<PlaceDto> getPlaceByUserNow(Long userId) {
+        List<PlaceDto> place = placeDao.getPlaceByUserNow(userId);
+        return place;
     }
 }
