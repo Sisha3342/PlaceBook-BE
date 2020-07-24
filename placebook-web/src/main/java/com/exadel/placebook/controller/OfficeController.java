@@ -1,11 +1,14 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,5 +52,10 @@ public class OfficeController {
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@RequestBody OfficeParams officeParams) {
         officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId, officeParams);
+    }
+
+    @GetMapping("/office/{officeId}/floors")
+    public List<FloorDto> getFloors(@PathVariable("officeId") Long officeId) {
+        return officeService.getFloorsByOfficeId(officeId);
     }
 }
