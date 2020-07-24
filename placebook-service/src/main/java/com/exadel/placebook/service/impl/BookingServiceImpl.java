@@ -13,6 +13,7 @@ import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
+import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +112,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto deleteBooking(Long id) {
-        Booking booking = bookingDao.load(id);
+        Booking booking = bookingDao.find(id);
+
+        if(booking == null) {
+            throw new EntityNotFoundException(Booking.class, id);
+        }
+
         booking.setStatus(Status.CANCELED);
 
         return bookingConverter.convert(bookingDao.save(booking));
