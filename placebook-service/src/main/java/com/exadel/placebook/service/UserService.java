@@ -1,6 +1,9 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.*;
+import com.exadel.placebook.model.dto.AdminUserDto;
+import com.exadel.placebook.model.dto.RoleDto;
+import com.exadel.placebook.model.dto.UserDto;
+import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 
 import java.util.List;
@@ -19,4 +22,6 @@ public interface UserService {
     List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter);
 
     List<UserSearchDto> findUsers(String text);
+
+    UserDto addUser(UserDto userDto);
 }
