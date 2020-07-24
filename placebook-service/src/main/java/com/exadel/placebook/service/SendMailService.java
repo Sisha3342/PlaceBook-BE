@@ -7,5 +7,5 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 
 public interface SendMailService {
-    void sendEmail(MailMessageDto mailMessageDto) throws IOException, TemplateException, MessagingException;
+    void sendEmail(MailMessageDto mailMessageDto);
 }

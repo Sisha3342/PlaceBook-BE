@@ -9,6 +9,7 @@ public class MailMessageDto {
 
     private String placeNumber;
     private String userName;
+    private String text;
     private String email;
     private String country;
     private String city;
