@@ -11,7 +11,7 @@ public class PlaceConverter {
         PlaceDto placeDto = new PlaceDto();
         placeDto.setActive(place.getPlaceStatus().equals(PlaceStatus.ACTIVE));
         placeDto.setPlaceId(place.getId());
-        place.setPlaceNumber(place.getPlaceNumber());
+        placeDto.setPlaceNumber(place.getPlaceNumber());
 
         return placeDto;
     }

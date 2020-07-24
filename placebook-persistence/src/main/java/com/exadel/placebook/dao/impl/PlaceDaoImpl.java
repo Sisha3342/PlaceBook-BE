@@ -12,7 +12,7 @@ import java.util.List;
 public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
 
     @Override
-    public List<Place> findPlacesByFloorId(Long floorId){
+    public List<Place> findPlacesByFloorId(Long floorId) {
         Session session = getSession();
         return session.createQuery("select p from Place p where p.floor.id = :id", Place.class)
                 .setParameter("id", floorId).list();
@@ -23,13 +23,27 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
         Session session = getSession();
         return session.createQuery("select count (b) from Booking b " +
                 "where b.place.id = :id and " +
-                "((:timeStart between b.timeStart and b.timeEnd) or " +
-                "(:timeEnd between b.timeStart and b.timeEnd)) and " +
+                "b.timeEnd > :timeStart and b.timeStart < :timeEnd and " +
                 "b.user.id <> :userId", Long.class)
                 .setParameter("id", placeId)
                 .setParameter("timeStart", start)
                 .setParameter("timeEnd", end)
                 .setParameter("userId", userId)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<Place> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
+        Session session = getSession();
+        return session.createQuery("select p from Place p " +
+                        "where p.floor.id = :id and " +
+                        "(select count (b) from Booking b " +
+                        "where b.place.id = p.id and " +
+                        "b.timeEnd > :timeStart and b.timeStart < :timeEnd) = 0"
+                , Place.class)
+                .setParameter("id", floorId)
+                .setParameter("timeStart", start)
+                .setParameter("timeEnd", end)
+                .list();
     }
 }
