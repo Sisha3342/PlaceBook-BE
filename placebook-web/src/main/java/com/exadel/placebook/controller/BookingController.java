@@ -36,6 +36,11 @@ public class BookingController {
         return bookingService.getBookingInfo(bookingId);
     }
 
+    @GetMapping("/user/{userId}/booking/all")
+    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId){
+        return bookingService.findBookings(userId);
+    }
+
     @PutMapping("/user/{userId}/booking")
     public BookingDto addBooking(@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId) {
         securityValidationService.validateUserCanAddBooking(userId);

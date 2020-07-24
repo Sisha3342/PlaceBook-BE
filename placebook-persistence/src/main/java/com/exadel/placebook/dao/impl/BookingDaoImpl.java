@@ -33,7 +33,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public List<Booking> findBookings(Long userId) {
         Session session = getSession();
         Query<Booking> query = session
-                .createQuery("from Booking b where b.userId = :user_id", Booking.class)
+                .createQuery("from Booking b where b.user.id = :user_id", Booking.class)
                 .setParameter("user_id", userId);
         return query.list();
     }
