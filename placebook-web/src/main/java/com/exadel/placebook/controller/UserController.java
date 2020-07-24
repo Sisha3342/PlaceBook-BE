@@ -2,10 +2,8 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.AdminUserDto;
 import com.exadel.placebook.model.dto.RoleDto;
-import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.model.filters.AdminUserFilter;
-import com.exadel.placebook.service.AdminUserFilterValidator;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,8 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AdminUserFilterValidator adminUserFilterValidator;
 
     @GetMapping("/users")
     public List<AdminUserDto> getUsers(@Valid AdminUserFilter adminUserFilter, BindingResult result) {
