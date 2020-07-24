@@ -1,13 +1,12 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.BookingDto;
-import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +30,7 @@ public class BookingController {
     public BookingInfoDto findBookingInfo(@PathVariable("userId") Long userId, @PathVariable("bookingId") Long bookingId) {
         return bookingService.getBookingInfo(bookingId);
     }
+
 
     @GetMapping("/countries")
     public List<String> getAllCountries() {

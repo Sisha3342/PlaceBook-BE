@@ -6,10 +6,7 @@ import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.dao.AddressDao;
 import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.dao.OfficeDao;
-import com.exadel.placebook.model.dto.BookingDto;
-import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.entity.Booking;
@@ -88,4 +85,6 @@ public class BookingServiceImpl implements BookingService {
     public Map<Status, Long> getStatistics(Long id) {
         return bookingDao.getStatistics(id);
     }
+
+
 }

@@ -19,4 +19,5 @@ public interface BookingDao extends BaseDao<Booking> {
     Optional<MarkDto> findMarksByPlaceId(Long id);
 
     void completeEndedBookings();
+
 }
