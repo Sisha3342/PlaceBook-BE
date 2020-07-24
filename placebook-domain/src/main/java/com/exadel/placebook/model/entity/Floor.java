@@ -16,6 +16,6 @@ public class Floor extends BaseEntity {
     @Column(name = "floor_configuration")
     private String floorConfiguration;
 
-    @Column(name = "floor_number")
+    @Column(name="floor_number")
     private String floorNumber;
 }

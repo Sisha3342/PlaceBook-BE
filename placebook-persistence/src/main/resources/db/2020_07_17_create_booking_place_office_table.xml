@@ -15,7 +15,6 @@
             `status` ENUM('ACTIVE', 'COMPLETED', 'CANCELED') NOT NULL,
             PRIMARY KEY (`id`)
             );
-
         </sql>
 
         <sql>
@@ -35,7 +34,6 @@
             `place_number` varchar(255) NOT NULL,
             PRIMARY KEY (`id`)
             );
-
         </sql>
 
         <sql>

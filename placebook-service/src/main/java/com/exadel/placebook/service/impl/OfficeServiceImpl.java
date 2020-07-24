@@ -1,10 +1,12 @@
 package com.exadel.placebook.service.impl;
 
+import com.exadel.placebook.converter.FloorDtoConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
@@ -21,21 +23,23 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class OfficeServiceImpl implements OfficeService {
-
     @Autowired
-    private PlaceDao placeDao;
-
-    @Autowired
-    private PlaceConverter placeConverter;
+    private OfficeDao officeDao;
 
     @Autowired
     private OfficeConverter officeConverter;
 
     @Autowired
+    private FloorDtoConverter floorConverter;
+
+    @Autowired
+    private PlaceDao placeDao;
+
+    @Autowired
     private AddressDao addressDao;
 
     @Autowired
-    private OfficeDao officeDao;
+    private PlaceConverter placeConverter;
 
     @Override
     public List<PlaceDto> getPlacesByFloorId(Long floorId) {
@@ -87,5 +91,13 @@ public class OfficeServiceImpl implements OfficeService {
         office.setWorkTimeStart(officeParams.getWorktimeStart());
         officeDao.update(office);
         return officeConverter.convert(office);
+    }
+
+    @Override
+    public List<FloorDto> getFloorsByOfficeId(Long officeId) {
+        return officeDao.findFloorsByOfficeId(officeId)
+                .stream()
+                .map(floor -> floorConverter.convert(floor))
+                .collect(Collectors.toList());
     }
 }
