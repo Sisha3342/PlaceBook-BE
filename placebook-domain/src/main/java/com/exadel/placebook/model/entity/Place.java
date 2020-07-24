@@ -1,5 +1,6 @@
 package com.exadel.placebook.model.entity;
 
+import com.exadel.placebook.model.enums.PlaceStatus;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,4 +16,8 @@ public class Place extends BaseEntity {
 
     @Column(name = "place_number")
     private String placeNumber;
+
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private PlaceStatus placeStatus;
 }
