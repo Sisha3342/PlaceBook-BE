@@ -1,10 +1,11 @@
 package com.exadel.placebook.service.impl;
 
+import com.exadel.placebook.converter.FloorDtoConverter;
 import com.exadel.placebook.converter.OfficeConverter;
-import com.exadel.placebook.dao.BaseDao;
 import com.exadel.placebook.dao.OfficeDao;
-import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.service.OfficeService;
@@ -12,14 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class OfficeServiceImpl implements OfficeService {
     @Autowired
     private OfficeDao officeDao;
+
     @Autowired
     private OfficeConverter officeConverter;
+
+    @Autowired
+    private FloorDtoConverter floorConverter;
 
     @Override
     public OfficeDto addOffice(OfficeParams officeParams) {
@@ -47,5 +54,13 @@ public class OfficeServiceImpl implements OfficeService {
         office.setWorkTimeStart(officeParams.getWorktimeStart());
         officeDao.update(office);
         return officeConverter.convert(office);
+    }
+
+    @Override
+    public List<FloorDto> getFloorsByOfficeId(Long officeId) {
+        return officeDao.findFloorsByOfficeId(officeId)
+                .stream()
+                .map(floor -> floorConverter.convert(floor))
+                .collect(Collectors.toList());
     }
 }

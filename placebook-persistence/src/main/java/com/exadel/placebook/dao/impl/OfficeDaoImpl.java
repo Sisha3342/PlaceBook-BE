@@ -1,8 +1,8 @@
 package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.OfficeDao;
+import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -23,6 +23,12 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
         return query.list();
     }
 
-
-
+    @Override
+    public List<Floor> findFloorsByOfficeId(Long officeId) {
+        Session session = getSession();
+        Query<Floor> query = session
+                .createQuery("select f from Floor f join f.office o where o.id = :id", Floor.class)
+                .setParameter("id", officeId);
+        return query.list();
+    }
 }
