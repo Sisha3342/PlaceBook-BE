@@ -1,7 +1,8 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.PlaceDto;
 
 import java.util.List;
@@ -12,5 +13,6 @@ public interface OfficeService {
     List<String> getCitiesByCountry(String country);
     List<OfficeDto> getOfficesByCityAndCountry(String city, String country);
     OfficeDto addOffice(OfficeParams officeParams);
-    OfficeDto editOffice(Long officeId, OfficeParams officeParams);
+    OfficeDto editOffice(Long officeId,OfficeParams officeParams);
+    List<FloorDto> getFloorsByOfficeId(Long officeId);
 }
