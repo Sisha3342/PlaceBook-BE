@@ -47,9 +47,4 @@ public class BookingController {
     public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
         return bookingService.getAllOfficesByCity(city);
     }
-
-    @GetMapping("/booking/{bookingId}/marks")
-    public MarkDto getPlaceMarksById(@PathVariable("bookingId") Long bookingId){
-        return bookingService.getMarksByPlaceId(bookingId);
-    }
 }
