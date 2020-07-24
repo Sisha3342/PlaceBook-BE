@@ -31,7 +31,10 @@ public class BookingController {
     public BookingInfoDto findBookingInfo(@PathVariable("userId") Long userId, @PathVariable("bookingId") Long bookingId) {
         return bookingService.getBookingInfo(bookingId);
     }
-
+    @GetMapping("/user/{userId}/booking/all")
+    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId){
+        return bookingService.findBookings(userId);
+    }
     @GetMapping("/countries")
     public List<String> getAllCountries() {
         return bookingService.getAllCountries();
