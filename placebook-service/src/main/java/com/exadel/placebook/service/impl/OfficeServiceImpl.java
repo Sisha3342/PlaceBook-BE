@@ -6,11 +6,8 @@ import com.exadel.placebook.dao.AddressDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.dto.PlaceDto;
-import com.exadel.placebook.dao.BaseDao;
-import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.model.dto.OfficeParams;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.service.OfficeService;
@@ -60,7 +57,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public List<OfficeDto> getOfficesByCityAndCountry(String city, String country) {
-        List<Office> list = officeDao.countActiveBookingsByPlaceIdAndTime(city, country);
+        List<Office> list = officeDao.findOfficesByCityAndCountry(city, country);
         return list.stream().map(officeConverter::convert).collect(Collectors.toList());
     }
 

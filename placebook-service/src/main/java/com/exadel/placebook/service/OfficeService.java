@@ -1,9 +1,8 @@
 package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.dto.OfficeParams;
-import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.PlaceDto;
 
 import java.util.List;
 
