@@ -2,6 +2,7 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.model.dto.PlaceDto;
+import com.exadel.placebook.model.dto.PlaceSearchDto;
 import com.exadel.placebook.model.exception.MarksNotFoundException;
 import com.exadel.placebook.model.exception.PlaceNotFoundException;
 import com.exadel.placebook.service.PlaceService;
@@ -19,8 +20,8 @@ public class PlaceServiceImpl implements PlaceService {
     private PlaceDao placeDao;
 
     @Override
-    public List<PlaceDto> getPlaceByUserNow(Long userId) {
-        List<PlaceDto> place = placeDao.getPlaceByUserNow(userId);
+    public List<PlaceSearchDto> getPlaceByUserNow(Long userId) {
+        List<PlaceSearchDto> place = placeDao.getPlaceByUserNow(userId);
         return place;
     }
 }

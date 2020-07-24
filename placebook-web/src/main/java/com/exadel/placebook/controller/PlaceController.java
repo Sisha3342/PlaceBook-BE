@@ -2,6 +2,7 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.dto.PlaceDto;
+import com.exadel.placebook.model.dto.PlaceSearchDto;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class PlaceController {
     }
 
     @GetMapping("/user/{userId}/places")
-    public List<PlaceDto> getPlaceByUser(@PathVariable("userId") Long userId) {
+    public List<PlaceSearchDto> getPlaceByUser(@PathVariable("userId") Long userId) {
         return placeService.getPlaceByUserNow(userId);
     }
 }

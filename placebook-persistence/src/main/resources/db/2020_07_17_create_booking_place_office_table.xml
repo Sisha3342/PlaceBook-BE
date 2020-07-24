@@ -33,7 +33,6 @@
             `id` INT NOT NULL AUTO_INCREMENT,
             `floor_id` INT NOT NULL,
             `place_number` varchar(255) NOT NULL,
-            `status` ENUM('ACTIVE','INACTIVE') NOT NULL,
             PRIMARY KEY (`id`)
             );
 
