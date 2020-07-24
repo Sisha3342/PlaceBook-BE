@@ -2,19 +2,21 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
-import com.exadel.placebook.converter.OfficeConverter;
-import com.exadel.placebook.dao.AddressDao;
 import com.exadel.placebook.dao.BookingDao;
-import com.exadel.placebook.dao.OfficeDao;
+import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.dao.UserDao;
+import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.entity.Office;
-import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.exception.MarksNotFoundException;
+import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.enums.Status;
+import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.service.BookingService;
+import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -98,5 +100,64 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Map<Status, Long> getStatistics(Long id) {
         return bookingDao.getStatistics(id);
+    }
+
+    @Override
+    public BookingDto findById(Long id) {
+        return bookingConverter.convert(bookingDao.find(id));
+    }
+
+    @Override
+    public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
+        Place place = getAvailablePlace(bookingRequest, userId);
+
+        Booking booking = new Booking();
+        booking.setPlace(place);
+        booking.setStatus(Status.ACTIVE);
+        booking.setTimeStart(bookingRequest.getTimeStart());
+        booking.setTimeEnd(bookingRequest.getTimeEnd());
+        booking.setUser(userDao.load(userId));
+
+        return bookingConverter.convert(bookingDao.save(booking));
+    }
+
+    @Override
+    public BookingDto editBooking(BookingRequest bookingRequest, Long bookingId) {
+        Place place = getAvailablePlace(bookingRequest, userService.getUserStatus().getId());
+        Booking booking = bookingDao.load(bookingId);
+
+        if(!booking.getStatus().equals(Status.ACTIVE)) {
+            throw new BookingException(String.format("booking %d is inactive", booking.getId()));
+        }
+
+        booking.setPlace(place);
+        booking.setTimeStart(bookingRequest.getTimeStart());
+        booking.setTimeEnd(bookingRequest.getTimeEnd());
+
+        return bookingConverter.convert(bookingDao.update(booking));
+    }
+
+    @Override
+    public BookingDto deleteBooking(Long id) {
+        Booking booking = bookingDao.find(id);
+
+        if(booking == null) {
+            throw new EntityNotFoundException(Booking.class, id);
+        }
+
+        booking.setStatus(Status.CANCELED);
+
+        return bookingConverter.convert(bookingDao.save(booking));
+    }
+
+    private Place getAvailablePlace(BookingRequest bookingRequest, Long userId) {
+        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
+                bookingRequest.getTimeStart(),
+                bookingRequest.getTimeEnd(),
+                userId) != 0) {
+            throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
+        }
+
+        return placeDao.load(bookingRequest.getPlaceId());
     }
 }

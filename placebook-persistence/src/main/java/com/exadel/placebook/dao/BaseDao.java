@@ -11,6 +11,8 @@ public interface BaseDao<T extends BaseEntity> {
 
     T find(Long id);
 
+    T load(Long id);
+
     boolean delete(Long id);
 
     T update(T object);
