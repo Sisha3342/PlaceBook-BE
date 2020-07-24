@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AddressDao extends BaseDao<Address> {
     List<String> findAllCountries();
-    List<String> findAllCitiesByCountry(String country);
+    List<String> findCitiesByCountry(String country);
 }

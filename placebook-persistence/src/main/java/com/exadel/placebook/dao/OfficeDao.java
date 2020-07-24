@@ -5,7 +5,7 @@ import com.exadel.placebook.model.entity.Office;
 
 import java.util.List;
 
-public interface OfficeDao extends BaseDao<Office>{
-    List<Office> findAllOfficesByCity(String city);
+public interface OfficeDao extends BaseDao<Office> {
+    List<Office> findOfficesByCityAndCountry(String city, String country);
     List<Floor> findFloorsByOfficeId(Long officeId);
 }

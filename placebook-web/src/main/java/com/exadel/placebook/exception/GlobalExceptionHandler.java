@@ -1,9 +1,6 @@
 package com.exadel.placebook.exception;
 
-import com.exadel.placebook.model.exception.AdminValidationException;
-import com.exadel.placebook.model.exception.ApplicationRuntimeException;
-import com.exadel.placebook.model.exception.ErrorResponse;
-import com.exadel.placebook.model.exception.ParamsValidationException;
+import com.exadel.placebook.model.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -60,4 +57,38 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+
+    @ExceptionHandler(value = BookingException.class)
+    public ResponseEntity<?> handleRestException(BookingException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+    @ExceptionHandler(value = SecurityValidationException.class)
+    public ResponseEntity<?> handleRestException(SecurityValidationException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.FORBIDDEN;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public ResponseEntity<?> handleRestException(EntityNotFoundException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
 }
