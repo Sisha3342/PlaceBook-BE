@@ -2,12 +2,14 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.FloorDtoConverter;
 import com.exadel.placebook.converter.OfficeConverter;
+import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
-import com.exadel.placebook.dao.BaseDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
-import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.service.OfficeService;

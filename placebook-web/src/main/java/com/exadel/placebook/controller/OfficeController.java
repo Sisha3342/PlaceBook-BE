@@ -3,6 +3,7 @@ package com.exadel.placebook.controller;
 import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
