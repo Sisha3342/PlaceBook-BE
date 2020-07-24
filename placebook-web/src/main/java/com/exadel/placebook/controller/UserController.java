@@ -32,7 +32,11 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    public AdminUserDto changeUserRole(@PathVariable("userId") Long id, @Valid @RequestBody RoleDto role) {
+    public AdminUserDto changeUserRole(@PathVariable("userId") Long id, @Valid @RequestBody RoleDto role,
+                                       BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
         return userService.updateUserRole(id, role);
     }
 }
