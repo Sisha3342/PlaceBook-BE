@@ -2,17 +2,14 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
-import com.exadel.placebook.dao.BookingDao;
-import com.exadel.placebook.dao.PlaceDao;
-import com.exadel.placebook.dao.UserDao;
+import com.exadel.placebook.converter.OfficeConverter;
+import com.exadel.placebook.dao.*;
 import com.exadel.placebook.exception.BookingException;
-import com.exadel.placebook.model.dto.BookingDto;
-import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.BookingRequest;
-import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.entity.Booking;
+import com.exadel.placebook.model.dto.*;
+import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
+import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +57,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public void completeEndedBooking() {
+        bookingDao.completeEndedBookings();
+    }
+
     public List<BookingDto> findByStatus(Long id, Status status) {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
