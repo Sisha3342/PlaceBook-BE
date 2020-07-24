@@ -17,4 +17,6 @@ public interface BookingDao extends BaseDao<Booking> {
     Map<Status, Long> getStatistics(Long userId);
 
     Optional<MarkDto> findMarksByPlaceId(Long id);
+
+    void completeEndedBookings();
 }

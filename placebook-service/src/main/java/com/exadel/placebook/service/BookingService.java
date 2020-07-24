@@ -3,7 +3,6 @@ package com.exadel.placebook.service;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 
 import java.util.List;
@@ -19,4 +18,5 @@ public interface BookingService {
     List<String> getAllCountries();
     List<String> getAllCitiesByCountry(String country);
     List<OfficeDto> getAllOfficesByCity(String city);
+    void completeEndedBooking();
 }
