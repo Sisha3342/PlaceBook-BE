@@ -13,8 +13,10 @@ import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.entity.Booking;
+import com.exadel.placebook.model.exception.MarksNotFoundException;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -72,6 +74,15 @@ public class BookingServiceImpl implements BookingService {
     public List<OfficeDto> getAllOfficesByCity(String city) {
         List<Office> list = officeDao.findAllOfficesByCity(city);
         return list.stream().map(officeConverter::convert).collect(Collectors.toList());
+    }
+
+    @Override
+    public MarkDto getMarksByPlaceId(Long id) {
+        Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
+        if(!marks.isPresent()) {
+            throw new MarksNotFoundException("marks is not found");
+        }
+        return marks.get();
     }
 
     @Override

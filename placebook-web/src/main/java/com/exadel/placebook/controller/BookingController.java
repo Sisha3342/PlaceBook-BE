@@ -2,6 +2,7 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
@@ -45,5 +46,10 @@ public class BookingController {
     @GetMapping("/countries/{country}/cities/{city}/offices")
     public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
         return bookingService.getAllOfficesByCity(city);
+    }
+
+    @GetMapping("/booking/{bookingId}/marks")
+    public MarkDto getPlaceMarksById(@PathVariable("bookingId") Long bookingId){
+        return bookingService.getMarksByPlaceId(bookingId);
     }
 }
