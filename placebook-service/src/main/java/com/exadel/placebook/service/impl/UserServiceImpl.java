@@ -2,12 +2,10 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.AdminUserConverter;
 import com.exadel.placebook.converter.UserConverter;
+import com.exadel.placebook.converter.UserSearchConverter;
 import com.exadel.placebook.converter.UserStatusConverter;
 import com.exadel.placebook.dao.UserDao;
-import com.exadel.placebook.model.dto.AdminUserDto;
-import com.exadel.placebook.model.dto.RoleDto;
-import com.exadel.placebook.model.dto.UserDto;
-import com.exadel.placebook.model.dto.UserStatusDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
@@ -37,6 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AdminUserConverter adminUserConverter;
+
+    @Autowired
+    private UserSearchConverter userSearchConverter;
 
     @Override
     public UserDto findById(Long id) {
@@ -69,5 +70,11 @@ public class UserServiceImpl implements UserService {
     public List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter) {
         List<User> users = userDao.findUsers(adminUserFilter);
         return users.stream().map(adminUserConverter::convert).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserSearchDto> findUsers(String text) {
+        List<User> users = userDao.findUsers(text);
+        return users.stream().map(userSearchConverter::convert).collect(Collectors.toList());
     }
 }
