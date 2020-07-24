@@ -25,7 +25,7 @@ public class PlaceController {
         return bookingService.getMarksByPlaceId(placeId);
     }
 
-    @GetMapping("/place/user/{userId}")
+    @GetMapping("/user/{userId}/places")
     public List<PlaceDto> getPlaceByUser(@PathVariable("userId") Long userId) {
         return placeService.getPlaceByUserNow(userId);
     }
