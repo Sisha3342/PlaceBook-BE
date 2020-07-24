@@ -4,8 +4,10 @@ import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;
+import com.exadel.placebook.service.SecurityValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,9 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private SecurityValidationService securityValidationService;
 
     @GetMapping("/user/{userId}/bookings")
     public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam Status status) {
@@ -33,18 +38,30 @@ public class BookingController {
         return bookingService.getBookingInfo(bookingId);
     }
 
-    @GetMapping("/countries")
-    public List<String> getAllCountries() {
-        return bookingService.getAllCountries();
+    @GetMapping("/user/{userId}/booking/all")
+    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId){
+        return bookingService.findBookings(userId);
     }
 
-    @GetMapping("/countries/{country}/cities")
-    public List<String> getAllCities(@PathVariable("country") String country) {
-        return bookingService.getAllCitiesByCountry(country);
+    @PutMapping("/user/{userId}/booking")
+    public BookingDto addBooking(@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId) {
+        securityValidationService.validateUserCanAddBooking(userId);
+
+        return bookingService.addBooking(bookingRequest, userId);
     }
 
-    @GetMapping("/countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getAllOffices(@PathVariable("country") String country, @PathVariable("city") String city) {
-        return bookingService.getAllOfficesByCity(city);
+    @PostMapping("/user/booking/{bookingId}")
+    public BookingDto editBooking(@RequestBody BookingRequest bookingRequest,
+                                  @PathVariable("bookingId") Long bookingId) {
+        securityValidationService.validateUserCanEditBooking(bookingId);
+
+        return bookingService.editBooking(bookingRequest, bookingId);
+    }
+
+    @DeleteMapping("/user/booking/{bookingId}")
+    public BookingDto deleteBooking(@PathVariable("bookingId") Long bookingId) {
+        securityValidationService.validateUserCanDeleteBooking(bookingId);
+
+        return bookingService.deleteBooking(bookingId);
     }
 }

@@ -23,6 +23,7 @@ public class SpringApplicationStarter {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         return mapper;
     }
 
