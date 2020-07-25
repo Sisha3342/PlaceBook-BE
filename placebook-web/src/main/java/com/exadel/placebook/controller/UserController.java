@@ -3,7 +3,10 @@ package com.exadel.placebook.controller;
 import com.exadel.placebook.model.dto.AdminUserDto;
 import com.exadel.placebook.model.dto.RoleDto;
 import com.exadel.placebook.model.exception.ValidationException;
+import com.exadel.placebook.model.dto.UserDto;
+import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
+import com.exadel.placebook.service.AdminUserFilterValidator;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -33,5 +36,10 @@ public class UserController {
             throw new ValidationException(result.getAllErrors().toString());
         }
         return userService.updateUserRole(id, role);
+    }
+
+    @PutMapping("/user")
+    public UserDto addUser(@RequestBody UserDto userDto) {
+        return userService.addUser(userDto);
     }
 }

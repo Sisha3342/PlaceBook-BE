@@ -33,7 +33,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public List<Booking> findBookings(Long userId) {
         Session session = getSession();
         Query<Booking> query = session
-                .createQuery("from Booking b where b.userId = :user_id", Booking.class)
+                .createQuery("from Booking b where b.user.id = :user_id", Booking.class)
                 .setParameter("user_id", userId);
         return query.list();
     }
@@ -59,6 +59,18 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "join b.place p " +
                         "where p.id = :id")
                 .setResultTransformer(Transformers.aliasToBean(MarkDto.class))
-                .setParameter("id",id).uniqueResultOptional();
+                .setParameter("id", id).uniqueResultOptional();
+    }
+
+    @Override
+    public void completeEndedBookings() {
+        Session session = getSession();
+        Query query = session
+                .createQuery("update Booking b " +
+                        "set b.status = :newStatus " +
+                        "where b.status = :status and b.timeEnd < CURRENT_TIMESTAMP()")
+                .setParameter("status", Status.ACTIVE)
+                .setParameter("newStatus", Status.COMPLETED);
+        int result = query.executeUpdate();
     }
 }

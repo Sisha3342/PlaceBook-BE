@@ -15,6 +15,7 @@ public class UserStatusConverter {
         p.setName(pd.getName());
         p.setSurname(pd.getSurname());
         p.setRole(pd.getRole());
+        p.setPhotoUrl(pd.getPhotoUrl());
         return p;
     }
     public UserStatusDto convert(User pd) {
@@ -24,6 +25,7 @@ public class UserStatusConverter {
         p.setName(pd.getName());
         p.setSurname(pd.getSurname());
         p.setRole(pd.getRole());
+        p.setPhotoUrl(pd.getPhotoUrl());
         return p;
     }
 }

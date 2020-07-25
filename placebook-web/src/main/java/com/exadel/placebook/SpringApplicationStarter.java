@@ -7,10 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EntityScan(basePackages = {"com.exadel.placebook"})
 //@ComponentScan(basePackages = {"com.exadel.placebook"})
+@EnableScheduling
 public class SpringApplicationStarter {
     public static void main(String[] args) {
         SpringApplication.run(SpringApplicationStarter.class, args);
@@ -21,6 +23,7 @@ public class SpringApplicationStarter {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         return mapper;
     }
 

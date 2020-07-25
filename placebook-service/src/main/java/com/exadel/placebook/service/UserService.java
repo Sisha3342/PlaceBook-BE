@@ -20,4 +20,6 @@ public interface UserService {
     AdminUserDto updateUserRole(Long id, RoleDto roleDto);
 
     List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter);
+
+    UserDto addUser(UserDto userDto);
 }
