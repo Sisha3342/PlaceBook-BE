@@ -2,8 +2,8 @@ package com.exadel.placebook.builder;
 
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.UserDao;
-import com.exadel.placebook.model.dto.AddBookingDto;
 import com.exadel.placebook.model.dto.BookingDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.MailMessageDto;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Place;
@@ -66,14 +66,14 @@ public class MailMessageBuilder {
         }
     }
 
-    public MailMessageDto convert(AddBookingDto addBookingDto)  {
+    public MailMessageDto convert(BookingRequest bookingRequest)  {
         try {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
 
-            Place place = placeDao.find(addBookingDto.getPlaceId());
+            Place place = placeDao.find(bookingRequest.getPlaceId());
             Address address= place.getFloor().getOffice().getAddress();
 
             Map<String, Object> model = new HashMap<>();
@@ -83,8 +83,8 @@ public class MailMessageBuilder {
             model.put("city", address.getCity());
             model.put("office", address.getAddress());
             model.put("placeNumber", place.getPlaceNumber());
-            model.put("timeStart", addBookingDto.getTimeStart().format(formatter));
-            model.put("timeEnd", addBookingDto.getTimeEnd().format(formatter));
+            model.put("timeStart", bookingRequest.getTimeStart().format(formatter));
+            model.put("timeEnd", bookingRequest.getTimeEnd().format(formatter));
 
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
             MailMessageDto message = new MailMessageDto(text, userDao.find(userService.getUserStatus().getId()).getEmail());
