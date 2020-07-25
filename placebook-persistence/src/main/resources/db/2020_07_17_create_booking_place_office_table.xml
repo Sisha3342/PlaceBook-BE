@@ -15,7 +15,6 @@
             `status` ENUM('ACTIVE', 'COMPLETED', 'CANCELED') NOT NULL,
             PRIMARY KEY (`id`)
             );
-
         </sql>
 
         <sql>
@@ -28,7 +27,6 @@
             );
         </sql>
 
-
         <sql>
             CREATE TABLE `place` (
             `id` INT NOT NULL AUTO_INCREMENT,
@@ -36,9 +34,7 @@
             `place_number` varchar(255) NOT NULL,
             PRIMARY KEY (`id`)
             );
-
         </sql>
-
 
         <sql>
             CREATE TABLE `address` (

@@ -16,6 +16,5 @@ public class BookingDto {
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Status status;
-
 }
 

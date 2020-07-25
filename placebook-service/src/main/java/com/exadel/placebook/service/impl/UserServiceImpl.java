@@ -9,7 +9,6 @@ import com.exadel.placebook.model.dto.RoleDto;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.User;
-import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.UserService;
@@ -69,5 +68,19 @@ public class UserServiceImpl implements UserService {
     public List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter) {
         List<User> users = userDao.findUsers(adminUserFilter);
         return users.stream().map(adminUserConverter::convert).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDto addUser(UserDto userDto) {
+        User user = userConverter.convert(userDto);
+
+        if(user.getHrId() == null) {
+            user.setHrId(1L);
+            user = userDao.save(user);
+            user.setHrId(user.getId());
+            userDao.update(user);
+        }
+
+        return userConverter.convert(userDao.save(user));
     }
 }

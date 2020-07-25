@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class AddBookingDto {
+public class BookingRequest {
 
     private Long placeId;
     private LocalDateTime timeStart;
