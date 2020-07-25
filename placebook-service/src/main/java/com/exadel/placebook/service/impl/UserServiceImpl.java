@@ -9,7 +9,6 @@ import com.exadel.placebook.model.dto.RoleDto;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.User;
-import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.UserService;

@@ -8,5 +8,6 @@
         <include file="db/2020_07_15_create_user_table.xml"/>
         <include file="db/2020_07_17_create_booking_place_office_table.xml"/>
         <include file="db/2020_07_20_change_office_table.xml"/>
+        <include file="db/2020_07_24_change_place_table.xml"/>
 
 </databaseChangeLog>
