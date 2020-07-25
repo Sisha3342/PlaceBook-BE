@@ -54,7 +54,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
         return session
                 .createQuery("select avg(pr.markLightning) as markLightning, avg(pr.markAir) as markAir, " +
                         "avg(pr.markVolume) as markVolume, avg(pr.markCleaning) as markCleaning, " +
-                        "avg(pr.markLocation) as markLocation, pr.feedback as null from PlaceRate pr " +
+                        "avg(pr.markLocation) as markLocation from PlaceRate pr " +
                         "join pr.booking b " +
                         "join b.place p " +
                         "where p.id = :id")
