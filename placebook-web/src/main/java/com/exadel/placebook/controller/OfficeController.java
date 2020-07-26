@@ -42,13 +42,13 @@ public class OfficeController {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
 
-    @PutMapping("/office")
+    @PostMapping("/office")
     public OfficeDto addOffice(@RequestBody OfficeParams officeParams) {
         officeParamsValidator.validate(officeParams);
         return officeService.addOffice(officeParams);
     }
 
-    @PostMapping("/office/{officeId}")
+    @PutMapping("/office/{officeId}")
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@RequestBody OfficeParams officeParams) {
         officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId, officeParams);
