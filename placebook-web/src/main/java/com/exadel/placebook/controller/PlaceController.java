@@ -17,12 +17,12 @@ import javax.validation.ValidationException;
 public class PlaceController {
     @Autowired
     private MarkService markService;
-    @PutMapping("/place/{placeId}/mark")
-    public MarkSubmitDto submitMark(@PathVariable("placeId") Long placeId,
+    @PutMapping("/booking/{bookingId}/mark")
+    public MarkSubmitDto submitMark(@PathVariable("bookingId") Long bookingId,
                                     @Valid@RequestBody MarkParams markParams, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
-        return markService.submitMark(placeId,markParams);
+        return markService.submitMark(bookingId,markParams);
     }
 }
