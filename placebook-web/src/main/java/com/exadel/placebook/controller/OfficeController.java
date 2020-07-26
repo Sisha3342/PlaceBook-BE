@@ -22,7 +22,7 @@ public class OfficeController {
     @Autowired
     private OfficeParamsValidator officeParamsValidator;
 
-    @PutMapping("/office")
+    @PostMapping("/office")
     public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
@@ -31,7 +31,7 @@ public class OfficeController {
         return officeService.addOffice(officeParams);
     }
 
-    @PostMapping("/office/{officeId}")
+    @PutMapping("/office/{officeId}")
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId, @Valid @RequestBody OfficeParams officeParams,
                                 BindingResult result) {
         if (result.hasErrors()) {
