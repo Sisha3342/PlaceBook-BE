@@ -6,7 +6,6 @@ import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserSearchDto;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.model.filters.AdminUserFilter;
-import com.exadel.placebook.service.AdminUserFilterValidator;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -20,10 +19,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private AdminUserFilterValidator adminUserFilterValidator;
-
     @GetMapping("/users")
     public List<AdminUserDto> getUsers(@Valid AdminUserFilter adminUserFilter, BindingResult result) {
         if (result.hasErrors()) {
@@ -42,7 +37,10 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public UserDto addUser(@RequestBody UserDto userDto) {
+    public UserDto addUser(@Valid@RequestBody UserDto userDto, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
         return userService.addUser(userDto);
     }
 

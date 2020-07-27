@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,13 +60,20 @@ public class OfficeController {
     }
 
     @PutMapping("/office")
-    public OfficeDto addOffice(@RequestBody OfficeParams officeParams) {
+    public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
         officeParamsValidator.validate(officeParams);
         return officeService.addOffice(officeParams);
     }
 
     @PostMapping("/office/{officeId}")
-    public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@RequestBody OfficeParams officeParams) {
+    public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@Valid@RequestBody OfficeParams officeParams,
+    BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
         officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId, officeParams);
     }
