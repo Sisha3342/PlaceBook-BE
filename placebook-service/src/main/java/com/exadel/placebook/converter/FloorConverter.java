@@ -5,7 +5,7 @@ import com.exadel.placebook.model.entity.Floor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FloorDtoConverter {
+public class FloorConverter {
     public FloorDto convert(Floor floor) {
         FloorDto dto = new FloorDto();
         dto.setFloorConfiguration(floor.getFloorConfiguration());

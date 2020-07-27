@@ -1,5 +1,6 @@
 package com.exadel.placebook.dao.impl;
 
+
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
@@ -28,7 +29,7 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
     public List<Floor> findFloorsByOfficeId(Long officeId) {
         Session session = getSession();
         Query<Floor> query = session
-                .createQuery("select f from Floor f join f.office o where o.id = :id", Floor.class)
+                .createQuery("select f from Floor f join f.office o where o.id = :id and f.deleted = false ", Floor.class)
                 .setParameter("id", officeId);
         return query.list();
     }

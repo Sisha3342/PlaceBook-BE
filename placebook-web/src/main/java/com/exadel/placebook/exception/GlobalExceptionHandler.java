@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import com.exadel.placebook.model.exception.ValidationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -22,6 +23,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 badRequest
         );
 
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+    @ExceptionHandler(value = {ValidationException.class})
+    public ResponseEntity<?>  handleRestException(ValidationException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
     @ExceptionHandler(value={ParamsValidationException.class})
@@ -57,6 +68,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+    @ExceptionHandler(value={MarksNotFoundException.class})
+    public ResponseEntity<?>  handleRestException(MarksNotFoundException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.NO_CONTENT;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
 
     @ExceptionHandler(value = BookingException.class)
     public ResponseEntity<?> handleRestException(BookingException e) {
@@ -68,6 +91,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+    @ExceptionHandler(value={SendMessageException.class})
+    public ResponseEntity<?>  handleRestException(SendMessageException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
 
     @ExceptionHandler(value = SecurityValidationException.class)
     public ResponseEntity<?> handleRestException(SecurityValidationException e) {
@@ -91,4 +126,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, badRequest);
     }
 
+    @ExceptionHandler(value = FloorException.class)
+    public ResponseEntity<?> handleRestException(FloorException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
 }
