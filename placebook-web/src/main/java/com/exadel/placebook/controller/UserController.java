@@ -19,8 +19,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(@Valid AdminUserFilter adminUserFilter, BindingResult result) {
+    public List<AdminUserDto> getUsers(@Valid @RequestBody AdminUserFilter adminUserFilter, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }

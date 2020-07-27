@@ -4,14 +4,18 @@ import com.exadel.placebook.converter.FloorConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
+import com.exadel.placebook.dao.FloorDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.exception.FloorException;
 import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.entity.Address;
+import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
+import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +45,9 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
     private PlaceConverter placeConverter;
+
+    @Autowired
+    private FloorDao floorDao;
 
     @Override
     public List<PlaceDto> getPlacesByFloorId(Long floorId) {
@@ -119,5 +126,41 @@ public class OfficeServiceImpl implements OfficeService {
         }
         return false;
 
+    }
+
+    @Override
+    public FloorDto addFloor(Long officeId, FloorDto floorDto) {
+        Office office = officeDao.find(officeId);
+
+        if(office == null) {
+            throw new EntityNotFoundException(Office.class, officeId);
+        }
+
+        Floor floor = new Floor();
+
+        if(floorDao.getFloorsNumbersByOfficeId(officeId)
+                .contains(floorDto.getFloorNumber())) {
+            throw new FloorException(String.format("number %s already exist",
+                    floorDto.getFloorNumber()));
+        }
+
+        floor.setFloorNumber(floorDto.getFloorNumber());
+        floor.setFloorConfiguration(floorDto.getFloorConfiguration());
+        floor.setOffice(office);
+
+        return floorConverter.convert(floorDao.save(floor));
+    }
+
+    @Override
+    public FloorDto deleteFloor(Long floorId) {
+        Floor floor = floorDao.find(floorId);
+
+        if(floor == null || floor.isDeleted()) {
+            throw new EntityNotFoundException(Floor.class, floorId);
+        }
+
+        floor.setDeleted(true);
+
+        return floorConverter.convert(floorDao.update(floor));
     }
 }
