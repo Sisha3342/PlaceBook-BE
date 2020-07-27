@@ -1,9 +1,7 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.FloorDto;
-import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.dto.OfficeParams;
-import com.exadel.placebook.model.dto.PlaceDto;
+import com.exadel.placebook.model.dto.*;
+import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
@@ -87,13 +85,15 @@ public class OfficeController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/office/{officeId}/floor")
-    public FloorDto addFloor(@RequestBody FloorDto floorDto, @PathVariable("officeId") Long officeId) {
-        return officeService.addFloor(officeId, floorDto);
+    @PutMapping("office/{officeId}/configuration")
+    public OfficeDto saveOfficeConfiguration(@RequestBody List<FloorRequest> floors,
+                                             @PathVariable("officeId") Long officeId) {
+        return officeService.saveOfficeConfiguration(floors, officeId);
     }
 
-    @DeleteMapping("/office/floor/{floorId}")
-    public FloorDto deleteFloor(@PathVariable("floorId") Long floorId) {
-        return officeService.deleteFloor(floorId);
+    @PostMapping("office/{officeId}/configuration")
+    public OfficeDto editOfficeConfiguration(@RequestBody List<FloorRequest> floors,
+                                             @PathVariable("officeId") Long officeId) {
+        return officeService.editOfficeConfiguration(floors, officeId);
     }
 }

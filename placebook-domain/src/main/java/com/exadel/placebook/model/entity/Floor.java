@@ -1,8 +1,10 @@
 package com.exadel.placebook.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "floors")
@@ -21,4 +23,9 @@ public class Floor extends BaseEntity {
 
     @Column(name="deleted")
     private boolean deleted;
+
+    @OneToMany(mappedBy = "floor",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Place> places;
 }

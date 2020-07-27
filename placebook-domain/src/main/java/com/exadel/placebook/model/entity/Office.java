@@ -1,9 +1,11 @@
 package com.exadel.placebook.model.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "office")
@@ -22,4 +24,9 @@ public class Office extends BaseEntity {
 
     @Column(name="deleted")
     private boolean deleted;
+
+    @OneToMany(mappedBy = "office",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Floor> floors;
 }
