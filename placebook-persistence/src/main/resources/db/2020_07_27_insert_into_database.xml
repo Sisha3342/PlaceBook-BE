@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet runOnChange="true" id="2020_07_15_user_table.xml" author="Alena Galygo">
+        <sql>
+            INSERT INTO user ( email, password, name, surname, hr_id, role, photo_url)
+            VALUES ("Alena23GL@gmail.com", "$2a$10$896fIOBUktgHHQ6ZT8qBaOxeYhkZukVMDtbQtLLVCtQlc1Kozrusy" , "Alena", "Alenskaya", 1, 'USER', "1111111");
+            INSERT INTO user ( email, password, name, surname, hr_id, role, photo_url)
+            VALUES ("Nat_030178@mail.ru", "$2a$10$896fIOBUktgHHQ6ZT8qBaOxeYhkZukVMDtbQtLLVCtQlc1Kozrusy" , "Natallia", "Nikitsina", 1, 'HR', "1111111");
+            INSERT INTO user ( email, password, name, surname, hr_id, role, photo_url)
+            VALUES ("vladic7777720@gmail.com", "$2a$10$896fIOBUktgHHQ6ZT8qBaOxeYhkZukVMDtbQtLLVCtQlc1Kozrusy" , "Vlad", "Shihutin", 1, 'USER', "1111111");
+            INSERT INTO user ( email, password, name, surname, hr_id, role, photo_url)
+            VALUES ("lappo.maks@gmail.com", "$2a$10$896fIOBUktgHHQ6ZT8qBaOxeYhkZukVMDtbQtLLVCtQlc1Kozrusy" , "Maksim", "Lappo", 1, 'ADMIN', "1111111");
+            INSERT INTO user ( email, password, name, surname, hr_id, role, photo_url)
+            VALUES ("tatyana.nelipovich@gmail.com", "$2a$10$896fIOBUktgHHQ6ZT8qBaOxeYhkZukVMDtbQtLLVCtQlc1Kozrusy" , "Tatyana", "Nelipovich", 1, 'USER', "1111111");
+        </sql>
+        <sql>
+            INSERT INTO address (address, city, country)
+            VALUES ("Kuprevicha 1", "Minsk", "Belarus");
+            INSERT INTO address (address, city, country)
+            VALUES ("Yanki Kupala 27", "Grodno", "Belarus");
+        </sql>
+        <sql>
+            INSERT INTO office (address_id, worktime_start, worktime_end, deleted)
+            VALUES (1, "08:00", "23:00", 0);
+            INSERT INTO office (address_id, worktime_start, worktime_end, deleted)
+            VALUES (2, "09:00", "23:59", 0);
+        </sql>
+        <sql>
+            INSERT INTO floors (office_id, floor_configuration, floor_number)
+            VALUES (1, "254444", 1);
+            INSERT INTO floors (office_id, floor_configuration, floor_number)
+            VALUES (1, "254444", 5);
+            INSERT INTO floors (office_id, floor_configuration, floor_number)
+            VALUES (2, "254444", 7);
+        </sql>
+        <sql>
+            INSERT INTO place (floor_id, place_number, status)
+            VALUES (1, "1A", 'ACTIVE');
+            INSERT INTO place (floor_id, place_number, status)
+            VALUES (1, "2A", 'ACTIVE');
+            INSERT INTO place (floor_id, place_number, status)
+            VALUES (1, "3A", 'INACTIVE');
+            INSERT INTO place (floor_id, place_number, status)
+            VALUES (2, "12B", 'ACTIVE');
+            INSERT INTO place (floor_id, place_number, status)
+            VALUES (3, "23B", 'ACTIVE');
+            INSERT INTO place (floor_id, place_number, status)
+            VALUES (3, "1A", 'ACTIVE');
+        </sql>
+        <sql>
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (6, 1, '2020-07-27 10:00:00', '2020-07-30 10:00:00', 'ACTIVE');
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (2, 1, '2020-08-01 10:00:00', '2020-08-08 10:00:00', 'ACTIVE');
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (1, 1, '2020-07-20 10:00:00', '2020-07-25 10:00:00', 'COMPLETED');
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (3, 2, '2020-07-27 10:00:00', '2020-09-01 10:00:00', 'ACTIVE');
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (5, 3, '2020-08-27 10:00:00', '2020-08-30 10:00:00', 'ACTIVE');
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (4, 2, '2020-07-27 10:00:00', '2020-07-30 10:00:00', 'CANCELED');
+            INSERT INTO booking (place_id, user_id, time_start, time_end, status)
+            VALUES (4, 4, '2020-07-27 10:00:00', '2020-07-30 10:00:00', 'ACTIVE');
+        </sql>
+
+    </changeSet>
+</databaseChangeLog>
