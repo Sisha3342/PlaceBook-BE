@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
@@ -72,5 +73,16 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                 .setParameter("status", Status.ACTIVE)
                 .setParameter("newStatus", Status.COMPLETED);
         int result = query.executeUpdate();
+    }
+
+    @Override
+    public List<Booking> historyByPlaceIdAndTime(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        Session session =getSession();
+        Query<Booking> query = session.createQuery("from Booking b where b.place.id = :placeId and " +
+                        "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
+                .setParameter("placeId", placeId)
+                .setParameter("timeStart", timeStart)
+                .setParameter("timeEnd", timeEnd);
+        return query.list();
     }
 }
