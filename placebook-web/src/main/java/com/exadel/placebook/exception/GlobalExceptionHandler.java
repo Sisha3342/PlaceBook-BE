@@ -83,23 +83,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = SecurityValidationException.class)
     public ResponseEntity<?> handleRestException(SecurityValidationException e) {
+    @ExceptionHandler(value={SendMessageException.class})
+    public ResponseEntity<?>  handleRestException(SendMessageException e){
         logger.error(e.getMessage(),e);
-        final HttpStatus badRequest = HttpStatus.FORBIDDEN;
-        ErrorResponse errorResponse = new ErrorResponse(
+        final HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponse errorResponse =new ErrorResponse(
                 e.getMessage(),
                 badRequest
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
 
-    @ExceptionHandler(value = EntityNotFoundException.class)
-    public ResponseEntity<?> handleRestException(EntityNotFoundException e) {
-        logger.error(e.getMessage(),e);
-        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ErrorResponse errorResponse = new ErrorResponse(
-                e.getMessage(),
-                badRequest
-        );
-        return new ResponseEntity<>(errorResponse, badRequest);
-    }
 }
