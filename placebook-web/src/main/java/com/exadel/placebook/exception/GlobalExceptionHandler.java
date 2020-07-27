@@ -57,6 +57,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+    @ExceptionHandler(value={MarksNotFoundException.class})
+    public ResponseEntity<?>  handleRestException(MarksNotFoundException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.NO_CONTENT;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+
+    @ExceptionHandler(value = BookingException.class)
+    public ResponseEntity<?> handleRestException(BookingException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
     @ExceptionHandler(value={SendMessageException.class})
     public ResponseEntity<?>  handleRestException(SendMessageException e){
         logger.error(e.getMessage(),e);
@@ -66,6 +89,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 badRequest
         );
 
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+
+    @ExceptionHandler(value = SecurityValidationException.class)
+    public ResponseEntity<?> handleRestException(SecurityValidationException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.FORBIDDEN;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public ResponseEntity<?> handleRestException(EntityNotFoundException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
 

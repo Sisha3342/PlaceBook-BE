@@ -2,6 +2,8 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
+import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.service.BookingService;

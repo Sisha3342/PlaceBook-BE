@@ -11,12 +11,14 @@ import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
+import com.exadel.placebook.model.exception.MarksNotFoundException;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -81,6 +83,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public MarkDto getMarksByPlaceId(Long id) {
+        Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
+        if(!marks.isPresent()) {
+            throw new MarksNotFoundException("marks is not found");
+        }
+        return marks.get();
+    }
+
+    @Override
+    public void completeEndedBooking() {
+        bookingDao.completeEndedBookings();
+    }
+  
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = getAvailablePlace(bookingRequest, userId);
 
