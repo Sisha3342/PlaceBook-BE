@@ -2,14 +2,12 @@ package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
+import com.exadel.placebook.converter.PlaceHistoryConverter;
 import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.exception.BookingException;
-import com.exadel.placebook.model.dto.BookingDto;
-import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.BookingRequest;
-import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
@@ -21,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,6 +37,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingInfoConverter bookingInfoConverter;
+
+    @Autowired
+    private PlaceHistoryConverter placeHistoryConverter;
 
     @Autowired
     private UserDao userDao;
@@ -142,5 +144,11 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return placeDao.load(bookingRequest.getPlaceId());
+    }
+
+    @Override
+    public List<PlaceHistoryDto> findPlaceHistory(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd){
+            List<Booking> list = bookingDao.historyByPlaceIdAndTime(placeId, timeStart, timeEnd);
+            return list.stream().map(placeHistoryConverter::convert).collect(Collectors.toList());
     }
 }
