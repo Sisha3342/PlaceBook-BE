@@ -68,6 +68,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+    @ExceptionHandler(value={MarksNotFoundException.class})
+    public ResponseEntity<?>  handleRestException(MarksNotFoundException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.NO_CONTENT;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
 
     @ExceptionHandler(value = BookingException.class)
     public ResponseEntity<?> handleRestException(BookingException e) {
@@ -79,6 +91,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+    @ExceptionHandler(value={SendMessageException.class})
+    public ResponseEntity<?>  handleRestException(SendMessageException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+
 
     @ExceptionHandler(value = SecurityValidationException.class)
     public ResponseEntity<?> handleRestException(SecurityValidationException e) {
@@ -101,5 +125,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
-
 }
