@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MarkConverter {
     public MarkSubmitDto convert(PlaceRate placeRate) {
-        MarkSubmitDto markSubmitDto=new MarkSubmitDto();
+        MarkSubmitDto markSubmitDto = new MarkSubmitDto();
         markSubmitDto.setFeedBack(placeRate.getFeedback());
         markSubmitDto.setMarkAir(placeRate.getMarkAir());
         markSubmitDto.setMarkCleaning(placeRate.getMarkCleaning());
