@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public UserDto addUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
+    public UserDto addUser(@Valid@RequestBody UserDto userDto, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/users/search")
-    public List<UserSearchDto> getUsersBySearch(@RequestParam("text") String searchText) {
+    public List<UserSearchDto> getUsersBySearch(@RequestParam("text") String searchText){
         return userService.findUsers(searchText);
     }
 }
