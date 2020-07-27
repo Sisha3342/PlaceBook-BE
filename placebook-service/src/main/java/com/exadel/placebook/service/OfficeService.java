@@ -1,6 +1,7 @@
 package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.FloorDto;
+import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
@@ -20,4 +21,8 @@ public interface OfficeService {
 
     List<FloorDto> getFloorsByOfficeId(Long officeId);
     boolean deleteOffice(Long officeId);
+
+    FloorDto addFloor(Long officeId, FloorDto floorDto);
+
+    FloorDto deleteFloor(Long floorId);
 }

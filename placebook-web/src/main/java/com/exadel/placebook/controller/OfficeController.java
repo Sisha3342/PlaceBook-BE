@@ -82,11 +82,22 @@ public class OfficeController {
     public List<FloorDto> getFloors(@PathVariable("officeId") Long officeId) {
         return officeService.getFloorsByOfficeId(officeId);
     }
+
     @DeleteMapping("/office/{officeId}")
     public ResponseEntity<String> deteleOffice(@PathVariable("officeId") Long officeId) {
         if (officeService.deleteOffice(officeId)) {
             return ResponseEntity.ok("Office deleted");
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/office/{officeId}/floor")
+    public FloorDto addFloor(@RequestBody FloorDto floorDto, @PathVariable("officeId") Long officeId) {
+        return officeService.addFloor(officeId, floorDto);
+    }
+
+    @DeleteMapping("/office/floor/{floorId}")
+    public FloorDto deleteFloor(@PathVariable("floorId") Long floorId) {
+        return officeService.deleteFloor(floorId);
     }
 }

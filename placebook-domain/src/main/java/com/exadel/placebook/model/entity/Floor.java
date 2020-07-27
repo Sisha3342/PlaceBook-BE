@@ -18,4 +18,7 @@ public class Floor extends BaseEntity {
 
     @Column(name="floor_number")
     private String floorNumber;
+
+    @Column(name="deleted")
+    private boolean deleted;
 }
