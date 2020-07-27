@@ -1,6 +1,6 @@
 package com.exadel.placebook.service.impl;
 
-import com.exadel.placebook.converter.FloorDtoConverter;
+import com.exadel.placebook.converter.FloorConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class OfficeServiceImpl implements OfficeService {
     private OfficeConverter officeConverter;
 
     @Autowired
-    private FloorDtoConverter floorConverter;
+    private FloorConverter floorConverter;
 
     @Autowired
     private PlaceDao placeDao;
@@ -91,6 +92,14 @@ public class OfficeServiceImpl implements OfficeService {
         office.setWorkTimeStart(officeParams.getWorktimeStart());
         officeDao.update(office);
         return officeConverter.convert(office);
+    }
+
+    @Override
+    public List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
+        return placeDao.getFreePlacesByFloorIdAndTimeRange(floorId, start, end)
+                .stream()
+                .map(place -> placeConverter.convert(place))
+                .collect(Collectors.toList());
     }
 
     @Override

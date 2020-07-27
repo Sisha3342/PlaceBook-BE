@@ -12,5 +12,6 @@ public interface PlaceDao extends BaseDao<Place> {
 
     long countBookingsByPlaceIdAndTime(Long placeId, LocalDateTime start, LocalDateTime end, Long userId);
 
+    List<Place> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
 }
 

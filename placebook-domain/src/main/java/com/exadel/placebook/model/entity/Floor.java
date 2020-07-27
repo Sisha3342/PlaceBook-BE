@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 public class Floor extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id")
     private Office office;
 
