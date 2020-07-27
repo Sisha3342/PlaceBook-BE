@@ -2,18 +2,15 @@ package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.BookingRequest;
+import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.enums.Status;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 public interface BookingService {
-
     List<BookingDto> findByStatus(Long id, Status status);
     List<BookingDto> findBookings(Long userId);
     Map<Status, Long> getStatistics(Long id);
@@ -24,4 +21,5 @@ public interface BookingService {
     BookingDto editBooking(BookingRequest bookingRequest, Long bookingId);
     BookingDto deleteBooking(Long id);
     void completeEndedBooking();
+
 }

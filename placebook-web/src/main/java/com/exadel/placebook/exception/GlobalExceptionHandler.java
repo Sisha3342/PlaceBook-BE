@@ -114,5 +114,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
-
 }
