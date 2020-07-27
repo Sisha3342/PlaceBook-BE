@@ -14,8 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.http.ResponseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,15 @@ public class OfficeController {
     @GetMapping("/floor/{floorId}/places")
     public List<PlaceDto> getPlacesByFloorId(@PathVariable("floorId") Long floorId) {
         return officeService.getPlacesByFloorId(floorId);
+    }
+
+    @GetMapping("/floor/{floorId}/freePlaces")
+    public List<PlaceDto> getFreePlaces(@PathVariable("floorId") Long floorId,
+                                             @RequestParam("timeStart")
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
+                                             @RequestParam("timeEnd")
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
+        return officeService.getFreePlacesByFloorIdAndTimeRange(floorId, timeStart, timeEnd);
     }
 
     @GetMapping("/countries")

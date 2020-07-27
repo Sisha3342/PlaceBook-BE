@@ -3,15 +3,18 @@ package com.exadel.placebook.controller;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.BookingRequest;
+import com.exadel.placebook.model.dto.PlaceHistoryDto;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.SecurityValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +47,9 @@ public class BookingController {
         return bookingService.findBookings(userId);
     }
 
+
+
+
     @PutMapping("/user/{userId}/booking")
     public BookingDto addBooking(@Valid@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId
     , BindingResult result) {
@@ -51,6 +57,7 @@ public class BookingController {
             throw new ValidationException(result.getAllErrors().toString());
         }
         securityValidationService.validateUserCanAddBooking(userId);
+
         return bookingService.addBooking(bookingRequest, userId);
     }
 
@@ -72,4 +79,14 @@ public class BookingController {
 
         return bookingService.deleteBooking(bookingId);
     }
+
+    @GetMapping("/place/{placeId}/bookings")
+    public List<PlaceHistoryDto> placeHistory(@PathVariable("placeId") Long placeId,
+                                              @RequestParam("timeStart")
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
+                                              @RequestParam("timeEnd")
+                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
+        return bookingService.findPlaceHistory(placeId, timeStart, timeEnd);
+    }
+
 }
