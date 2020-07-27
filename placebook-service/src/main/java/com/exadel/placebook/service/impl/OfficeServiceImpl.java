@@ -109,4 +109,15 @@ public class OfficeServiceImpl implements OfficeService {
                 .map(floor -> floorConverter.convert(floor))
                 .collect(Collectors.toList());
     }
+    @Override
+    public boolean deleteOffice(Long officeId) {
+        Office office = officeDao.find(officeId);
+        if(office!=null) {
+            office.setDeleted(true);
+            officeDao.update(office);
+            return true;
+        }
+        return false;
+
+    }
 }
