@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import com.exadel.placebook.model.exception.ValidationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -22,6 +23,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 badRequest
         );
 
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
+    @ExceptionHandler(value = {ValidationException.class})
+    public ResponseEntity<?>  handleRestException(ValidationException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
     @ExceptionHandler(value={ParamsValidationException.class})

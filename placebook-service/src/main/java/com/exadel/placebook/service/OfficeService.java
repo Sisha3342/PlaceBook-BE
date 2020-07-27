@@ -1,8 +1,8 @@
 package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.FloorDto;
-import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
 
 import java.time.LocalDateTime;
@@ -19,4 +19,5 @@ public interface OfficeService {
     List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
 
     List<FloorDto> getFloorsByOfficeId(Long officeId);
+    boolean deleteOffice(Long officeId);
 }

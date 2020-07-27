@@ -4,12 +4,20 @@ import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
+import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.http.ResponseEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,13 +60,20 @@ public class OfficeController {
     }
 
     @PutMapping("/office")
-    public OfficeDto addOffice(@RequestBody OfficeParams officeParams) {
+    public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
         officeParamsValidator.validate(officeParams);
         return officeService.addOffice(officeParams);
     }
 
     @PostMapping("/office/{officeId}")
-    public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@RequestBody OfficeParams officeParams) {
+    public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@Valid@RequestBody OfficeParams officeParams,
+    BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
         officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId, officeParams);
     }
@@ -66,5 +81,12 @@ public class OfficeController {
     @GetMapping("/office/{officeId}/floors")
     public List<FloorDto> getFloors(@PathVariable("officeId") Long officeId) {
         return officeService.getFloorsByOfficeId(officeId);
+    }
+    @DeleteMapping("/office/{officeId}")
+    public ResponseEntity<String> deteleOffice(@PathVariable("officeId") Long officeId) {
+        if (officeService.deleteOffice(officeId)) {
+            return ResponseEntity.ok("Office deleted");
+        }
+        return ResponseEntity.notFound().build();
     }
 }
