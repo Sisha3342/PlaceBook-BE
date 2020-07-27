@@ -6,6 +6,15 @@ public class AdminUserFilter {
     private int limit;
     private String text;
 
+    AdminUserFilter() {
+    }
+
+    public AdminUserFilter(int limit, int offset, String text) {
+        this.limit = limit;
+        this.offset = offset;
+        this.text = text;
+    }
+
     public int getOffset() {
         return offset;
     }
