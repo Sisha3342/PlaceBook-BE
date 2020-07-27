@@ -4,17 +4,13 @@ import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
-import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.http.ResponseEntity;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -83,7 +79,7 @@ public class OfficeController {
         return officeService.getFloorsByOfficeId(officeId);
     }
     @DeleteMapping("/office/{officeId}")
-    public ResponseEntity<String> deteleOffice(@PathVariable("officeId") Long officeId) {
+    public ResponseEntity<String> deleteOffice(@PathVariable("officeId") Long officeId) {
         if (officeService.deleteOffice(officeId)) {
             return ResponseEntity.ok("Office deleted");
         }

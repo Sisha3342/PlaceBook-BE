@@ -10,15 +10,6 @@ import com.exadel.placebook.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.exadel.placebook.model.dto.MarkParams;
-import com.exadel.placebook.model.dto.MarkSubmitDto;
-import com.exadel.placebook.service.MarkService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -34,6 +25,7 @@ public class PlaceController {
     private PlaceService placeService;
     @Autowired
     private MarkService markService;
+
     @GetMapping("/place/{placeId}/marks")
     public MarkDto getPlaceMarksById(@PathVariable("placeId") Long placeId) {
         return bookingService.getMarksByPlaceId(placeId);
@@ -50,6 +42,6 @@ public class PlaceController {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
-        return markService.submitMark(bookingId,markParams);
+        return markService.submitMark(bookingId, markParams);
     }
 }
