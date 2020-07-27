@@ -125,4 +125,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+
+    @ExceptionHandler(value = FloorException.class)
+    public ResponseEntity<?> handleRestException(FloorException e) {
+        logger.error(e.getMessage(),e);
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                badRequest
+        );
+        return new ResponseEntity<>(errorResponse, badRequest);
+    }
 }
