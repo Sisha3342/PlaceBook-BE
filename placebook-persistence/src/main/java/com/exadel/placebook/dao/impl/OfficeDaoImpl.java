@@ -29,7 +29,7 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
     public List<Floor> findFloorsByOfficeId(Long officeId) {
         Session session = getSession();
         Query<Floor> query = session
-                .createQuery("select f from Floor f join f.office o where o.id = :id", Floor.class)
+                .createQuery("select f from Floor f join f.office o where o.id = :id and f.deleted = false ", Floor.class)
                 .setParameter("id", officeId);
         return query.list();
     }
