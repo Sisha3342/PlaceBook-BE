@@ -2,17 +2,12 @@ package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
-<<<<<<<<< Temporary merge branch 1
-import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.dto.OfficeDto;
-=========
 import com.exadel.placebook.model.dto.BookingRequest;
->>>>>>>>> Temporary merge branch 2
+import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.enums.Status;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 public interface BookingService {
