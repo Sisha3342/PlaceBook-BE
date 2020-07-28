@@ -11,6 +11,8 @@ public class BookingDto {
     private String placeNumber;
     private String userName;
     private String userSurname;
+    private String email;
+    private AddressDto address;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Status status;

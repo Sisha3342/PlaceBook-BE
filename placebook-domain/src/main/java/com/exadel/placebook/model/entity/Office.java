@@ -19,4 +19,7 @@ public class Office extends BaseEntity {
 
     @Column(name = "worktime_end")
     private LocalTime workTimeEnd;
+
+    @Column(name="deleted")
+    private boolean deleted;
 }

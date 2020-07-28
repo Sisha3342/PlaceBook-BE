@@ -2,7 +2,7 @@ package com.exadel.placebook.model.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class ErrorResponse {
+public class ErrorResponse  extends RuntimeException{
     private final String message;
     private final HttpStatus httpStatus;
 

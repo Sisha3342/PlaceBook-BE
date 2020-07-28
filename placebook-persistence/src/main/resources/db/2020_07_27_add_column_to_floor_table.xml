@@ -3,9 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet runOnChange="true" id="2020_07_24_change_place_table.xml" author="Maksim Lapo">
+    <changeSet runOnChange="true" id="2020_07_27_add_column_to_floor_table.xml" author="Andrei Zelikov">
         <sql>
-            ALTER TABLE `place` ADD `status` ENUM('ACTIVE','INACTIVE') DEFAULT 'ACTIVE' NOT NULL;
+            alter table floors add deleted boolean default false not null;
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -1,7 +1,6 @@
 package com.exadel.placebook.dao;
 
 import com.exadel.placebook.model.entity.User;
-import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.filters.AdminUserFilter;
 
 import java.util.List;
@@ -12,5 +11,7 @@ public interface UserDao extends BaseDao<User> {
     Optional<User> findByEmail(String email);
 
     List<User> findUsers(AdminUserFilter adminUserFilter);
+
+    List<User> findUsers(String text);
 }
 

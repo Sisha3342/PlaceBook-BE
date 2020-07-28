@@ -10,4 +10,5 @@ public class OfficeDto {
     private AddressDto address;
     private LocalTime worktimeStart;
     private LocalTime worktimeEnd;
+    private boolean deleted;
 }

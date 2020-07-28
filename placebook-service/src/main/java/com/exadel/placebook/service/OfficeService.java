@@ -3,8 +3,10 @@ package com.exadel.placebook.service;
 import com.exadel.placebook.model.dto.FloorDto;
 import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
 import com.exadel.placebook.model.dto.PlaceDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OfficeService {
@@ -14,5 +16,13 @@ public interface OfficeService {
     List<OfficeDto> getOfficesByCityAndCountry(String city, String country);
     OfficeDto addOffice(OfficeParams officeParams);
     OfficeDto editOffice(Long officeId,OfficeParams officeParams);
+
+    List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
+
     List<FloorDto> getFloorsByOfficeId(Long officeId);
+    boolean deleteOffice(Long officeId);
+
+    FloorDto addFloor(Long officeId, FloorDto floorDto);
+
+    FloorDto deleteFloor(Long floorId);
 }

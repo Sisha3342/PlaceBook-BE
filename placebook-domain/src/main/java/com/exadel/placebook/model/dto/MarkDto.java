@@ -7,9 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MarkDto {
 
+
     private double markLightning;
+
     private double markAir;
+
     private double markVolume;
+
     private double markCleaning;
     private double markLocation;
 }

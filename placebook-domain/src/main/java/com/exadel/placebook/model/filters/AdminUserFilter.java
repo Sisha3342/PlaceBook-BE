@@ -1,10 +1,24 @@
 package com.exadel.placebook.model.filters;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 
 public class AdminUserFilter {
+    @Min(0)
     private int offset;
+    @Min(1)
+    @Positive
     private int limit;
     private String text;
+
+    public AdminUserFilter() {
+    }
+
+    public AdminUserFilter(int limit, int offset, String text) {
+        this.limit = limit;
+        this.offset = offset;
+        this.text = text;
+    }
 
     public int getOffset() {
         return offset;
