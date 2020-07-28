@@ -57,6 +57,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+
     @ExceptionHandler(value={Exception.class})
     public ResponseEntity<?>  handleRestException(Exception e){
         logger.error(e.getMessage(),e);
@@ -68,6 +69,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, badRequest);
     }
+
+    @ExceptionHandler(value={ConverterException.class})
+    public ResponseEntity<?>  handleRestException(ConverterException e){
+        logger.error(e.getMessage(),e);
+        final HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+        ErrorResponse errorResponse =new ErrorResponse(
+                e.getMessage(),
+                internalServerError
+        );
+
+        return new ResponseEntity<>(errorResponse, internalServerError);
+    }
+
     @ExceptionHandler(value={MarksNotFoundException.class})
     public ResponseEntity<?>  handleRestException(MarksNotFoundException e){
         logger.error(e.getMessage(),e);
