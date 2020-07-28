@@ -85,5 +85,4 @@ public class BookingController {
                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
         return bookingService.findPlaceHistory(placeId, timeStart, timeEnd);
     }
-
 }
