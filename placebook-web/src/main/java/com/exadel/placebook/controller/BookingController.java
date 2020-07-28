@@ -28,7 +28,7 @@ public class BookingController {
     private SecurityValidationService securityValidationService;
 
     @GetMapping("/user/{userId}/bookings")
-    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam Status status) {
+    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam("status") Status status) {
         return bookingService.findByStatus(userId, status);
     }
 
@@ -43,16 +43,13 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}/booking/all")
-    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId){
+    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId) {
         return bookingService.findBookings(userId);
     }
 
-
-
-
-    @PutMapping("/user/{userId}/booking")
-    public BookingDto addBooking(@Valid@RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId
-    , BindingResult result) {
+    @PostMapping("/user/{userId}/booking")
+    public BookingDto addBooking(@Valid @RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId
+            , BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
@@ -61,7 +58,7 @@ public class BookingController {
         return bookingService.addBooking(bookingRequest, userId);
     }
 
-    @PostMapping("/user/booking/{bookingId}")
+    @PutMapping("/user/booking/{bookingId}")
     public BookingDto editBooking(@Valid @RequestBody BookingRequest bookingRequest,
                                   @PathVariable("bookingId") Long bookingId,
                                   BindingResult result) {

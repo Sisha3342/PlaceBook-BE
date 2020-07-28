@@ -1,7 +1,9 @@
 package com.exadel.placebook.controller;
 
-import com.exadel.placebook.model.dto.*;
-import com.exadel.placebook.model.entity.Floor;
+import com.exadel.placebook.model.dto.FloorDto;
+import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
@@ -53,7 +55,7 @@ public class OfficeController {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
 
-    @PutMapping("/office")
+    @PostMapping("/office")
     public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
@@ -62,7 +64,7 @@ public class OfficeController {
         return officeService.addOffice(officeParams);
     }
 
-    @PostMapping("/office/{officeId}")
+    @PutMapping("/office/{officeId}")
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@Valid@RequestBody OfficeParams officeParams,
     BindingResult result) {
         if (result.hasErrors()) {
