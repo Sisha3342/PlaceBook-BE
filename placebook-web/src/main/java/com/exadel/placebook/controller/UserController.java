@@ -21,16 +21,16 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(@Valid @RequestParam("limit") int limit,
-                                       @Valid @RequestParam("offset") int offset,
-                                       @RequestParam("text") String text,
-                                       BindingResult result) {
+    public List<AdminUserDto> getUsers(@RequestParam("limit") int limit,
+                                       @RequestParam("offset") int offset,
+                                       @RequestParam("text") String text/*,
+                                       BindingResult result*/) {
 
         AdminUserFilter adminUserFilter = new AdminUserFilter(limit, offset, text);
 
-        if (result.hasErrors()) {
+        /*if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
-        }
+        }*/
 
         return userService.findUsers(adminUserFilter);
     }
