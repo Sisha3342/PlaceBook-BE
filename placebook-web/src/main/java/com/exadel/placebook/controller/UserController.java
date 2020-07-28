@@ -21,10 +21,17 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(@Valid @RequestBody AdminUserFilter adminUserFilter, BindingResult result) {
+    public List<AdminUserDto> getUsers(@Valid @RequestParam("limit") int limit,
+                                       @Valid @RequestParam("offset") int offset,
+                                       @RequestParam("text") String text,
+                                       BindingResult result) {
+
+        AdminUserFilter adminUserFilter = new AdminUserFilter(limit, offset, text);
+
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
+
         return userService.findUsers(adminUserFilter);
     }
 
@@ -37,8 +44,8 @@ public class UserController {
         return userService.updateUserRole(id, role);
     }
 
-    @PutMapping("/user")
-    public UserDto addUser(@Valid@RequestBody UserDto userDto, BindingResult result) {
+    @PostMapping("/user")
+    public UserDto addUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
@@ -46,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/users/search")
-    public List<UserSearchDto> getUsersBySearch(@RequestParam("text") String searchText){
+    public List<UserSearchDto> getUsersBySearch(@RequestParam("text") String searchText) {
         return userService.findUsers(searchText);
     }
 }
