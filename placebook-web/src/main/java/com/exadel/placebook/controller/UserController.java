@@ -9,20 +9,23 @@ import com.exadel.placebook.model.filters.AdminUserFilter;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
+@Validated
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(@RequestParam("limit") int limit,
-                                       @RequestParam("offset") int offset,
+    public List<AdminUserDto> getUsers(@RequestParam("limit") @Min(value = 1, message = "limit must be greater than 0") int limit,
+                                       @RequestParam("offset") @Min(value = 0, message = "offset must be 0 or greater") int offset,
                                        @RequestParam("text") String text/*,
                                        BindingResult result*/) {
 
