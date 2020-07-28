@@ -87,13 +87,15 @@ public class OfficeController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/office/{officeId}/floor")
-    public FloorDto addFloor(@RequestBody FloorDto floorDto, @PathVariable("officeId") Long officeId) {
-        return officeService.addFloor(officeId, floorDto);
+    @PostMapping("office/{officeId}/configuration")
+    public OfficeDto saveOfficeConfiguration(@RequestBody List<FloorRequest> floors,
+                                             @PathVariable("officeId") Long officeId) {
+        return officeService.saveOfficeConfiguration(floors, officeId);
     }
 
-    @DeleteMapping("/office/floor/{floorId}")
-    public FloorDto deleteFloor(@PathVariable("floorId") Long floorId) {
-        return officeService.deleteFloor(floorId);
+    @PutMapping("office/{officeId}/configuration")
+    public OfficeDto editOfficeConfiguration(@RequestBody List<FloorRequest> floors,
+                                             @PathVariable("officeId") Long officeId) {
+        return officeService.editOfficeConfiguration(floors, officeId);
     }
 }
