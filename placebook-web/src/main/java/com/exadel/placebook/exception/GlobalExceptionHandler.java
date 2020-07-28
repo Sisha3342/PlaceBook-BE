@@ -73,13 +73,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value={ConverterException.class})
     public ResponseEntity<?>  handleRestException(ConverterException e){
         logger.error(e.getMessage(),e);
-        final HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+        final HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse =new ErrorResponse(
                 e.getMessage(),
-                badRequest
+                internalServerError
         );
 
-        return new ResponseEntity<>(errorResponse, badRequest);
+        return new ResponseEntity<>(errorResponse, internalServerError);
     }
 
     @ExceptionHandler(value={MarksNotFoundException.class})

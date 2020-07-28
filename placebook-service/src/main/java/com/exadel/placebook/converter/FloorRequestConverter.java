@@ -43,7 +43,8 @@ public class FloorRequestConverter {
         floor.setPlaces(places);
 
         try {
-            floor.setFloorConfiguration(objectMapper.writeValueAsString(request.getConfigurationList()));
+            String floorConfig = objectMapper.writeValueAsString(request.getConfigurationList());
+            floor.setFloorConfiguration(floorConfig);
         } catch (JsonProcessingException e) {
             throw new ConverterException(e.getMessage());
         }

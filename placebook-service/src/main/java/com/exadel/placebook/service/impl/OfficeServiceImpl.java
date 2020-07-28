@@ -163,7 +163,7 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     private void editDBOfficeFloors(Office office, List<Floor> floorsFromRequest) {
-        List<Floor> currentDBFloors =  officeDao.findFloorsByOfficeId(office.getId());
+        List<Floor> currentDBFloors = officeDao.findFloorsByOfficeId(office.getId());
         List<Floor> editedDBFloors = new LinkedList<>();
 
         for (Floor floorFromRequest : floorsFromRequest) {
@@ -230,7 +230,9 @@ public class OfficeServiceImpl implements OfficeService {
                 .map(dto -> floorRequestConverter.convert(dto))
                 .collect(Collectors.toList());
 
-        if (floors.stream().map(Floor::getFloorNumber).distinct().count() < floors.size()) {
+        long uniqueFloorsNumbersSize = floors.stream().map(Floor::getFloorNumber).distinct().count();
+
+        if (uniqueFloorsNumbersSize < floors.size()) {
             throw new FloorException("duplicate numbers");
         }
 

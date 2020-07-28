@@ -85,13 +85,13 @@ public class OfficeController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("office/{officeId}/configuration")
+    @PostMapping("office/{officeId}/configuration")
     public OfficeDto saveOfficeConfiguration(@RequestBody List<FloorRequest> floors,
                                              @PathVariable("officeId") Long officeId) {
         return officeService.saveOfficeConfiguration(floors, officeId);
     }
 
-    @PostMapping("office/{officeId}/configuration")
+    @PutMapping("office/{officeId}/configuration")
     public OfficeDto editOfficeConfiguration(@RequestBody List<FloorRequest> floors,
                                              @PathVariable("officeId") Long officeId) {
         return officeService.editOfficeConfiguration(floors, officeId);
