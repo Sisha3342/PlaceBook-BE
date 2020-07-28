@@ -55,7 +55,7 @@ public class OfficeController {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
 
-    @PutMapping("/office")
+    @PostMapping("/office")
     public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
@@ -64,7 +64,7 @@ public class OfficeController {
         return officeService.addOffice(officeParams);
     }
 
-    @PostMapping("/office/{officeId}")
+    @PutMapping("/office/{officeId}")
     public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@Valid@RequestBody OfficeParams officeParams,
     BindingResult result) {
         if (result.hasErrors()) {
@@ -87,7 +87,7 @@ public class OfficeController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/office/{officeId}/floor")
+    @PostMapping("/office/{officeId}/floor")
     public FloorDto addFloor(@RequestBody FloorDto floorDto, @PathVariable("officeId") Long officeId) {
         return officeService.addFloor(officeId, floorDto);
     }

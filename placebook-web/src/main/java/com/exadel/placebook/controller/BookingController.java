@@ -47,7 +47,7 @@ public class BookingController {
         return bookingService.findBookings(userId);
     }
 
-    @PutMapping("/user/{userId}/booking")
+    @PostMapping("/user/{userId}/booking")
     public BookingDto addBooking(@Valid @RequestBody BookingRequest bookingRequest, @PathVariable("userId") Long userId
             , BindingResult result) {
         if (result.hasErrors()) {
@@ -58,7 +58,7 @@ public class BookingController {
         return bookingService.addBooking(bookingRequest, userId);
     }
 
-    @PostMapping("/user/booking/{bookingId}")
+    @PutMapping("/user/booking/{bookingId}")
     public BookingDto editBooking(@Valid @RequestBody BookingRequest bookingRequest,
                                   @PathVariable("bookingId") Long bookingId,
                                   BindingResult result) {
