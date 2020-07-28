@@ -36,7 +36,7 @@ public class PlaceController {
         return placeService.getPlaceByUserNow(userId);
     }
 
-    @PutMapping("/booking/{bookingId}/mark")
+    @PostMapping("/booking/{bookingId}/mark")
     public MarkSubmitDto submitMark(@PathVariable("bookingId") Long bookingId,
                                     @Valid @RequestBody MarkParams markParams, BindingResult result) {
         if (result.hasErrors()) {
