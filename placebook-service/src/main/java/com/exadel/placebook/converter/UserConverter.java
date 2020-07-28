@@ -3,6 +3,7 @@ package com.exadel.placebook.converter;
 
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.entity.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,7 +26,7 @@ public class UserConverter {
         User p = new User();
         p.setId(pd.getId());
         p.setEmail(pd.getEmail());
-        p.setPassword(pd.getPassword());
+        p.setPassword(new BCryptPasswordEncoder().encode(pd.getPassword()));
         p.setName(pd.getName());
         p.setSurname(pd.getSurname());
         p.setHrId(pd.getHrId());
