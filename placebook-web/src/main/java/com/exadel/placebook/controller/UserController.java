@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<AdminUserDto> getUsers(@RequestParam("limit") int limit,
-                                       @RequestParam("offset") int offset,
+    public List<AdminUserDto> getUsers(@RequestParam("limit") /*@Min(1)*/ int limit,
+                                       @RequestParam("offset") @Min(value = 0, message = "limit must be greater than 0")
+                                               int offset,
                                        @RequestParam("text") String text/*,
                                        BindingResult result*/) {
 

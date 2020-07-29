@@ -20,7 +20,6 @@ public class PlaceController {
 
     @Autowired
     private BookingService bookingService;
-
     @Autowired
     private PlaceService placeService;
     @Autowired
