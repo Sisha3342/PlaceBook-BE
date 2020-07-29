@@ -1,6 +1,7 @@
 package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.FloorConverter;
+import com.exadel.placebook.converter.FloorRequestConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
@@ -8,13 +9,12 @@ import com.exadel.placebook.dao.FloorDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.exception.FloorException;
-import com.exadel.placebook.model.dto.FloorDto;
-import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.dto.OfficeParams;
-import com.exadel.placebook.model.dto.PlaceDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
+import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +48,9 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
     private FloorDao floorDao;
+
+    @Autowired
+    private FloorRequestConverter floorRequestConverter;
 
     @Override
     public List<PlaceDto> getPlacesByFloorId(Long floorId) {
@@ -116,10 +119,11 @@ public class OfficeServiceImpl implements OfficeService {
                 .map(floor -> floorConverter.convert(floor))
                 .collect(Collectors.toList());
     }
+
     @Override
     public boolean deleteOffice(Long officeId) {
         Office office = officeDao.find(officeId);
-        if(office!=null) {
+        if (office != null) {
             office.setDeleted(true);
             officeDao.update(office);
             return true;
@@ -129,38 +133,109 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
-    public FloorDto addFloor(Long officeId, FloorDto floorDto) {
+    public OfficeDto saveOfficeConfiguration(List<FloorRequest> floorRequestList, Long officeId) {
         Office office = officeDao.find(officeId);
 
-        if(office == null) {
+        if (office == null) {
             throw new EntityNotFoundException(Office.class, officeId);
         }
 
-        Floor floor = new Floor();
+        List<Floor> floors = getFloorList(floorRequestList);
 
-        if(floorDao.getFloorsNumbersByOfficeId(officeId)
-                .contains(floorDto.getFloorNumber())) {
-            throw new FloorException(String.format("number %s already exist",
-                    floorDto.getFloorNumber()));
-        }
+        floors.forEach(floor -> floor.setOffice(office));
 
-        floor.setFloorNumber(floorDto.getFloorNumber());
-        floor.setFloorConfiguration(floorDto.getFloorConfiguration());
-        floor.setOffice(office);
+        office.setFloors(floors);
 
-        return floorConverter.convert(floorDao.save(floor));
+        return officeConverter.convert(officeDao.update(office));
     }
 
     @Override
-    public FloorDto deleteFloor(Long floorId) {
-        Floor floor = floorDao.find(floorId);
+    public OfficeDto editOfficeConfiguration(List<FloorRequest> floors, Long officeId) {
+        Office office = officeDao.find(officeId);
 
-        if(floor == null || floor.isDeleted()) {
-            throw new EntityNotFoundException(Floor.class, floorId);
+        if (office == null) {
+            throw new EntityNotFoundException(Office.class, officeId);
         }
 
-        floor.setDeleted(true);
+        editDBOfficeFloors(office, getFloorList(floors));
 
-        return floorConverter.convert(floorDao.update(floor));
+        return officeConverter.convert(officeDao.update(office));
+    }
+
+    private void editDBOfficeFloors(Office office, List<Floor> floorsFromRequest) {
+        List<Floor> currentDBFloors = officeDao.findFloorsByOfficeId(office.getId());
+        List<Floor> editedDBFloors = new LinkedList<>();
+
+        for (Floor floorFromRequest : floorsFromRequest) {
+            Optional<Floor> floorWithSameNumber = currentDBFloors
+                    .stream()
+                    .filter(floor -> floor.getFloorNumber()
+                            .equals(floorFromRequest.getFloorNumber()))
+                    .findAny();
+
+            if (floorWithSameNumber.isPresent()) {
+                if (!floorWithSameNumber.get().getFloorConfiguration()
+                        .equals(floorFromRequest.getFloorConfiguration())) {
+                    floorWithSameNumber.get().setFloorConfiguration(floorFromRequest.getFloorConfiguration());
+
+                    editDBFloorPlaces(floorWithSameNumber.get(), floorFromRequest);
+                }
+
+                editedDBFloors.add(floorWithSameNumber.get());
+                currentDBFloors.remove(floorWithSameNumber.get());
+            } else {
+                editedDBFloors.add(floorFromRequest);
+            }
+        }
+
+        currentDBFloors.forEach(floor -> floor.setDeleted(true));
+
+        editedDBFloors.forEach(floor -> floor.setOffice(office));
+
+        office.setFloors(editedDBFloors);
+    }
+
+    private void editDBFloorPlaces(Floor floorFromDB, Floor floorFromRequest) {
+        List<Place> currentDBPlaceList = floorFromDB.getPlaces();
+        List<Place> editedDBPlaceList = new LinkedList<>();
+
+        for (Place placeFromRequest : floorFromRequest.getPlaces()) {
+            Optional<Place> placeWithSameNumber = currentDBPlaceList
+                    .stream()
+                    .filter(place -> place.getPlaceNumber()
+                            .equals(placeFromRequest.getPlaceNumber()))
+                    .findAny();
+
+            if (placeWithSameNumber.isPresent()) {
+                currentDBPlaceList.remove(placeWithSameNumber.get());
+
+                placeWithSameNumber.get().setPlaceStatus(placeFromRequest.getPlaceStatus());
+
+                editedDBPlaceList.add(placeWithSameNumber.get());
+            } else {
+                editedDBPlaceList.add(placeFromRequest);
+            }
+        }
+
+        currentDBPlaceList.forEach(place -> place.setPlaceStatus(PlaceStatus.INACTIVE));
+
+        editedDBPlaceList.forEach(place -> place.setFloor(floorFromDB));
+
+        floorFromDB.setPlaces(editedDBPlaceList);
+    }
+
+    private List<Floor> getFloorList(List<FloorRequest> floorRequestList) {
+        List<Floor> floors = floorRequestList
+                .stream()
+                .map(dto -> floorRequestConverter.convert(dto))
+                .collect(Collectors.toList());
+
+        long uniqueFloorsNumbersSize = floors.stream().map(Floor::getFloorNumber).distinct().count();
+
+        if (uniqueFloorsNumbersSize < floors.size()) {
+            throw new FloorException("duplicate numbers");
+        }
+
+        return floors;
     }
 }
