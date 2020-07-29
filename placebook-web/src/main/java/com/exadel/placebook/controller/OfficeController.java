@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class OfficeController {
 
     @Autowired
@@ -51,7 +52,7 @@ public class OfficeController {
     public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable("country") String country, @PathVariable("city") String city) {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
-    @CrossOrigin
+
     @PostMapping("/office")
     public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
         if (result.hasErrors()) {
