@@ -51,7 +51,7 @@ public class OfficeController {
     public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable("country") String country, @PathVariable("city") String city) {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
-
+    @CrossOrigin
     @PostMapping("/office")
     public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
         if (result.hasErrors()) {
