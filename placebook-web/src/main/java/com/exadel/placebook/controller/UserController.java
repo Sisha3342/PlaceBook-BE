@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@CrossOrigin
 public class UserController {
 
     @Autowired
