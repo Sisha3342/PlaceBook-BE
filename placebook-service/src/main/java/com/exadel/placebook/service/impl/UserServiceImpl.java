@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
             user.setHrId(1L);
             user = userDao.save(user);
             user.setHrId(user.getId());
-            userDao.update(user);
+            return userConverter.convert(userDao.update(user));
         }
 
         return userConverter.convert(userDao.save(user));
