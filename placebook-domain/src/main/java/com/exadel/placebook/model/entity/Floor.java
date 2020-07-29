@@ -24,6 +24,12 @@ public class Floor extends BaseEntity {
     @Column(name="deleted")
     private boolean deleted;
 
+    @Column(name = "width")
+    private Long width;
+
+    @Column(name = "height")
+    private Long height;
+
     @OneToMany(mappedBy = "floor",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)

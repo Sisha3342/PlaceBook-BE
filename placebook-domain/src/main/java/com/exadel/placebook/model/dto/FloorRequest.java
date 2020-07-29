@@ -9,7 +9,11 @@ import java.util.List;
 @Data
 public class FloorRequest {
     @NotNull
-    private List<FloorConfigElement> configurationList;
+    private List<FloorConfigElement> dashboard;
     @NotBlank
     private String floorNumber;
+    @NotNull
+    private Long height;
+    @NotNull
+    private Long width;
 }

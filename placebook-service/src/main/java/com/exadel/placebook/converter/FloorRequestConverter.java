@@ -27,8 +27,10 @@ public class FloorRequestConverter {
         Floor floor = new Floor();
 
         floor.setFloorNumber(request.getFloorNumber());
+        floor.setWidth(request.getWidth());
+        floor.setHeight(request.getHeight());
 
-        List<Place> places = request.getConfigurationList()
+        List<Place> places = request.getDashboard()
                 .stream()
                 .map(FloorConfigElement::getData)
                 .filter(data -> FloorConfigElementType.isInTypesSimpleNames(data.getType(),
@@ -43,7 +45,7 @@ public class FloorRequestConverter {
         floor.setPlaces(places);
 
         try {
-            String floorConfig = objectMapper.writeValueAsString(request.getConfigurationList());
+            String floorConfig = objectMapper.writeValueAsString(request.getDashboard());
             floor.setFloorConfiguration(floorConfig);
         } catch (JsonProcessingException e) {
             throw new ConverterException(e.getMessage());

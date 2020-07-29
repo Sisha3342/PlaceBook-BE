@@ -12,4 +12,6 @@ public class FloorDto {
     private String floorNumber;
     @NotNull
     private String floorConfiguration;
+    private Long width;
+    private Long height;
 }

@@ -11,7 +11,8 @@ public class FloorConverter {
         dto.setFloorConfiguration(floor.getFloorConfiguration());
         dto.setFloorNumber(floor.getFloorNumber());
         dto.setId(floor.getId());
-
+        dto.setHeight(floor.getHeight());
+        dto.setWidth(floor.getWidth());
         return dto;
     }
 }
