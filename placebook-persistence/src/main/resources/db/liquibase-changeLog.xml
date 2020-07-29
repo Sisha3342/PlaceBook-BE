@@ -13,4 +13,5 @@
         <include file="db/2020_07_27_add_column_to_floor_table.xml"/>
         <include file="db/2020_07_27_insert_into_database.xml"/>
         <include file="db/2020_07_29_add_columns_to_floor_table.xml"/>
+        <include file="db/2020_07_29_change_column_in_floor_table.xml"/>
 </databaseChangeLog>

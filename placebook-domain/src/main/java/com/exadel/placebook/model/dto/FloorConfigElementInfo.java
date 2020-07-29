@@ -9,4 +9,5 @@ public class FloorConfigElementInfo {
     private boolean active;
     private String icon;
     private String tooltip;
+    private long capacity;
 }
