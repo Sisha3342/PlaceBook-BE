@@ -1,6 +1,7 @@
 package com.exadel.placebook.dao;
 
 import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 
@@ -14,6 +15,10 @@ public interface BookingDao extends BaseDao<Booking> {
     List<Booking> findBookings(Long userId);
 
     List<Booking> findUserBookingsByStatus(Long id, Status status);
+
+    List<Booking> findUsersBookingsByHrIdAndStatus(Long id,Status status);
+
+    List<Booking> findUsersBookingsByStatus(Status status);
 
     Map<Status, Long> getStatistics(Long userId);
 
