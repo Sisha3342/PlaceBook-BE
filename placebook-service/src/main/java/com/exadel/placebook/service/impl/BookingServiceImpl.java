@@ -60,19 +60,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional(noRollbackFor = {Exception.class})
     public MarkDto getAverageMarks(Long placeId) {
-        MarkDto markDto;
-        try {
-            markDto = bookingDao.findMarksByPlaceId(placeId).get();
-        } catch (Exception e) {
-            markDto = new MarkDto();
-        }
-        return markDto;
+        return bookingDao.findMarksByPlaceId(placeId).orElse(new MarkDto());
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional(propagation = Propagation.NESTED)
     public BookingInfoDto getBookingInfo(Long id) {
         Booking booking = bookingDao.find(id);
         return bookingInfoConverter.convert(booking, getAverageMarks(booking.getPlace().getId()));
