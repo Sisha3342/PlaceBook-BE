@@ -14,6 +14,6 @@ public class SubscribeProcessor {
 
     @Scheduled(fixedDelay = 3600000)
     public void scheduledBookingStatusChange() {
-
+        placeService.subscribeChecker();
     }
 }

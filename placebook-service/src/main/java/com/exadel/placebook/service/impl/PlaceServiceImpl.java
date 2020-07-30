@@ -1,5 +1,6 @@
 package com.exadel.placebook.service.impl;
 
+import com.exadel.placebook.builder.MailMessageBuilder;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.converter.UserConverter;
 import com.exadel.placebook.dao.PlaceDao;
@@ -12,6 +13,7 @@ import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.entity.Subscribe;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.PlaceService;
+import com.exadel.placebook.service.SendMailService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +38,12 @@ public class PlaceServiceImpl implements PlaceService {
     @Autowired
     private PlaceConverter placeConverter;
 
+    @Autowired
+    private SendMailService sendMailService;
+
+    @Autowired
+    private MailMessageBuilder mailMessageBuilder;
+
     @Override
     public List<PlaceSearchDto> getPlaceByUserNow(Long userId) {
         List<PlaceSearchDto> place = placeDao.getPlaceByUserNow(userId);
@@ -56,6 +64,10 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void subscribeChecker() {
-
+       List<Subscribe> list = subscribeToPlaceDao.freePlaceFromSubscribe();
+       if(list.size()!=0) {
+           list.forEach(s -> sendMailService.sendEmail(mailMessageBuilder.convert(s)));
+           subscribeToPlaceDao.deleteSubscribes(list);
+       }
     }
 }
