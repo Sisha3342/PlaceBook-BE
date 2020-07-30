@@ -161,6 +161,9 @@ public class OfficeServiceImpl implements OfficeService {
                     editDBFloorPlaces(floorWithSameNumber.get(), floorFromRequest);
                 }
 
+                floorWithSameNumber.get().setHeight(floorFromRequest.getHeight());
+                floorWithSameNumber.get().setWidth(floorFromRequest.getWidth());
+
                 editedDBFloors.add(floorWithSameNumber.get());
                 currentDBFloors.remove(floorWithSameNumber.get());
             } else {
