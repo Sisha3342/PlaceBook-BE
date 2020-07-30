@@ -10,8 +10,10 @@ public class BookingInfoDto {
 
     private Long id;
     private String placeInfo;
+    private Long userId;
     private String userName;
     private String userSurname;
+    private String photoUrl;
     private MarkDto marks;
     private AddressDto address;
     private LocalDateTime timeStart;

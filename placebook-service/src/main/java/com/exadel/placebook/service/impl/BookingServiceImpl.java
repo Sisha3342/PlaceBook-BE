@@ -17,6 +17,7 @@ import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -57,10 +58,22 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @org.springframework.transaction.annotation.Transactional(noRollbackFor = {Exception.class})
+    public MarkDto getAverageMarks(Long placeId) {
+        MarkDto markDto;
+        try {
+            markDto = bookingDao.findMarksByPlaceId(placeId).get();
+        } catch (Exception e) {
+            markDto = new MarkDto();
+        }
+        return markDto;
+    }
+
+    @Override
+    @org.springframework.transaction.annotation.Transactional(propagation = Propagation.NESTED)
     public BookingInfoDto getBookingInfo(Long id) {
-        Optional<MarkDto> markDto = bookingDao.findMarksByPlaceId(id);
         Booking booking = bookingDao.find(id);
-        return bookingInfoConverter.convert(booking, markDto.get());
+        return bookingInfoConverter.convert(booking, getAverageMarks(booking.getPlace().getId()));
     }
 
     @Override
@@ -85,13 +98,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public MarkDto getMarksByPlaceId(Long id) {
-        Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
-        if(!marks.isPresent()) {
+        try {
+            Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
+            return marks.get();
+        } catch (Exception e) {
             throw new MarksNotFoundException("marks is not found");
         }
-        return marks.get();
     }
-
 
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = getAvailablePlace(bookingRequest, userId);
@@ -111,7 +124,7 @@ public class BookingServiceImpl implements BookingService {
         Place place = getAvailablePlace(bookingRequest, userService.getUserStatus().getId());
         Booking booking = bookingDao.load(bookingId);
 
-        if(!booking.getStatus().equals(Status.ACTIVE)) {
+        if (!booking.getStatus().equals(Status.ACTIVE)) {
             throw new BookingException(String.format("booking %d is inactive", booking.getId()));
         }
 
@@ -126,7 +139,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto deleteBooking(Long id) {
         Booking booking = bookingDao.find(id);
 
-        if(booking == null) {
+        if (booking == null) {
             throw new EntityNotFoundException(Booking.class, id);
         }
 
@@ -147,8 +160,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<PlaceHistoryDto> findPlaceHistory(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd){
-            List<Booking> list = bookingDao.historyByPlaceIdAndTime(placeId, timeStart, timeEnd);
-            return list.stream().map(placeHistoryConverter::convert).collect(Collectors.toList());
+    public List<PlaceHistoryDto> findPlaceHistory(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        List<Booking> list = bookingDao.historyByPlaceIdAndTime(placeId, timeStart, timeEnd);
+        return list.stream().map(placeHistoryConverter::convert).collect(Collectors.toList());
     }
 }
