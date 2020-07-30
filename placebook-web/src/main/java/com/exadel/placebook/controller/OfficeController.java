@@ -48,8 +48,9 @@ public class OfficeController {
         return officeService.getCitiesByCountry(country);
     }
 
-    @GetMapping("/countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable("country") String country, @PathVariable("city") String city) {
+    @GetMapping(value = {"/countries/{country}/cities/{city}/offices", "/countries/{country}/offices", "/offices"})
+    public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable(value = "country", required = false) String country,
+                                                      @PathVariable(value = "city", required = false) String city) {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
 
