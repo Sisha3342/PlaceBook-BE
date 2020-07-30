@@ -1,15 +1,16 @@
 package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.FloorConverter;
-import com.exadel.placebook.converter.FloorRequestConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
-import com.exadel.placebook.dao.FloorDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.exception.FloorException;
-import com.exadel.placebook.model.dto.*;
+import com.exadel.placebook.model.dto.FloorDto;
+import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
@@ -22,7 +23,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,12 +48,6 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Autowired
     private PlaceConverter placeConverter;
-
-    @Autowired
-    private FloorDao floorDao;
-
-    @Autowired
-    private FloorRequestConverter floorRequestConverter;
 
     @Override
     public List<PlaceDto> getPlacesByFloorId(Long floorId) {
@@ -133,24 +130,7 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
-    public OfficeDto saveOfficeConfiguration(List<FloorRequest> floorRequestList, Long officeId) {
-        Office office = officeDao.find(officeId);
-
-        if (office == null) {
-            throw new EntityNotFoundException(Office.class, officeId);
-        }
-
-        List<Floor> floors = getFloorList(floorRequestList);
-
-        floors.forEach(floor -> floor.setOffice(office));
-
-        office.setFloors(floors);
-
-        return officeConverter.convert(officeDao.update(office));
-    }
-
-    @Override
-    public OfficeDto editOfficeConfiguration(List<FloorRequest> floors, Long officeId) {
+    public OfficeDto saveOfficeConfiguration(List<FloorDto> floors, Long officeId) {
         Office office = officeDao.find(officeId);
 
         if (office == null) {
@@ -188,7 +168,10 @@ public class OfficeServiceImpl implements OfficeService {
             }
         }
 
-        currentDBFloors.forEach(floor -> floor.setDeleted(true));
+        currentDBFloors.forEach(floor -> {
+            floor.setDeleted(true);
+            floor.getPlaces().forEach(place -> place.setPlaceStatus(PlaceStatus.INACTIVE));
+        });
 
         editedDBFloors.forEach(floor -> floor.setOffice(office));
 
@@ -224,16 +207,25 @@ public class OfficeServiceImpl implements OfficeService {
         floorFromDB.setPlaces(editedDBPlaceList);
     }
 
-    private List<Floor> getFloorList(List<FloorRequest> floorRequestList) {
+    private List<Floor> getFloorList(List<FloorDto> floorRequestList) {
         List<Floor> floors = floorRequestList
                 .stream()
-                .map(dto -> floorRequestConverter.convert(dto))
+                .map(dto -> floorConverter.convert(dto))
                 .collect(Collectors.toList());
 
         long uniqueFloorsNumbersSize = floors.stream().map(Floor::getFloorNumber).distinct().count();
 
         if (uniqueFloorsNumbersSize < floors.size()) {
-            throw new FloorException("duplicate numbers");
+            throw new FloorException("duplicate floor numbers");
+        }
+
+        for(Floor floor: floors) {
+            long uniquePlacesNumberSize = floor.getPlaces().stream()
+                    .map(Place::getPlaceNumber).distinct().count();
+
+            if(uniqueFloorsNumbersSize < floor.getPlaces().size()) {
+                throw new FloorException("duplicate place numbers");
+            }
         }
 
         return floors;
