@@ -71,14 +71,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> yemployeesBookingsByStatusAndHrId(Status status) {
+    public List<BookingDto> employeesBookingsByStatusAndHrId(Status status) {
         UserContext context = (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Booking> bookingList = bookingDao.findUsersBookingsByHrIdAndStatus(context.getUserDto().getId(), status);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
     @Override
-    public List<BookingDto> yemployeesBookingsByStatus(Status status) {
+    public List<BookingDto> employeesBookingsByStatus(Status status) {
         List<Booking> bookingList = bookingDao.findUsersBookingsByStatus(status);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
