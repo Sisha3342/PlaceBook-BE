@@ -26,15 +26,9 @@ public class UserController {
     @GetMapping("/users")
     public List<AdminUserDto> getUsers(@RequestParam("limit") @Min(value = 1, message = "limit must be greater than 0") int limit,
                                        @RequestParam("offset") @Min(value = 0, message = "offset must be 0 or greater") int offset,
-                                       @RequestParam("text") String text/*,
-                                       BindingResult result*/) {
+                                       @RequestParam("text") String text) {
 
         AdminUserFilter adminUserFilter = new AdminUserFilter(limit, offset, text);
-
-        /*if (result.hasErrors()) {
-            throw new ValidationException(result.getAllErrors().toString());
-        }*/
-
         return userService.findUsers(adminUserFilter);
     }
 
