@@ -17,11 +17,11 @@ public class HrController {
 
     @GetMapping("/employees/bookings/all")
     public List<BookingDto> findAllUsersBookings(@RequestParam("status") Status status) {
-        return bookingService.yemployeesBookingsByStatus(status);
+        return bookingService.employeesBookingsByStatus(status);
     }
 
     @GetMapping("/employees/bookings")
     public List<BookingDto> findUsersBookingsByHrId(@RequestParam("status") Status status) {
-        return bookingService.yemployeesBookingsByStatusAndHrId(status);
+        return bookingService.employeesBookingsByStatusAndHrId(status);
     }
 }
