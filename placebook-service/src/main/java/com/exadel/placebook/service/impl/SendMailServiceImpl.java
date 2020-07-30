@@ -20,19 +20,17 @@ public class SendMailServiceImpl implements SendMailService {
 
     public void sendEmail(MailMessageDto messageDto) {
 
-         try {
+        try {
 
-             MimeMessage message = emailSender.createMimeMessage();
-             MimeMessageHelper helper = new MimeMessageHelper(message);
-             helper.setTo(messageDto.getEmail());
-             helper.setText(messageDto.getText(), true);
-             helper.setSubject("Placebook notification");
-             this.emailSender.send(message);
-         }
-
-         catch (MessagingException e) {
-             throw new SendMessageException("Send email exception! MessagingException");
-         }
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setTo(messageDto.getEmail());
+            helper.setText(messageDto.getText(), true);
+            helper.setSubject("Placebook notification");
+            this.emailSender.send(message);
+        } catch (MessagingException e) {
+            throw new SendMessageException("Send email exception! MessagingException");
+        }
 
 
     }

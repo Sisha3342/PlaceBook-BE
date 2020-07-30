@@ -64,10 +64,10 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void subscribeChecker() {
-       List<Subscribe> list = subscribeToPlaceDao.freePlaceFromSubscribe();
-       if(list.size()!=0) {
-           list.forEach(s -> sendMailService.sendEmail(mailMessageBuilder.convert(s)));
-           subscribeToPlaceDao.deleteSubscribes(list);
-       }
+        List<Subscribe> list = subscribeToPlaceDao.freePlaceFromSubscribe();
+        if (list.size() != 0) {
+            list.forEach(s -> sendMailService.sendEmail(mailMessageBuilder.convert(s)));
+            subscribeToPlaceDao.deleteSubscribes(list);
+        }
     }
 }
