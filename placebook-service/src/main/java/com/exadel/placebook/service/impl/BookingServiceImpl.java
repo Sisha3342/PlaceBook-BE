@@ -13,10 +13,13 @@ import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.model.exception.MarksNotFoundException;
+import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
