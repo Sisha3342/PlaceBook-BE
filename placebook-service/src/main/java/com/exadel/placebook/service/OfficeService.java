@@ -1,6 +1,9 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.*;
+import com.exadel.placebook.model.dto.FloorDto;
+import com.exadel.placebook.model.dto.OfficeDto;
+import com.exadel.placebook.model.dto.OfficeParams;
+import com.exadel.placebook.model.dto.PlaceDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +27,5 @@ public interface OfficeService {
 
     boolean deleteOffice(Long officeId);
 
-    OfficeDto saveOfficeConfiguration(List<FloorRequest> floors, Long officeId);
-
-    OfficeDto editOfficeConfiguration(List<FloorRequest> floors, Long officeId);
+    OfficeDto saveOfficeConfiguration(List<FloorDto> floors, Long officeId);
 }

@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**", "/users/**").hasAuthority(Role.ADMIN.name())
                 .antMatchers("/hello").permitAll()
                 .antMatchers("/office/**").hasAnyAuthority(Role.EDITOR.name(), Role.ADMIN.name(), Role.USER.name(), Role.HR.name())
+                .antMatchers("/employees/**").hasAnyAuthority(Role.ADMIN.name(), Role.HR.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginProcessingUrl("/login").usernameParameter("email").passwordParameter("password")

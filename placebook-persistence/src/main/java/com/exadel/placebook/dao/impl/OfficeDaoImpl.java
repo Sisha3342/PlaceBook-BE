@@ -14,12 +14,13 @@ import java.util.List;
 @Repository
 public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
 
-
     @Override
     public List<Office> findOfficesByCityAndCountry(String city, String country) {
         Session session = getSession();
         return session
-                .createQuery("select o from Office o join o.address a where a.city = :city and a.country = :country", Office.class)
+                .createQuery("select o from Office o join o.address a where " +
+                        "a.city like concat(:city,'%') and" +
+                        " a.country like concat(:country,'%')", Office.class)
                 .setParameter("city", city)
                 .setParameter("country", country)
                 .list();

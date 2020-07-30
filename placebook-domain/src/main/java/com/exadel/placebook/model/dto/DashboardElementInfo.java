@@ -3,7 +3,7 @@ package com.exadel.placebook.model.dto;
 import lombok.Data;
 
 @Data
-public class FloorConfigElementInfo {
+public class DashboardElementInfo {
     private String type;
     private String number;
     private boolean active;

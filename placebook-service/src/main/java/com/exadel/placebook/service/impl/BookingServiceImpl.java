@@ -17,7 +17,6 @@ import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -81,6 +80,20 @@ public class BookingServiceImpl implements BookingService {
         bookingDao.completeEndedBookings();
     }
 
+    @Override
+    public List<BookingDto> yemployeesBookingsByStatusAndHrId(Status status) {
+        UserContext context = (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Booking> bookingList = bookingDao.findUsersBookingsByHrIdAndStatus(context.getUserDto().getId(), status);
+        return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingDto> yemployeesBookingsByStatus(Status status) {
+        List<Booking> bookingList = bookingDao.findUsersBookingsByStatus(status);
+        return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
+    }
+
+    @Override
     public List<BookingDto> findByStatus(Long id, Status status) {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
