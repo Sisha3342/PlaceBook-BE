@@ -38,6 +38,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserSearchConverter userSearchConverter;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public UserDto findById(Long id) {
         User user = userDao.find(id);
@@ -68,6 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter) {
         List<User> users = userDao.findUsers(adminUserFilter);
+        users.remove(userDao.find(userService.getUserStatus().getId()));
         return users.stream().map(adminUserConverter::convert).collect(Collectors.toList());
     }
 
