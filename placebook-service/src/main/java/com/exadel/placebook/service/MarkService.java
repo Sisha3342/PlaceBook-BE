@@ -7,4 +7,5 @@ public interface MarkService {
 
    MarkSubmitDto submitMark(Long id,MarkParams markParams);
 
+   MarkSubmitDto getMarksByBookingId(Long bookingId);
 }

@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 @Data
 public class BookingDto {
     private Long id;
+    private Long userId;
+    private String photoUrl;
     private String placeNumber;
     private String userName;
     private String userSurname;
