@@ -106,11 +106,12 @@ public class SecurityValidationServiceImpl implements SecurityValidationService 
             case USER:
             case EDITOR:
             case ADMIN:
+            /*case ADMIN:
                 if (!userStatus.getId().equals(bookingOwner.getId())) {
                     throw new SecurityValidationException(String.format("user %s can't see booking of user %s",
                             userStatus.getName(),
                             bookingOwner.getName()));
-                }
+                }*/
         }
     }
 

@@ -18,4 +18,5 @@ public interface BaseDao<T extends BaseEntity> {
     boolean delete(Long id);
 
     T update(T object);
+
 }
