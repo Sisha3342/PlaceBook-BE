@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface MarkDao extends BaseDao<PlaceRate> {
     Optional<PlaceRate> getMarksByBookingId(Long id);
+    PlaceRate checkMarksByBookingId(Long id);
 }

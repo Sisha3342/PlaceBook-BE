@@ -18,4 +18,15 @@ public class MarkDaoImpl extends BaseDaoImpl<PlaceRate> implements MarkDao {
                 .setParameter("bookingId", id)
                 .uniqueResultOptional();
     }
+
+    @Override
+    public PlaceRate checkMarksByBookingId(Long id) {
+        Session session = getSession();
+        return session.createQuery("from PlaceRate pr " +
+                "where pr.booking" +
+                ".id = :bookingId", PlaceRate.class)
+                .setParameter("bookingId", id)
+                .uniqueResult();
+    }
+
 }

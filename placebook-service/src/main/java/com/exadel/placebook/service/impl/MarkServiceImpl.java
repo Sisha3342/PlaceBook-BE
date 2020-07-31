@@ -25,8 +25,10 @@ public class MarkServiceImpl implements MarkService {
 
     @Override
     public MarkSubmitDto submitMark(Long id, MarkParams markParams) {
-        PlaceRate placeRate = new PlaceRate();
-        Booking booking= bookingDao.find(id);
+        PlaceRate placeRate = markDao.checkMarksByBookingId(id);
+        if (placeRate == null)
+            placeRate = new PlaceRate();
+        Booking booking = bookingDao.load(id);
         placeRate.setBooking(booking);
         placeRate.setMarkAir(markParams.getMarkAir());
         placeRate.setMarkCleaning(markParams.getMarkCleaning());
@@ -34,7 +36,7 @@ public class MarkServiceImpl implements MarkService {
         placeRate.setMarkLocation(markParams.getMarkLocation());
         placeRate.setMarkLightning(markParams.getMarkLightning());
         placeRate.setMarkVolume(markParams.getMarkVolume());
-        markDao.update(placeRate);
+        markDao.saveOrUpdate(placeRate);
         return markConverter.convert(placeRate);
     }
 

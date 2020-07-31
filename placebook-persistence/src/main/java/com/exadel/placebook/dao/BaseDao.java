@@ -9,6 +9,8 @@ public interface BaseDao<T extends BaseEntity> {
 
     T save(T object);
 
+    void saveOrUpdate(T object);
+
     T find(Long id);
 
     T load(Long id);
