@@ -11,8 +11,11 @@ import java.util.Map;
 public interface BookingService {
 
     List<BookingDto> findByStatus(Long id, Status status);
+
     List<BookingDto> employeesBookingsByStatusAndHrId(Status status);
+
     List<BookingDto> employeesBookingsByStatus(Status status);
+
     List<BookingDto> findBookings(Long userId);
 
     List<PlaceHistoryDto> findPlaceHistory(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd);
@@ -22,8 +25,6 @@ public interface BookingService {
     BookingInfoDto getBookingInfo(Long id);
 
     BookingDto findById(Long id);
-
-    MarkDto getMarksByPlaceId(Long id);
 
     BookingDto addBooking(BookingRequest bookingRequest, Long userId);
 

@@ -12,20 +12,18 @@ import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
-import com.exadel.placebook.model.exception.MarksNotFoundException;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.BookingService;
+import com.exadel.placebook.service.MarkService;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +51,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MarkService markService;
+
     @Override
     public List<BookingDto> findBookings(Long userId) {
         List<Booking> list = bookingDao.findBookings(userId);
@@ -67,7 +68,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingInfoDto getBookingInfo(Long id) {
         Booking booking = bookingDao.find(id);
-        return bookingInfoConverter.convert(booking, getAverageMarks(booking.getPlace().getId()));
+        return bookingInfoConverter.convert(booking, markService.getMarksByBookingId(id));
     }
 
     @Override
@@ -104,15 +105,6 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.find(id));
     }
 
-    @Override
-    public MarkDto getMarksByPlaceId(Long id) {
-        try {
-            Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
-            return marks.get();
-        } catch (Exception e) {
-            throw new MarksNotFoundException("marks is not found");
-        }
-    }
 
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = getAvailablePlace(bookingRequest, userId);
