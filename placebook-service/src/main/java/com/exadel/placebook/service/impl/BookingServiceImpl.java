@@ -105,9 +105,9 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.find(id));
     }
 
-
+    @Override
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
-        Place place = getAvailablePlace(bookingRequest, userId);
+        Place place = getAvailablePlace(bookingRequest);
 
         Booking booking = new Booking();
         booking.setPlace(place);
@@ -121,7 +121,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto editBooking(BookingRequest bookingRequest, Long bookingId) {
-        Place place = getAvailablePlace(bookingRequest, userService.getUserStatus().getId());
+        Place place = getAvailablePlace(bookingRequest);
         Booking booking = bookingDao.load(bookingId);
 
         if (!booking.getStatus().equals(Status.ACTIVE)) {
@@ -148,15 +148,14 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.save(booking));
     }
 
-    private Place getAvailablePlace(BookingRequest bookingRequest, Long userId) {
-        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
-                bookingRequest.getTimeStart(),
-                bookingRequest.getTimeEnd(),
-                userId) != 0) {
-            throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
+    private Place getAvailablePlace(BookingRequest bookingRequest) {
+        Place place = placeDao.findByBookingRequest(bookingRequest);
+
+        if (place == null) {
+            throw new BookingException(String.format("no such place available %S", bookingRequest.getPlaceNumber()));
         }
 
-        return placeDao.load(bookingRequest.getPlaceId());
+        return place;
     }
 
     @Override
