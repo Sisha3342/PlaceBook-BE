@@ -22,6 +22,9 @@ public class Place extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PlaceStatus placeStatus;
 
+    @Column(name="capacity")
+    private long capacity;
+
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<Booking> bookings;
 }

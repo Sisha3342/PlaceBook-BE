@@ -40,6 +40,8 @@ public class BookingController {
 
     @GetMapping("/user/{userId}/booking/{bookingId}/info")
     public BookingInfoDto findBookingInfo(@PathVariable("userId") Long userId, @PathVariable("bookingId") Long bookingId) {
+        securityValidationService.validateUserCanGetBookingInfo(bookingId);
+
         return bookingService.getBookingInfo(bookingId);
     }
 

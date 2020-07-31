@@ -12,4 +12,5 @@
         <include file="db/2020_07_24_add_column_to_place_table.xml"/>
         <include file="db/2020_07_27_insert_into_database.xml"/>
         <include file="db/2020_07_27_add_column_to_floor_table.xml"/>
+        <include file="db/2020_07_31_add_capacity_to_place_table.xml"/>
 </databaseChangeLog>
