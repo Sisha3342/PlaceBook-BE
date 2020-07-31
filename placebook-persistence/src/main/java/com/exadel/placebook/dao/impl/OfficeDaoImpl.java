@@ -19,8 +19,8 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
         Session session = getSession();
         return session
                 .createQuery("select o from Office o join o.address a where " +
-                        "a.city like concat(:city,'%') and" +
-                        " a.country like concat(:country,'%')", Office.class)
+                        "(:city is null or a.city = :city) and " +
+                        "(:country is null or a.country = :country)", Office.class)
                 .setParameter("city", city)
                 .setParameter("country", country)
                 .list();
