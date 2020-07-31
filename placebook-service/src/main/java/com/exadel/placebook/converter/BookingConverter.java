@@ -14,6 +14,8 @@ public class BookingConverter {
     public BookingDto convert(Booking booking) {
         com.exadel.placebook.model.dto.BookingDto bookingDto = new com.exadel.placebook.model.dto.BookingDto();
         bookingDto.setId(booking.getId());
+        bookingDto.setUserId(booking.getId());
+        bookingDto.setPhotoUrl(booking.getUser().getPhotoUrl());
         bookingDto.setPlaceNumber(booking.getPlace().getPlaceNumber());
         bookingDto.setUserName(booking.getUser().getName());
         bookingDto.setUserSurname(booking.getUser().getSurname());
