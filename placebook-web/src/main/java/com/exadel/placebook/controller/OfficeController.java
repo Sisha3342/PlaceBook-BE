@@ -48,8 +48,9 @@ public class OfficeController {
         return officeService.getCitiesByCountry(country);
     }
 
-    @GetMapping("/countries/{country}/cities/{city}/offices")
-    public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable("country") String country, @PathVariable("city") String city) {
+    @GetMapping(value = {"/countries/{country}/cities/{city}/offices", "/countries/{country}/offices", "/offices"})
+    public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable(value = "country", required = false) String country,
+                                                      @PathVariable(value = "city", required = false) String city) {
         return officeService.getOfficesByCityAndCountry(city, country);
     }
 
@@ -86,14 +87,8 @@ public class OfficeController {
     }
 
     @PostMapping("office/{officeId}/configuration")
-    public OfficeDto saveOfficeConfiguration(@RequestBody List<FloorRequest> floors,
+    public OfficeDto saveOfficeConfiguration(@RequestBody List<FloorDto> floors,
                                              @PathVariable("officeId") Long officeId) {
         return officeService.saveOfficeConfiguration(floors, officeId);
-    }
-
-    @PutMapping("office/{officeId}/configuration")
-    public OfficeDto editOfficeConfiguration(@RequestBody List<FloorRequest> floors,
-                                             @PathVariable("officeId") Long officeId) {
-        return officeService.editOfficeConfiguration(floors, officeId);
     }
 }

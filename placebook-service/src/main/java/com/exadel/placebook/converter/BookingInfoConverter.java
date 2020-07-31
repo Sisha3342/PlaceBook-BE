@@ -18,6 +18,8 @@ public class BookingInfoConverter {
         bookingInfoDto.setUserName(booking.getUser().getName());
         bookingInfoDto.setUserSurname(booking.getUser().getSurname());
         bookingInfoDto.setPlaceInfo(booking.getPlace().getPlaceNumber());
+        bookingInfoDto.setUserId(booking.getUser().getId());
+        bookingInfoDto.setPhotoUrl(booking.getUser().getPhotoUrl());
         bookingInfoDto.setAddress(addressConverter.convert(booking.getPlace().getFloor().getOffice().getAddress()));
         bookingInfoDto.setTimeStart(booking.getTimeStart());
         bookingInfoDto.setTimeEnd(booking.getTimeEnd());

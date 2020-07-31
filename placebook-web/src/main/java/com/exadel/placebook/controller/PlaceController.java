@@ -1,5 +1,6 @@
 package com.exadel.placebook.controller;
 
+import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.dto.MarkParams;
 import com.exadel.placebook.model.dto.MarkSubmitDto;
@@ -16,15 +17,18 @@ import javax.validation.ValidationException;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class PlaceController {
 
     @Autowired
     private BookingService bookingService;
-
     @Autowired
     private PlaceService placeService;
     @Autowired
     private MarkService markService;
+
+    @Autowired
+    private PlaceConverter placeConverter;
 
     @GetMapping("/place/{placeId}/marks")
     public MarkDto getPlaceMarksById(@PathVariable("placeId") Long placeId) {
@@ -44,4 +48,5 @@ public class PlaceController {
         }
         return markService.submitMark(bookingId, markParams);
     }
+
 }

@@ -34,5 +34,7 @@ public interface BookingService {
 
     BookingDto deleteBooking(Long id);
 
+    MarkDto getAverageMarks(Long placeId);
+
     void completeEndedBooking();
 }

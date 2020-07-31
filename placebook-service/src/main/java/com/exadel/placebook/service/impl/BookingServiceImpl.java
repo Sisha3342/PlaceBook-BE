@@ -19,6 +19,7 @@ import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -59,10 +60,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public MarkDto getAverageMarks(Long placeId) {
+        return bookingDao.findMarksByPlaceId(placeId).orElse(new MarkDto());
+    }
+
+    @Override
     public BookingInfoDto getBookingInfo(Long id) {
-        Optional<MarkDto> markDto = bookingDao.findMarksByPlaceId(id);
         Booking booking = bookingDao.find(id);
-        return bookingInfoConverter.convert(booking, markDto.get());
+        return bookingInfoConverter.convert(booking, getAverageMarks(booking.getPlace().getId()));
     }
 
     @Override
@@ -101,13 +106,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public MarkDto getMarksByPlaceId(Long id) {
-        Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
-        if (!marks.isPresent()) {
+        try {
+            Optional<MarkDto> marks = bookingDao.findMarksByPlaceId(id);
+            return marks.get();
+        } catch (Exception e) {
             throw new MarksNotFoundException("marks is not found");
         }
-        return marks.get();
     }
-
 
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = getAvailablePlace(bookingRequest, userId);
