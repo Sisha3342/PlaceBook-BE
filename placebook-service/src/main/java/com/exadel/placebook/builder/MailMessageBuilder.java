@@ -1,12 +1,14 @@
 package com.exadel.placebook.builder;
 
+import com.exadel.placebook.dao.OfficeDao;
+import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.dto.BookingDto;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.MailMessageDto;
-import com.exadel.placebook.model.entity.Address;
-import com.exadel.placebook.model.entity.Place;
-import com.exadel.placebook.model.entity.Subscribe;
-import com.exadel.placebook.model.entity.User;
+import com.exadel.placebook.model.entity.*;
 import com.exadel.placebook.model.exception.SendMessageException;
+import com.exadel.placebook.service.UserService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -24,6 +26,15 @@ public class MailMessageBuilder {
 
     @Autowired
     private Configuration freemarkerConfig;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private OfficeDao officeDao;
+
+    @Autowired
+    private UserService userService;
 
     static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -43,6 +54,32 @@ public class MailMessageBuilder {
 
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
             MailMessageDto message = new MailMessageDto(text, bookingDto.getEmail());
+            return message;
+        } catch (IOException e) {
+            throw new SendMessageException("Send email exception! IOException");
+        } catch (TemplateException e) {
+            throw new SendMessageException("Send email exception! TemplateException");
+
+        }
+    }
+
+    public MailMessageDto convert(BookingRequest bookingRequest, Long userId) {
+        try {
+            freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+            Template temp = freemarkerConfig.getTemplate("email-template.ftl");
+            Address address = officeDao.findOfficeById(bookingRequest.getOfficeId()).getAddress();
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("name", userDao.find(userService.getUserStatus().getId()).getName());
+            model.put("text", "You have just booked your place!");
+            model.put("country", address.getCountry());
+            model.put("city", address.getCity());
+            model.put("office", address.getAddress());
+            model.put("placeNumber", bookingRequest.getPlaceNumber());
+            model.put("timeStart", bookingRequest.getTimeStart().format(formatter));
+            model.put("timeEnd", bookingRequest.getTimeEnd().format(formatter));
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
+            MailMessageDto message = new MailMessageDto(text, userDao.find(userId).getEmail());
             return message;
         } catch (IOException e) {
             throw new SendMessageException("Send email exception! IOException");

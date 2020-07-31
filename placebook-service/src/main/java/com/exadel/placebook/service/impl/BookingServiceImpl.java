@@ -115,7 +115,6 @@ public class BookingServiceImpl implements BookingService {
         booking.setTimeStart(bookingRequest.getTimeStart());
         booking.setTimeEnd(bookingRequest.getTimeEnd());
         booking.setUser(userDao.load(userId));
-
         return bookingConverter.convert(bookingDao.save(booking));
     }
 

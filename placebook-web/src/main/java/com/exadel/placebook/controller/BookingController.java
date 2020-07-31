@@ -1,5 +1,6 @@
 package com.exadel.placebook.controller;
 
+import com.exadel.placebook.builder.MailMessageBuilder;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.BookingRequest;
@@ -8,7 +9,9 @@ import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.ValidationException;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.SecurityValidationService;
+import com.exadel.placebook.service.SendMailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailMessage;
 import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,13 @@ public class BookingController {
 
     @Autowired
     private SecurityValidationService securityValidationService;
+
+    @Autowired
+    private SendMailService sendMailService;
+
+    @Autowired
+    private MailMessageBuilder mailMessageBuilder;
+
 
     @GetMapping("/user/{userId}/bookings")
     public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam("status") Status status) {
@@ -57,9 +67,10 @@ public class BookingController {
             throw new ValidationException(result.getAllErrors().toString());
         }
         securityValidationService.validateUserCanAddBooking(userId);
-
+        sendMailService.sendEmail(mailMessageBuilder.convert(bookingRequest, userId));
         return bookingService.addBooking(bookingRequest, userId);
     }
+
 
     @PutMapping("/user/booking/{bookingId}")
     public BookingDto editBooking(@Valid @RequestBody BookingRequest bookingRequest,

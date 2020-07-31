@@ -8,4 +8,5 @@ import java.util.List;
 public interface OfficeDao extends BaseDao<Office> {
     List<Office> findOfficesByCityAndCountry(String city, String country);
     List<Floor> findFloorsByOfficeId(Long officeId);
+    Office findOfficeById(Long id);
 }
