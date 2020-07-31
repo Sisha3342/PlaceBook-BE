@@ -2,6 +2,7 @@ package com.exadel.placebook.converter;
 
 import com.exadel.placebook.model.dto.BookingInfoDto;
 import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.dto.MarkSubmitDto;
 import com.exadel.placebook.model.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ public class BookingInfoConverter {
     @Autowired
     private AddressConverter addressConverter;
 
-    public BookingInfoDto convert(Booking booking, MarkDto markDto) {
+    public BookingInfoDto convert(Booking booking, MarkSubmitDto markSubmitDto) {
         BookingInfoDto bookingInfoDto = new BookingInfoDto();
         bookingInfoDto.setId(booking.getId());
         bookingInfoDto.setUserName(booking.getUser().getName());
@@ -24,7 +25,7 @@ public class BookingInfoConverter {
         bookingInfoDto.setTimeStart(booking.getTimeStart());
         bookingInfoDto.setTimeEnd(booking.getTimeEnd());
         bookingInfoDto.setStatus(booking.getStatus());
-        bookingInfoDto.setMarks(markDto);
+        bookingInfoDto.setMarkSubmitDto(markSubmitDto);
         return bookingInfoDto;
     }
 }

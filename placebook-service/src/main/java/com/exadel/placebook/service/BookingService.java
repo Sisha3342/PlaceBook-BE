@@ -26,8 +26,6 @@ public interface BookingService {
 
     BookingDto findById(Long id);
 
-    MarkDto getMarksByPlaceId(Long id);
-
     BookingDto addBooking(BookingRequest bookingRequest, Long userId);
 
     BookingDto editBooking(BookingRequest bookingRequest, Long bookingId);
