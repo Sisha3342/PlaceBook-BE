@@ -6,13 +6,14 @@ import com.exadel.placebook.model.enums.PlaceStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FloorConfigElementInfoConverter {
+public class DashboardElementInfoConverter {
 
     public Place convert(DashboardElementInfo elementInfo) {
         Place place = new Place();
 
         place.setPlaceStatus(elementInfo.isActive() ? PlaceStatus.ACTIVE : PlaceStatus.INACTIVE);
         place.setPlaceNumber(elementInfo.getNumber());
+        place.setCapacity(elementInfo.getCapacity());
 
         return place;
     }

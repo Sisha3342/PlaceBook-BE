@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class FloorConverter {
 
     @Autowired
-    private FloorConfigElementInfoConverter converter;
+    private DashboardElementInfoConverter converter;
 
     @Autowired
     private ObjectMapper objectMapper;
