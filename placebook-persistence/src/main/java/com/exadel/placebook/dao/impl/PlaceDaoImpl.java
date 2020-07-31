@@ -1,6 +1,7 @@
 package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.PlaceSearchDto;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
@@ -40,16 +41,19 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
     }
 
     @Override
-    public long countBookingsByPlaceIdAndTime(Long placeId, LocalDateTime start, LocalDateTime end, Long userId) {
-        Session session = getSession();
-        return session.createQuery("select count (b) from Booking b " +
-                "where b.place.id = :id and " +
-                "b.timeEnd > :timeStart and b.timeStart < :timeEnd and " +
-                "b.user.id <> :userId", Long.class)
-                .setParameter("id", placeId)
-                .setParameter("timeStart", start)
-                .setParameter("timeEnd", end)
-                .setParameter("userId", userId)
+    public Place findByBookingRequest(BookingRequest bookingRequest) {
+        return getSession().createQuery("select p from Place p join p.floor f where " +
+                "f.office.id = :officeId and " +
+                "f.floorNumber = :floorNumber and " +
+                "p.placeNumber = :placeNumber and " +
+                "(select count (b) from Booking b " +
+                "where b.place.id = p.id and " +
+                "b.timeEnd > :timeStart and b.timeStart < :timeEnd) = 0", Place.class)
+                .setParameter("timeStart", bookingRequest.getTimeStart())
+                .setParameter("timeEnd", bookingRequest.getTimeEnd())
+                .setParameter("floorNumber", bookingRequest.getFloorNumber())
+                .setParameter("placeNumber", bookingRequest.getPlaceNumber())
+                .setParameter("officeId", bookingRequest.getOfficeId())
                 .getSingleResult();
     }
 
