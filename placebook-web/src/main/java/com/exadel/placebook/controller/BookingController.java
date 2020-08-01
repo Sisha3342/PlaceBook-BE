@@ -67,8 +67,10 @@ public class BookingController {
             throw new ValidationException(result.getAllErrors().toString());
         }
         securityValidationService.validateUserCanAddBooking(userId);
-        sendMailService.sendEmail(mailMessageBuilder.convert(bookingRequest, userId));
-        return bookingService.addBooking(bookingRequest, userId);
+
+        BookingDto bookingDto = bookingService.addBooking(bookingRequest, userId);
+        sendMailService.sendEmail(mailMessageBuilder.convert(bookingDto));
+        return bookingDto;
     }
 
 

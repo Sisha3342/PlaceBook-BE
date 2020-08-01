@@ -10,6 +10,7 @@ import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.model.security.UserContext;
@@ -152,6 +153,10 @@ public class BookingServiceImpl implements BookingService {
 
         if (place == null) {
             throw new EntityNotFoundException(Place.class, bookingRequest.getPlaceId());
+        }
+
+        if(place.getPlaceStatus().equals(PlaceStatus.INACTIVE)) {
+            throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
         }
 
         long placeBookingsNumber = bookingDao.countBookingsByPlaceIdAndTimeRange(bookingRequest.getPlaceId(),
