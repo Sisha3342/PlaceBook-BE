@@ -4,13 +4,11 @@ import com.exadel.placebook.converter.FloorConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
+import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.exception.FloorException;
-import com.exadel.placebook.model.dto.FloorDto;
-import com.exadel.placebook.model.dto.OfficeDto;
-import com.exadel.placebook.model.dto.OfficeParams;
-import com.exadel.placebook.model.dto.PlaceDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Address;
 import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
@@ -49,12 +47,26 @@ public class OfficeServiceImpl implements OfficeService {
     @Autowired
     private PlaceConverter placeConverter;
 
+    @Autowired
+    private BookingDao bookingDao;
+
     @Override
-    public List<PlaceDto> getPlacesByFloorId(Long floorId) {
-        return placeDao.findPlacesByFloorId(floorId)
-                .stream()
-                .map(place -> placeConverter.convert(place))
-                .collect(Collectors.toList());
+    public List<PlaceResponse> getPlacesByFloorId(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        List<Place> places = placeDao.findPlacesByFloorId(floorId);
+        List<PlaceResponse> result = new LinkedList<>();
+
+        for(Place place: places) {
+            long countBookings = bookingDao.countBookingsByPlaceIdAndTimeRange(place.getId(), timeStart, timeEnd);
+
+            PlaceResponse placeResponse = new PlaceResponse();
+            placeResponse.setPlaceNumber(place.getPlaceNumber());
+            placeResponse.setPlaceId(place.getId());
+            placeResponse.setOccupied(countBookings != 0);
+
+            result.add(placeResponse);
+        }
+
+        return result;
     }
 
     @Override

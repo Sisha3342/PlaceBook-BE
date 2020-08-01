@@ -11,9 +11,8 @@ import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.SecurityValidationService;
 import com.exadel.placebook.service.SendMailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailMessage;
-import org.springframework.validation.BindingResult;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

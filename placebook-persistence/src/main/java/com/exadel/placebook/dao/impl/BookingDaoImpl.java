@@ -108,7 +108,8 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public Long countBookingsByPlaceIdAndTimeRange(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
         return getSession().createQuery("select count (b) from Booking b where " +
                 "b.place.id = :placeId and " +
-                "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Long.class)
+                "b.timeEnd > :timeStart and b.timeStart < :timeEnd and " +
+                "b.status = 'ACTIVE'", Long.class)
                 .setParameter("timeStart", timeStart)
                 .setParameter("timeEnd", timeEnd)
                 .setParameter("placeId", placeId)

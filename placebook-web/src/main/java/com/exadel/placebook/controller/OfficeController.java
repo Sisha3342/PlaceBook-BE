@@ -25,8 +25,12 @@ public class OfficeController {
     private OfficeParamsValidator officeParamsValidator;
 
     @GetMapping("/floor/{floorId}/places")
-    public List<PlaceDto> getPlacesByFloorId(@PathVariable("floorId") Long floorId) {
-        return officeService.getPlacesByFloorId(floorId);
+    public List<PlaceResponse> getPlacesByFloorId(@PathVariable("floorId") Long floorId,
+                                                  @RequestParam("timeStart")
+                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
+                                                  @RequestParam("timeEnd")
+                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
+        return officeService.getPlacesByFloorId(floorId, timeStart, timeEnd);
     }
 
     @GetMapping("/floor/{floorId}/freePlaces")
