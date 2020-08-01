@@ -1,6 +1,5 @@
 package com.exadel.placebook.dao;
 
-import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.PlaceSearchDto;
 import com.exadel.placebook.model.entity.Place;
 
@@ -9,10 +8,9 @@ import java.util.List;
 
 public interface PlaceDao extends BaseDao<Place> {
     List<PlaceSearchDto> getPlaceByUserNow(Long userId);
+
     List<Place> findPlacesByFloorId(Long floorId);
 
     List<Place> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
-
-    Place findByBookingRequest(BookingRequest bookingRequest);
 }
 

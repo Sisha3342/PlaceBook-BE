@@ -148,10 +148,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private Place getAvailablePlace(BookingRequest bookingRequest) {
-        Place place = placeDao.findByBookingRequest(bookingRequest);
+        Place place = placeDao.find(bookingRequest.getPlaceId());
 
         if (place == null) {
-            throw new BookingException(String.format("no such place available %S", bookingRequest.getPlaceNumber()));
+            throw new EntityNotFoundException(Place.class, bookingRequest.getPlaceId());
+        }
+
+        long placeBookingsNumber = bookingDao.countBookingsByPlaceIdAndTimeRange(bookingRequest.getPlaceId(),
+                bookingRequest.getTimeStart(),
+                bookingRequest.getTimeEnd());
+
+        if(placeBookingsNumber != 0) {
+            throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
         }
 
         return place;

@@ -41,23 +41,6 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
     }
 
     @Override
-    public Place findByBookingRequest(BookingRequest bookingRequest) {
-        return getSession().createQuery("select p from Place p join p.floor f where " +
-                "f.office.id = :officeId and " +
-                "f.floorNumber = :floorNumber and " +
-                "p.placeNumber = :placeNumber and " +
-                "(select count (b) from Booking b " +
-                "where b.place.id = p.id and " +
-                "b.timeEnd > :timeStart and b.timeStart < :timeEnd) = 0", Place.class)
-                .setParameter("timeStart", bookingRequest.getTimeStart())
-                .setParameter("timeEnd", bookingRequest.getTimeEnd())
-                .setParameter("floorNumber", bookingRequest.getFloorNumber())
-                .setParameter("placeNumber", bookingRequest.getPlaceNumber())
-                .setParameter("officeId", bookingRequest.getOfficeId())
-                .getSingleResult();
-    }
-
-    @Override
     public List<Place> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
         Session session = getSession();
         return session.createQuery("select p from Place p " +

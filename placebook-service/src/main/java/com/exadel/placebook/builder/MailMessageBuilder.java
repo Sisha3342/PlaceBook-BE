@@ -34,6 +34,9 @@ public class MailMessageBuilder {
     private OfficeDao officeDao;
 
     @Autowired
+    private PlaceDao placeDao;
+
+    @Autowired
     private UserService userService;
 
     static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -67,7 +70,8 @@ public class MailMessageBuilder {
         try {
             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
-            Address address = officeDao.findOfficeById(bookingRequest.getOfficeId()).getAddress();
+            Place place = placeDao.find(bookingRequest.getPlaceId());
+            Address address = place.getFloor().getOffice().getAddress();
 
             Map<String, Object> model = new HashMap<>();
             model.put("name", userDao.find(userService.getUserStatus().getId()).getName());
@@ -75,7 +79,7 @@ public class MailMessageBuilder {
             model.put("country", address.getCountry());
             model.put("city", address.getCity());
             model.put("office", address.getAddress());
-            model.put("placeNumber", bookingRequest.getPlaceNumber());
+            model.put("placeNumber", place.getPlaceNumber());
             model.put("timeStart", bookingRequest.getTimeStart().format(formatter));
             model.put("timeEnd", bookingRequest.getTimeEnd().format(formatter));
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);

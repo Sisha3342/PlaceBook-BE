@@ -12,10 +12,6 @@ public class BookingRequest {
     private LocalDateTime timeStart;
     @NotNull
     private LocalDateTime timeEnd;
-    @NotBlank
-    private String placeNumber;
-    @NotBlank
-    private String floorNumber;
     @NotNull
-    private long officeId;
+    private Long placeId;
 }
