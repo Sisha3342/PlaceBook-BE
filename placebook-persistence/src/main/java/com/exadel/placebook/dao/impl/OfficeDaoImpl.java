@@ -4,6 +4,7 @@ package com.exadel.placebook.dao.impl;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
+import com.exadel.placebook.model.entity.Place;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -34,4 +35,12 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
                 .setParameter("id", officeId);
         return query.list();
     }
+
+    @Override
+    public Office findOfficeById(Long officeId) {
+        return getSession().createQuery("select o from Office o where o.id = :officeId ", Office.class)
+                .setParameter("officeId", officeId)
+                .getSingleResult();
+    }
+
 }

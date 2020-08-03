@@ -10,6 +10,7 @@ import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.model.security.UserContext;
@@ -105,9 +106,9 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.find(id));
     }
 
-
+    @Override
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
-        Place place = getAvailablePlace(bookingRequest, userId);
+        Place place = getAvailablePlace(bookingRequest);
 
         Booking booking = new Booking();
         booking.setPlace(place);
@@ -115,13 +116,12 @@ public class BookingServiceImpl implements BookingService {
         booking.setTimeStart(bookingRequest.getTimeStart());
         booking.setTimeEnd(bookingRequest.getTimeEnd());
         booking.setUser(userDao.load(userId));
-
         return bookingConverter.convert(bookingDao.save(booking));
     }
 
     @Override
     public BookingDto editBooking(BookingRequest bookingRequest, Long bookingId) {
-        Place place = getAvailablePlace(bookingRequest, userService.getUserStatus().getId());
+        Place place = getAvailablePlace(bookingRequest);
         Booking booking = bookingDao.load(bookingId);
 
         if (!booking.getStatus().equals(Status.ACTIVE)) {
@@ -148,15 +148,26 @@ public class BookingServiceImpl implements BookingService {
         return bookingConverter.convert(bookingDao.save(booking));
     }
 
-    private Place getAvailablePlace(BookingRequest bookingRequest, Long userId) {
-        if (placeDao.countBookingsByPlaceIdAndTime(bookingRequest.getPlaceId(),
+    private Place getAvailablePlace(BookingRequest bookingRequest) {
+        Place place = placeDao.find(bookingRequest.getPlaceId());
+
+        if (place == null) {
+            throw new EntityNotFoundException(Place.class, bookingRequest.getPlaceId());
+        }
+
+        if(place.getPlaceStatus().equals(PlaceStatus.INACTIVE)) {
+            throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
+        }
+
+        long placeBookingsNumber = bookingDao.countBookingsByPlaceIdAndTimeRange(bookingRequest.getPlaceId(),
                 bookingRequest.getTimeStart(),
-                bookingRequest.getTimeEnd(),
-                userId) != 0) {
+                bookingRequest.getTimeEnd());
+
+        if(placeBookingsNumber != 0) {
             throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
         }
 
-        return placeDao.load(bookingRequest.getPlaceId());
+        return place;
     }
 
     @Override

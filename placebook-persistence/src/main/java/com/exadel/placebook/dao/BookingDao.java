@@ -28,4 +28,5 @@ public interface BookingDao extends BaseDao<Booking> {
 
     void completeEndedBookings();
 
+    Long countBookingsByPlaceIdAndTimeRange(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd);
 }
