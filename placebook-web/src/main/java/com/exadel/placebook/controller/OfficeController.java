@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -78,7 +79,7 @@ public class OfficeController {
     }
 
     @GetMapping("/office/{officeId}")
-    public OfficeDto editOffice(@PathVariable("officeId") Long officeId){
+    public OfficeDto editOffice(@PathVariable("officeId") Long officeId) {
         return officeService.getOffice(officeId);
     }
 
@@ -88,9 +89,9 @@ public class OfficeController {
     }
 
     @DeleteMapping("/office/{officeId}")
-    public ResponseEntity<String> deleteOffice(@PathVariable("officeId") Long officeId) {
+    public ResponseEntity<Response> deleteOffice(@PathVariable("officeId") Long officeId) {
         if (officeService.deleteOffice(officeId)) {
-            return ResponseEntity.ok("Office deleted");
+            return ResponseEntity.ok(new Response("Office Deleted"));
         }
         return ResponseEntity.notFound().build();
     }
