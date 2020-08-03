@@ -114,6 +114,12 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
+    public OfficeDto getOffice(Long officeId) {
+        Office office = officeDao.find(officeId);
+        return officeConverter.convert(office);
+    }
+
+    @Override
     public List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
         return placeDao.getFreePlacesByFloorIdAndTimeRange(floorId, start, end)
                 .stream()
