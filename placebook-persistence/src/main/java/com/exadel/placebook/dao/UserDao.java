@@ -10,7 +10,7 @@ public interface UserDao extends BaseDao<User> {
 
     Optional<User> findByEmail(String email);
 
-    List<User> findUsers(AdminUserFilter adminUserFilter);
+    List<User> findUsers(AdminUserFilter adminUserFilter, Long id);
 
     List<User> findUsers(String text);
 }

@@ -1,5 +1,6 @@
 package com.exadel.placebook.builder;
 
+import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.UserDao;
@@ -31,7 +32,7 @@ public class MailMessageBuilder {
     private UserDao userDao;
 
     @Autowired
-    private OfficeDao officeDao;
+    private BookingDao bookingDao;
 
     @Autowired
     private PlaceDao placeDao;
@@ -47,7 +48,7 @@ public class MailMessageBuilder {
             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
             Map<String, Object> model = new HashMap<>();
             model.put("name", bookingDto.getUserName());
-            model.put("text", "Your booking is CANCELLED!");
+            model.put("text", "You have just booked your place!");
             model.put("country", bookingDto.getAddress().getCountry());
             model.put("city", bookingDto.getAddress().getCity());
             model.put("office", bookingDto.getAddress().getAddress());
@@ -66,7 +67,36 @@ public class MailMessageBuilder {
         }
     }
 
-    public MailMessageDto convert(BookingRequest bookingRequest, Long userId) {
+    public MailMessageDto convert(Long bookingId){
+
+        try {
+            freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+            Template temp = freemarkerConfig.getTemplate("email-template.ftl");
+            Booking booking = bookingDao.find(bookingId);
+            Address address = booking.getPlace().getFloor().getOffice().getAddress();
+            Map<String, Object> model = new HashMap<>();
+            model.put("name", booking.getUser().getName());
+            model.put("text", "Your booking is CANCELLED!");
+            model.put("country", address.getCountry());
+            model.put("city", address.getCity());
+            model.put("office", address.getAddress());
+            model.put("placeNumber", booking.getPlace().getPlaceNumber());
+            model.put("timeStart", booking.getTimeStart().format(formatter));
+            model.put("timeEnd", booking.getTimeEnd().format(formatter));
+
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
+            MailMessageDto message = new MailMessageDto(text, booking.getUser().getEmail());
+            return message;
+        } catch (IOException e) {
+            throw new SendMessageException("Send email exception! IOException");
+        } catch (TemplateException e) {
+            throw new SendMessageException("Send email exception! TemplateException");
+
+        }
+
+    }
+
+    public MailMessageDto convert(BookingRequest bookingRequest, Long bookingId) {
         try {
             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
@@ -74,8 +104,8 @@ public class MailMessageBuilder {
             Address address = place.getFloor().getOffice().getAddress();
 
             Map<String, Object> model = new HashMap<>();
-            model.put("name", userDao.find(userService.getUserStatus().getId()).getName());
-            model.put("text", "You have just booked your place!");
+            model.put("name", bookingDao.find(bookingId).getUser().getName());
+            model.put("text", "Your booking has been changed!");
             model.put("country", address.getCountry());
             model.put("city", address.getCity());
             model.put("office", address.getAddress());
@@ -83,7 +113,7 @@ public class MailMessageBuilder {
             model.put("timeStart", bookingRequest.getTimeStart().format(formatter));
             model.put("timeEnd", bookingRequest.getTimeEnd().format(formatter));
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
-            MailMessageDto message = new MailMessageDto(text, userDao.find(userId).getEmail());
+            MailMessageDto message = new MailMessageDto(text, bookingDao.find(bookingId).getUser().getEmail());
             return message;
         } catch (IOException e) {
             throw new SendMessageException("Send email exception! IOException");

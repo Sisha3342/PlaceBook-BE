@@ -81,15 +81,17 @@ public class BookingController {
             throw new ValidationException(result.getAllErrors().toString());
         }
         securityValidationService.validateUserCanEditBooking(bookingId);
-
-        return bookingService.editBooking(bookingRequest, bookingId);
+        BookingDto bookingDto = bookingService.editBooking(bookingRequest, bookingId);
+        sendMailService.sendEmail(mailMessageBuilder.convert(bookingRequest, bookingId));
+        return bookingDto;
     }
 
     @DeleteMapping("/user/booking/{bookingId}")
     public BookingDto deleteBooking(@PathVariable("bookingId") Long bookingId) {
         securityValidationService.validateUserCanDeleteBooking(bookingId);
-
-        return bookingService.deleteBooking(bookingId);
+        BookingDto bookingDto = bookingService.deleteBooking(bookingId);
+        sendMailService.sendEmail(mailMessageBuilder.convert(bookingId));
+        return bookingDto;
     }
 
     @GetMapping("/place/{placeId}/bookings")

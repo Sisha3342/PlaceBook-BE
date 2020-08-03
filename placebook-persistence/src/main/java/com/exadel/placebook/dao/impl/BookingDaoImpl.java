@@ -104,6 +104,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
         return query.list();
     }
 
+
     @Override
     public Long countBookingsByPlaceIdAndTimeRange(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
         return getSession().createQuery("select count (b) from Booking b where " +
