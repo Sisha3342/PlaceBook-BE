@@ -18,6 +18,8 @@ public interface OfficeService {
 
     OfficeDto editOffice(Long officeId, OfficeParams officeParams);
 
+    OfficeDto getOffice(Long officeId);
+
     List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
 
     List<FloorDto> getFloorsByOfficeId(Long officeId);

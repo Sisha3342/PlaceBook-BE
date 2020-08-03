@@ -29,16 +29,16 @@ public class OfficeController {
                                                   @RequestParam("timeStart")
                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
                                                   @RequestParam("timeEnd")
-                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
+                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
         return officeService.getPlacesByFloorId(floorId, timeStart, timeEnd);
     }
 
     @GetMapping("/floor/{floorId}/freePlaces")
     public List<PlaceDto> getFreePlaces(@PathVariable("floorId") Long floorId,
-                                             @RequestParam("timeStart")
-                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
-                                             @RequestParam("timeEnd")
-                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
+                                        @RequestParam("timeStart")
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeStart,
+                                        @RequestParam("timeEnd")
+                                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime timeEnd) {
         return officeService.getFreePlacesByFloorIdAndTimeRange(floorId, timeStart, timeEnd);
     }
 
@@ -59,7 +59,7 @@ public class OfficeController {
     }
 
     @PostMapping("/office")
-    public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams,BindingResult result) {
+    public OfficeDto addOffice(@Valid @RequestBody OfficeParams officeParams, BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
@@ -68,13 +68,18 @@ public class OfficeController {
     }
 
     @PutMapping("/office/{officeId}")
-    public OfficeDto editOffice(@PathVariable("officeId") Long officeId,@Valid@RequestBody OfficeParams officeParams,
-    BindingResult result) {
+    public OfficeDto editOffice(@PathVariable("officeId") Long officeId, @Valid @RequestBody OfficeParams officeParams,
+                                BindingResult result) {
         if (result.hasErrors()) {
             throw new ValidationException(result.getAllErrors().toString());
         }
         officeParamsValidator.validate(officeParams);
         return officeService.editOffice(officeId, officeParams);
+    }
+
+    @GetMapping("/office/{officeId}")
+    public OfficeDto editOffice(@PathVariable("officeId") Long officeId){
+        return officeService.getOffice(officeId);
     }
 
     @GetMapping("/office/{officeId}/floors")
