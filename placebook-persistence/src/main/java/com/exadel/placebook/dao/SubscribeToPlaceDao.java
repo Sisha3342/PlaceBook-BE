@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface SubscribeToPlaceDao extends BaseDao<Subscribe> {
     List<Subscribe> freePlaceFromSubscribe();
-    void deleteSubscribes(List<Subscribe> list);
+    void deleteSubscribes(List<Long> list);
 }
