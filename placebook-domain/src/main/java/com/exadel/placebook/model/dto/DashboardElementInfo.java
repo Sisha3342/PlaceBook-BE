@@ -10,4 +10,5 @@ public class DashboardElementInfo {
     private String icon;
     private String tooltip;
     private long capacity;
+    private String border;
 }

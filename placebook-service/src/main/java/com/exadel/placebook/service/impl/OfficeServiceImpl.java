@@ -114,6 +114,12 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
+    public OfficeDto getOffice(Long officeId) {
+        Office office = officeDao.find(officeId);
+        return officeConverter.convert(office);
+    }
+
+    @Override
     public List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
         return placeDao.getFreePlacesByFloorIdAndTimeRange(floorId, start, end)
                 .stream()
@@ -235,10 +241,10 @@ public class OfficeServiceImpl implements OfficeService {
         }
 
         for(Floor floor: floors) {
-            long uniquePlacesNumberSize = floor.getPlaces().stream()
+            long uniquePlacesNumbersSize = floor.getPlaces().stream()
                     .map(Place::getPlaceNumber).distinct().count();
 
-            if(uniqueFloorsNumbersSize < floor.getPlaces().size()) {
+            if(uniquePlacesNumbersSize < floor.getPlaces().size()) {
                 throw new FloorException("duplicate place numbers");
             }
         }
