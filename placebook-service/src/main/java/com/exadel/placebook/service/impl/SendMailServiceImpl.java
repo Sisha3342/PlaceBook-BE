@@ -29,7 +29,7 @@ public class SendMailServiceImpl implements SendMailService {
             helper.setSubject("Placebook notification");
             this.emailSender.send(message);
         } catch (MessagingException e) {
-            throw new SendMessageException("Send email exception! MessagingException");
+            throw new SendMessageException("Send email exception! MessagingException", e);
         }
 
 

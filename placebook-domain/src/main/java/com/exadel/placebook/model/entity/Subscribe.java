@@ -8,11 +8,11 @@ import javax.persistence.*;
 @Table(name = "subscribe_to_place")
 @Data
 public class Subscribe extends BaseEntity {
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "place_id")
     private Place place;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

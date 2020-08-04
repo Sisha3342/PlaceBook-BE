@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,10 +65,12 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public void subscribeChecker() {
-        List<Subscribe> list = subscribeToPlaceDao.freePlaceFromSubscribe();
-        if (list.size() != 0) {
-            list.forEach(s -> sendMailService.sendEmail(mailMessageBuilder.convert(s)));
+        List<Subscribe> subscribes = subscribeToPlaceDao.freePlaceFromSubscribe();
+        if (subscribes.size() != 0) {
+            List<Long> list = new ArrayList<>();
+            subscribes.forEach(s -> list.add(s.getId()));
             subscribeToPlaceDao.deleteSubscribes(list);
+            subscribes.forEach(s -> sendMailService.sendEmail(mailMessageBuilder.convert(s)));
         }
     }
 }
