@@ -84,13 +84,9 @@ public class MailMessageBuilder {
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
             MailMessageDto message = new MailMessageDto(text, booking.getUser().getEmail());
             return message;
-        } catch (IOException e) {
-            throw new SendMessageException("Send email exception! IOException");
-        } catch (TemplateException e) {
-            throw new SendMessageException("Send email exception! TemplateException");
-
+        } catch (IOException | TemplateException e) {
+            throw new SendMessageException("Send email exception!", e);
         }
-
     }
 
     public MailMessageDto convert(BookingRequest bookingRequest, Long bookingId) {
