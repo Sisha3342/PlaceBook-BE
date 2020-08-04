@@ -58,11 +58,8 @@ public class MailMessageBuilder {
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
             MailMessageDto message = new MailMessageDto(text, bookingDto.getEmail());
             return message;
-        } catch (IOException e) {
-            throw new SendMessageException("Send email exception! IOException");
-        } catch (TemplateException e) {
-            throw new SendMessageException("Send email exception! TemplateException");
-
+        } catch (IOException | TemplateException e) {
+            throw new SendMessageException("Send email exception!", e);
         }
     }
 
@@ -88,12 +85,10 @@ public class MailMessageBuilder {
             MailMessageDto message = new MailMessageDto(text, userDao.find(userService.getUserStatus().getId()).getEmail());
 
             return message;
-        } catch (IOException e) {
-            throw new SendMessageException("Send email exception! IOException");
-        } catch (TemplateException e) {
-            throw new SendMessageException("Send email exception! TemplateException");
-
+        } catch (IOException | TemplateException e) {
+            throw new SendMessageException("Send email exception!", e);
         }
+
     }
 
     public MailMessageDto convert(Subscribe subscribe) {
@@ -107,7 +102,7 @@ public class MailMessageBuilder {
 
             Map<String, Object> model = new HashMap<>();
             model.put("name", user.getName());
-            model.put("text", "We are glad to tell you, that the place you subscribed to is free! have time to book!");
+            model.put("text", "We are glad to tell you, that the place you subscribed to is free! Have time to book!");
             model.put("country", address.getCountry());
             model.put("city", address.getCity());
             model.put("office", address.getAddress());
@@ -117,11 +112,8 @@ public class MailMessageBuilder {
             MailMessageDto message = new MailMessageDto(text, user.getEmail());
 
             return message;
-        } catch (IOException e) {
-            throw new SendMessageException("Send email exception! IOException");
-        } catch (TemplateException e) {
-            throw new SendMessageException("Send email exception! TemplateException");
-
+        } catch (IOException | TemplateException e) {
+            throw new SendMessageException("Send email exception!", e);
         }
     }
 }
