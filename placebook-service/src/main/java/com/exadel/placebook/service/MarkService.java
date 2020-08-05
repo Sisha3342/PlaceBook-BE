@@ -1,6 +1,5 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.dto.MarkParams;
 import com.exadel.placebook.model.dto.MarkSubmitDto;
 
