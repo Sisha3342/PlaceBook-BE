@@ -1,7 +1,8 @@
 package com.exadel.placebook.model.entity;
 
-import lombok.Data;
-import org.hibernate.annotations.OnDelete;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -9,7 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "office")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Office extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL)

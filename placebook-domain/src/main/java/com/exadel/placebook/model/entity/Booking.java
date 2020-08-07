@@ -2,14 +2,18 @@ package com.exadel.placebook.model.entity;
 
 
 import com.exadel.placebook.model.enums.Status;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "booking")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Booking extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -1,13 +1,18 @@
 package com.exadel.placebook.model.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Table(name="address")
 @Entity
-
 public class Address extends BaseEntity {
 
     @Column(name = "address")

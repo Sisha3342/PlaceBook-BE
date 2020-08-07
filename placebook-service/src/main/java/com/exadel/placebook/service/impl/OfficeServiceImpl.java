@@ -24,6 +24,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -48,26 +49,16 @@ public class OfficeServiceImpl implements OfficeService {
     @Autowired
     private PlaceConverter placeConverter;
 
-    @Autowired
-    private BookingDao bookingDao;
-
     @Override
     public List<PlaceResponse> getPlacesByFloorId(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd) {
-        List<Place> places = placeDao.findPlacesByFloorId(floorId);
-        List<PlaceResponse> result = new LinkedList<>();
+        Map<Place, Boolean> placeBooleanMap = placeDao.getPlacesWithOccupation(floorId, timeStart, timeEnd);
 
-        for(Place place: places) {
-            long countBookings = bookingDao.countBookingsByPlaceIdAndTimeRange(place.getId(), timeStart, timeEnd);
-
-            PlaceResponse placeResponse = new PlaceResponse();
-            placeResponse.setPlaceNumber(place.getPlaceNumber());
-            placeResponse.setPlaceId(place.getId());
-            placeResponse.setOccupied(countBookings != 0);
-
-            result.add(placeResponse);
-        }
-
-        return result;
+        return placeBooleanMap.entrySet().stream()
+                .map(entry -> new PlaceResponse(
+                        entry.getKey().getId(),
+                        entry.getKey().getPlaceNumber(),
+                        entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -241,11 +232,11 @@ public class OfficeServiceImpl implements OfficeService {
             throw new FloorException("duplicate floor numbers");
         }
 
-        for(Floor floor: floors) {
+        for (Floor floor : floors) {
             long uniquePlacesNumbersSize = floor.getPlaces().stream()
                     .map(Place::getPlaceNumber).distinct().count();
 
-            if(uniquePlacesNumbersSize < floor.getPlaces().size()) {
+            if (uniquePlacesNumbersSize < floor.getPlaces().size()) {
                 throw new FloorException("duplicate place numbers");
             }
         }
