@@ -19,7 +19,6 @@ public class UserDto {
     private String password;
     @NotNull
     private Role role;
-    @NotNull
     private Long hrId;
     @NotBlank
     private String photoUrl;

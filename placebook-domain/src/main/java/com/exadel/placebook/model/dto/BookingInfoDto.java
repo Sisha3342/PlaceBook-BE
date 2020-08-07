@@ -7,12 +7,13 @@ import java.time.LocalDateTime;
 
 @Data
 public class BookingInfoDto {
-
     private Long id;
     private String placeInfo;
+    private Long userId;
     private String userName;
     private String userSurname;
-    private MarkDto marks;
+    private String photoUrl;
+    private MarkSubmitDto markSubmitDto;
     private AddressDto address;
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;

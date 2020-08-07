@@ -4,16 +4,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class MarkDto {
+    private Double markLightning;
+    private Double markAir;
+    private Double markVolume;
+    private Double markCleaning;
+    private Double markLocation;
 
-
-    private double markLightning;
-
-    private double markAir;
-
-    private double markVolume;
-
-    private double markCleaning;
-    private double markLocation;
+    public MarkDto() {
+        markLightning = 0.0;
+        markAir = 0.0;
+        markVolume = 0.0;
+        markCleaning = 0.0;
+        markLocation = 0.0;
+    }
 }

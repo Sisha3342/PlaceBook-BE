@@ -1,11 +1,10 @@
 package com.exadel.placebook.service.impl;
 
 import com.exadel.placebook.converter.FloorConverter;
-import com.exadel.placebook.converter.FloorRequestConverter;
 import com.exadel.placebook.converter.OfficeConverter;
 import com.exadel.placebook.converter.PlaceConverter;
 import com.exadel.placebook.dao.AddressDao;
-import com.exadel.placebook.dao.FloorDao;
+import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.exception.FloorException;
@@ -22,7 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,17 +48,25 @@ public class OfficeServiceImpl implements OfficeService {
     private PlaceConverter placeConverter;
 
     @Autowired
-    private FloorDao floorDao;
-
-    @Autowired
-    private FloorRequestConverter floorRequestConverter;
+    private BookingDao bookingDao;
 
     @Override
-    public List<PlaceDto> getPlacesByFloorId(Long floorId) {
-        return placeDao.findPlacesByFloorId(floorId)
-                .stream()
-                .map(place -> placeConverter.convert(place))
-                .collect(Collectors.toList());
+    public List<PlaceResponse> getPlacesByFloorId(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        List<Place> places = placeDao.findPlacesByFloorId(floorId);
+        List<PlaceResponse> result = new LinkedList<>();
+
+        for(Place place: places) {
+            long countBookings = bookingDao.countBookingsByPlaceIdAndTimeRange(place.getId(), timeStart, timeEnd);
+
+            PlaceResponse placeResponse = new PlaceResponse();
+            placeResponse.setPlaceNumber(place.getPlaceNumber());
+            placeResponse.setPlaceId(place.getId());
+            placeResponse.setOccupied(countBookings != 0);
+
+            result.add(placeResponse);
+        }
+
+        return result;
     }
 
     @Override
@@ -105,6 +114,12 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
+    public OfficeDto getOffice(Long officeId) {
+        Office office = officeDao.find(officeId);
+        return officeConverter.convert(office);
+    }
+
+    @Override
     public List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
         return placeDao.getFreePlacesByFloorIdAndTimeRange(floorId, start, end)
                 .stream()
@@ -133,24 +148,7 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
-    public OfficeDto saveOfficeConfiguration(List<FloorRequest> floorRequestList, Long officeId) {
-        Office office = officeDao.find(officeId);
-
-        if (office == null) {
-            throw new EntityNotFoundException(Office.class, officeId);
-        }
-
-        List<Floor> floors = getFloorList(floorRequestList);
-
-        floors.forEach(floor -> floor.setOffice(office));
-
-        office.setFloors(floors);
-
-        return officeConverter.convert(officeDao.update(office));
-    }
-
-    @Override
-    public OfficeDto editOfficeConfiguration(List<FloorRequest> floors, Long officeId) {
+    public OfficeDto saveOfficeConfiguration(List<FloorDto> floors, Long officeId) {
         Office office = officeDao.find(officeId);
 
         if (office == null) {
@@ -181,6 +179,9 @@ public class OfficeServiceImpl implements OfficeService {
                     editDBFloorPlaces(floorWithSameNumber.get(), floorFromRequest);
                 }
 
+                floorWithSameNumber.get().setHeight(floorFromRequest.getHeight());
+                floorWithSameNumber.get().setWidth(floorFromRequest.getWidth());
+
                 editedDBFloors.add(floorWithSameNumber.get());
                 currentDBFloors.remove(floorWithSameNumber.get());
             } else {
@@ -188,7 +189,10 @@ public class OfficeServiceImpl implements OfficeService {
             }
         }
 
-        currentDBFloors.forEach(floor -> floor.setDeleted(true));
+        currentDBFloors.forEach(floor -> {
+            floor.setDeleted(true);
+            floor.getPlaces().forEach(place -> place.setPlaceStatus(PlaceStatus.INACTIVE));
+        });
 
         editedDBFloors.forEach(floor -> floor.setOffice(office));
 
@@ -224,16 +228,25 @@ public class OfficeServiceImpl implements OfficeService {
         floorFromDB.setPlaces(editedDBPlaceList);
     }
 
-    private List<Floor> getFloorList(List<FloorRequest> floorRequestList) {
+    private List<Floor> getFloorList(List<FloorDto> floorRequestList) {
         List<Floor> floors = floorRequestList
                 .stream()
-                .map(dto -> floorRequestConverter.convert(dto))
+                .map(dto -> floorConverter.convert(dto))
                 .collect(Collectors.toList());
 
         long uniqueFloorsNumbersSize = floors.stream().map(Floor::getFloorNumber).distinct().count();
 
         if (uniqueFloorsNumbersSize < floors.size()) {
-            throw new FloorException("duplicate numbers");
+            throw new FloorException("duplicate floor numbers");
+        }
+
+        for(Floor floor: floors) {
+            long uniquePlacesNumbersSize = floor.getPlaces().stream()
+                    .map(Place::getPlaceNumber).distinct().count();
+
+            if(uniquePlacesNumbersSize < floor.getPlaces().size()) {
+                throw new FloorException("duplicate place numbers");
+            }
         }
 
         return floors;

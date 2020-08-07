@@ -6,6 +6,8 @@ public interface SecurityValidationService {
 
     void validateUserCanEditBooking(Long bookingId);
 
+    void validateUserCanGetBookingInfo(Long bookingId);
+
     void validateUserCanDeleteBooking(Long bookingId);
 
     void validateAdminCanChangeUserRole(Long userId);

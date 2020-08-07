@@ -40,6 +40,13 @@ public abstract class BaseDaoImpl<T extends BaseEntity> implements BaseDao<T> {
     }
 
     @Override
+    public void saveOrUpdate(T object) {
+        if (object != null) {
+            getSession().saveOrUpdate(object);
+        }
+    }
+
+    @Override
     public T find(Long id) {
         return id == null ? null : getSession().get(entityClass, id);
     }
@@ -53,7 +60,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> implements BaseDao<T> {
         }
         return false;
     }
-    
+
     @Override
     public T update(T object) {
         getSession().merge(object);
