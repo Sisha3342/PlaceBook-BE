@@ -33,7 +33,12 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public List<Booking> findUsersBookingsByStatus(Status status) {
         Session session = getSession();
         Query<Booking> query = session
-                .createQuery("from Booking b where b.status = :status", Booking.class)
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p "+
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where b.status = :status", Booking.class)
                 .setParameter("status", status);
         return query.list();
     }
@@ -42,7 +47,12 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public List<Booking> findUsersBookingsByHrIdAndStatus(Long id, Status status) {
         Session session = getSession();
         Query<Booking> query = session
-                .createQuery("from Booking b where b.user.hrId = :hrId and b.status = :status", Booking.class)
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p " +
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where b.user.hrId = :hrId and b.status = :status", Booking.class)
                 .setParameter("hrId", id)
                 .setParameter("status", status);
         return query.list();
@@ -52,7 +62,12 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public List<Booking> findBookings(Long userId) {
         Session session = getSession();
         Query<Booking> query = session
-                .createQuery("from Booking b where b.user.id = :user_id", Booking.class)
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p " +
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where b.user.id = :user_id", Booking.class)
                 .setParameter("user_id", userId);
         return query.list();
     }
@@ -96,7 +111,12 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     @Override
     public List<Booking> historyByPlaceIdAndTime(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
         Session session = getSession();
-        Query<Booking> query = session.createQuery("from Booking b where b.place.id = :placeId and " +
+        Query<Booking> query = session.createQuery("from Booking b " +
+                "left join fetch b.place p " +
+                "left join fetch b.user u " +
+                "left join fetch p.floor f " +
+                "left join fetch f.office off " +
+                "left join fetch off.address ad where b.place.id = :placeId and " +
                 "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
                 .setParameter("placeId", placeId)
                 .setParameter("timeStart", timeStart)
