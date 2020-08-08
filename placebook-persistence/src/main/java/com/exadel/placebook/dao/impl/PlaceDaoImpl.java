@@ -10,7 +10,11 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
@@ -53,5 +57,19 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
                 .setParameter("timeStart", start)
                 .setParameter("timeEnd", end)
                 .list();
+    }
+
+    @Override
+    public Map<Place, Boolean> getPlacesWithOccupation(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        return getSession().createQuery("select p, count(b) from Place p left join p.bookings b " +
+                "where p.floor.id = :floorId and " +
+                "b.timeEnd > :timeStart and " +
+                "b.timeStart < :timeEnd " +
+                "group by p.id", Object[].class)
+                .setParameter("floorId", floorId)
+                .setParameter("timeStart", timeStart)
+                .setParameter("timeEnd", timeEnd)
+                .stream()
+                .collect(Collectors.toMap(o -> (Place) o[0], o -> (Long)o[1] != 0));
     }
 }
