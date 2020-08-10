@@ -93,7 +93,6 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
-
     @Override
     public Map<Status, Long> getStatistics(Long id) {
         return bookingDao.getStatistics(id);
