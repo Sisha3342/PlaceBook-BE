@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 public class Address extends BaseEntity {
 
-
     @Column(name = "address")
     private String address;
 

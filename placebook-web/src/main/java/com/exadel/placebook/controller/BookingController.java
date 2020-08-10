@@ -1,12 +1,10 @@
 package com.exadel.placebook.controller;
 
 import com.exadel.placebook.builder.MailMessageBuilder;
-import com.exadel.placebook.model.dto.BookingDto;
-import com.exadel.placebook.model.dto.BookingInfoDto;
-import com.exadel.placebook.model.dto.BookingRequest;
-import com.exadel.placebook.model.dto.PlaceHistoryDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.ValidationException;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.SecurityValidationService;
 import com.exadel.placebook.service.SendMailService;
@@ -38,8 +36,9 @@ public class BookingController {
 
 
     @GetMapping("/user/{userId}/bookings")
-    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId, @RequestParam("status") Status status) {
-        return bookingService.findByStatus(userId, status);
+    public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId,
+                                                   @RequestParam BookingSorting bookingSorting) {
+        return bookingService.findByStatus(userId, bookingSorting);
     }
 
     @GetMapping("/user/{userId}/booking/statistics")

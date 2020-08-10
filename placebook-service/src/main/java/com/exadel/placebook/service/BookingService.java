@@ -2,6 +2,7 @@ package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.enums.Status;
+import com.exadel.placebook.model.sorting.BookingSorting;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public interface BookingService {
 
-    List<BookingDto> findByStatus(Long id, Status status);
+    List<BookingDto> findByStatus(Long id, BookingSorting bookingSorting);
 
     List<BookingDto> employeesBookingsByStatusAndHrId(Status status);
 

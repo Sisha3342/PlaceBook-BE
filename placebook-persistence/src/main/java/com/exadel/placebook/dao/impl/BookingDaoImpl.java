@@ -2,6 +2,7 @@ package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 import org.hibernate.Session;
@@ -20,13 +21,40 @@ import java.util.stream.Collectors;
 public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
 
     @Override
-    public List<Booking> findUserBookingsByStatus(Long userId, Status status) {
+    @SuppressWarnings({"unchecked", "deprecation"})
+    public List<Booking> findUserBookingsByStatus(Long userId, BookingSorting bookingSorting) {
         Session session = getSession();
-        Query<Booking> query = session
-                .createQuery("from Booking b where b.user.id = :user_id and status = :status", Booking.class)
+        String order = bookingSorting.getOrder().getOrderOption();
+        String sortingParam = bookingSorting.getBookingSort().getSortingOption();
+        String table;
+        switch (bookingSorting.getBookingSort()) {
+            case PLACE_NAME:
+                table = "p." + bookingSorting.getBookingSort().getSortingOption();
+                break;
+            case CITY:
+            case ADDRESS:
+            case COUNTRY:
+                table = "a." + bookingSorting.getBookingSort().getSortingOption();
+                break;
+            case DATE_START:
+            case DATE_END:
+            default:
+                table = "b." + bookingSorting.getBookingSort().getSortingOption();
+                break;
+        }
+        String queryStr = new String("from Booking b " +
+                "left join fetch b.user u " +
+                "left join fetch b.place p " +
+                "left join fetch p.floor f " +
+                "left join fetch f.office o " +
+                "left join fetch o.address a " +
+                "where u.id = :user_id and " +
+                "b.status = :status order by " + table + " " + order);
+        return session
+                .createQuery(queryStr, Booking.class)
                 .setParameter("user_id", userId)
-                .setParameter("status", status);
-        return query.list();
+                .setParameter("status", bookingSorting.getStatus())
+                .list();
     }
 
     @Override
@@ -34,7 +62,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
         Session session = getSession();
         Query<Booking> query = session
                 .createQuery("from Booking b " +
-                        "left join fetch b.place p "+
+                        "left join fetch b.place p " +
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +

@@ -13,6 +13,7 @@ import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.MarkService;
@@ -91,8 +92,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> findByStatus(Long id, Status status) {
-        List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
+    public List<BookingDto> findByStatus(Long id, BookingSorting bookingSorting) {
+        List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
@@ -155,7 +156,7 @@ public class BookingServiceImpl implements BookingService {
             throw new EntityNotFoundException(Place.class, bookingRequest.getPlaceId());
         }
 
-        if(place.getPlaceStatus().equals(PlaceStatus.INACTIVE)) {
+        if (place.getPlaceStatus().equals(PlaceStatus.INACTIVE)) {
             throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
         }
 
@@ -163,7 +164,7 @@ public class BookingServiceImpl implements BookingService {
                 bookingRequest.getTimeStart(),
                 bookingRequest.getTimeEnd());
 
-        if(placeBookingsNumber != 0) {
+        if (placeBookingsNumber != 0) {
             throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
         }
 

@@ -7,7 +7,7 @@ import com.exadel.placebook.converter.UserStatusConverter;
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.User;
-import com.exadel.placebook.model.filters.AdminUserFilter;
+import com.exadel.placebook.model.sorting.AdminUserFilter;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import com.exadel.placebook.model.dto.RoleDto;
 import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserSearchDto;
 import com.exadel.placebook.model.exception.ValidationException;
-import com.exadel.placebook.model.filters.AdminUserFilter;
+import com.exadel.placebook.model.sorting.AdminUserFilter;
 import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -24,12 +23,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
-    public List<AdminUserDto> getUsers(@RequestParam("limit") @Min(value = 1, message = "limit must be greater than 0") int limit,
-                                       @RequestParam("offset") @Min(value = 0, message = "offset must be 0 or greater") int offset,
-                                       @RequestParam("text") String text) {
+    /*@GetMapping("/users")
+    public List<AdminUserDto> getUsers(@RequestParam(value = "limit", defaultValue = "10") @Min(value = 1, message = "limit must be greater than 0") int limit,
+                                       @RequestParam(value = "offset", defaultValue = "0") @Min(value = 0, message = "offset must be 0 or greater") int offset,
+                                       @RequestParam(value = "text", defaultValue = "") String text) {
 
         AdminUserFilter adminUserFilter = new AdminUserFilter(limit, offset, text);
+        return userService.findUsers(adminUserFilter);
+    }*/
+    @GetMapping("/users")
+    public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) {
         return userService.findUsers(adminUserFilter);
     }
 
