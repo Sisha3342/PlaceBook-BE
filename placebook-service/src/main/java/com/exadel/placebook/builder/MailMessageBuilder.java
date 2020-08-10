@@ -117,6 +117,7 @@ public class MailMessageBuilder {
     public MailMessageDto convert(Subscribe subscribe) {
         try {
             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+            
             Template temp = freemarkerConfig.getTemplate("notification-template.ftl");
 
             Place place = subscribe.getPlace();
