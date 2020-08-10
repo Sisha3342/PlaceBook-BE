@@ -3,13 +3,10 @@ package com.exadel.placebook.model.sorting;
 import com.exadel.placebook.model.enums.BookingSortEnum;
 import com.exadel.placebook.model.enums.Order;
 import com.exadel.placebook.model.enums.Status;
-import lombok.Builder;
 
 public class BookingSorting extends PaginationParameters {
-    //@Builder.Default
     private Order order = Order.ASC;
 
-    //@Builder.Default
     private BookingSortEnum bookingSort = BookingSortEnum.DATE_START;
 
     private Status status;

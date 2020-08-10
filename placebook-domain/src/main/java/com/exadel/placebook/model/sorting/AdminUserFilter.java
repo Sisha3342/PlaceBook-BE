@@ -1,15 +1,11 @@
 package com.exadel.placebook.model.sorting;
 
-import com.exadel.placebook.model.enums.BookingSortEnum;
 import com.exadel.placebook.model.enums.Order;
 import com.exadel.placebook.model.enums.UserSortEnum;
-import lombok.Builder;
 
 public class AdminUserFilter extends PaginationParameters {
-    @Builder.Default
     private Order order = Order.ASC;
 
-    @Builder.Default
     private UserSortEnum userSort = UserSortEnum.USER_SURNAME;
 
     public Order getOrder() {
