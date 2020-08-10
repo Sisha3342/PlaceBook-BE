@@ -13,7 +13,13 @@ public class MarkDaoImpl extends BaseDaoImpl<PlaceRate> implements MarkDao {
     public Optional<PlaceRate> getMarksByBookingId(Long id) {
         Session session = getSession();
         return session.createQuery("from PlaceRate pr " +
-                "where pr.booking" +
+                "left join fetch pr.booking b " +
+                "left join fetch b.place p " +
+                "left join fetch b.user u " +
+                "left join fetch p.floor f " +
+                "left join fetch f.office off " +
+                "left join fetch off.address a " +
+                "where b" +
                 ".id = :bookingId", PlaceRate.class)
                 .setParameter("bookingId", id)
                 .uniqueResultOptional();
@@ -23,7 +29,13 @@ public class MarkDaoImpl extends BaseDaoImpl<PlaceRate> implements MarkDao {
     public PlaceRate checkMarksByBookingId(Long id) {
         Session session = getSession();
         return session.createQuery("from PlaceRate pr " +
-                "where pr.booking" +
+                "left join fetch pr.booking b " +
+                "left join fetch b.place p " +
+                "left join fetch b.user u " +
+                "left join fetch p.floor f " +
+                "left join fetch f.office off " +
+                "left join fetch off.address a " +
+                "where b" +
                 ".id = :bookingId", PlaceRate.class)
                 .setParameter("bookingId", id)
                 .uniqueResult();
