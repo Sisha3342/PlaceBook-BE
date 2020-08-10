@@ -19,7 +19,7 @@ public class MarkDaoImpl extends BaseDaoImpl<PlaceRate> implements MarkDao {
                 "left join fetch p.floor f " +
                 "left join fetch f.office off " +
                 "left join fetch off.address a " +
-                "where pr.booking" +
+                "where b" +
                 ".id = :bookingId", PlaceRate.class)
                 .setParameter("bookingId", id)
                 .uniqueResultOptional();
@@ -35,7 +35,7 @@ public class MarkDaoImpl extends BaseDaoImpl<PlaceRate> implements MarkDao {
                 "left join fetch p.floor f " +
                 "left join fetch f.office off " +
                 "left join fetch off.address a " +
-                "where pr.booking" +
+                "where b" +
                 ".id = :bookingId", PlaceRate.class)
                 .setParameter("bookingId", id)
                 .uniqueResult();

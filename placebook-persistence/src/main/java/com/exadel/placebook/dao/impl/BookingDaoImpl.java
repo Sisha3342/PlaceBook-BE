@@ -93,7 +93,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.user.hrId = :hrId " +
+                        "left join fetch off.address ad where u.hrId = :hrId " +
                         "and b.status = :status" +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("hrId", id)
@@ -114,7 +114,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.user.id = :user_id " +
+                        "left join fetch off.address ad where u.id = :user_id " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("user_id", userId)
                 .setMaxResults(bookingSorting.getLimit())
@@ -166,7 +166,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                 "left join fetch b.user u " +
                 "left join fetch p.floor f " +
                 "left join fetch f.office off " +
-                "left join fetch off.address ad where b.place.id = :placeId and " +
+                "left join fetch off.address ad where p.id = :placeId and " +
                 "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
                 .setParameter("placeId", placeId)
                 .setParameter("timeStart", timeStart)
