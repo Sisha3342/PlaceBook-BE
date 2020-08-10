@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Floor extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "office_id")
     private Office office;
 
