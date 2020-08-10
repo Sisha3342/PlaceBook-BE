@@ -52,7 +52,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.user.hrId = :hrId and b.status = :status", Booking.class)
+                        "left join fetch off.address ad where u.hrId = :hrId and b.status = :status", Booking.class)
                 .setParameter("hrId", id)
                 .setParameter("status", status);
         return query.list();
@@ -67,7 +67,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.user.id = :user_id", Booking.class)
+                        "left join fetch off.address ad where u.id = :user_id", Booking.class)
                 .setParameter("user_id", userId);
         return query.list();
     }
@@ -116,7 +116,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                 "left join fetch b.user u " +
                 "left join fetch p.floor f " +
                 "left join fetch f.office off " +
-                "left join fetch off.address ad where b.place.id = :placeId and " +
+                "left join fetch off.address ad where p.id = :placeId and " +
                 "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
                 .setParameter("placeId", placeId)
                 .setParameter("timeStart", timeStart)
