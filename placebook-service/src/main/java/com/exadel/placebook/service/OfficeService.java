@@ -1,6 +1,7 @@
 package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.*;
+import com.exadel.placebook.model.sorting.OfficeSorting;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +13,7 @@ public interface OfficeService {
 
     List<String> getCitiesByCountry(String country);
 
-    List<OfficeDto> getOfficesByCityAndCountry(String city, String country);
+    List<OfficeDto> getOfficesByCityAndCountry(String city, String country, OfficeSorting officeSorting);
 
     OfficeDto addOffice(OfficeParams officeParams);
 

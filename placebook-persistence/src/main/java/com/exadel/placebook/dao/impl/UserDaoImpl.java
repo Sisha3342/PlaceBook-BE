@@ -26,12 +26,15 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     @Override
     public List<User> findUsers(AdminUserFilter adminUserFilter, Long id) {
         Session session = getSession();
+        String table = adminUserFilter.getUserSort().getSortingOption();
+        String order = adminUserFilter.getOrder().getOrderOption();
         Query<User> query = session
                 .createQuery("from User u " +
                         "where u.id <> :id and " +
                         "trim(coalesce(:text, '')) = '' or " +
                         "concat_ws(' ', u.name, u.surname) " +
-                        "like :text", User.class)
+                        "like :text " +
+                        "order by " + table + " " + order, User.class)
                 .setParameter("text", StringUtils
                         .wrap(adminUserFilter.getText(), "%"))
                 .setParameter("id", id)

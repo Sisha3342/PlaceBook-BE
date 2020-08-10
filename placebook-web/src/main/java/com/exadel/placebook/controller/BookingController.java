@@ -37,7 +37,7 @@ public class BookingController {
 
     @GetMapping("/user/{userId}/bookings")
     public List<BookingDto> findUserBookingsActive(@PathVariable("userId") Long userId,
-                                                   @RequestParam BookingSorting bookingSorting) {
+                                                   BookingSorting bookingSorting) {
         return bookingService.findByStatus(userId, bookingSorting);
     }
 
@@ -54,8 +54,9 @@ public class BookingController {
     }
 
     @GetMapping("/user/{userId}/booking/all")
-    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId) {
-        return bookingService.findBookings(userId);
+    public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId,
+                                                   BookingSorting bookingSorting) {
+        return bookingService.findBookings(userId,bookingSorting);
     }
 
     @PostMapping("/user/{userId}/booking")

@@ -51,14 +51,11 @@ public class BookingServiceImpl implements BookingService {
     private PlaceDao placeDao;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private MarkService markService;
 
     @Override
-    public List<BookingDto> findBookings(Long userId) {
-        List<Booking> list = bookingDao.findBookings(userId);
+    public List<BookingDto> findBookings(Long userId, BookingSorting bookingSorting) {
+        List<Booking> list = bookingDao.findBookings(userId, bookingSorting);
         return list.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
@@ -79,15 +76,15 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> employeesBookingsByStatusAndHrId(Status status) {
+    public List<BookingDto> employeesBookingsByStatusAndHrId(BookingSorting bookingSorting) {
         UserContext context = (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Booking> bookingList = bookingDao.findUsersBookingsByHrIdAndStatus(context.getUserDto().getId(), status);
+        List<Booking> bookingList = bookingDao.findUsersBookingsByHrIdAndStatus(context.getUserDto().getId(), bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
     @Override
-    public List<BookingDto> employeesBookingsByStatus(Status status) {
-        List<Booking> bookingList = bookingDao.findUsersBookingsByStatus(status);
+    public List<BookingDto> employeesBookingsByStatus(BookingSorting bookingSorting) {
+        List<Booking> bookingList = bookingDao.findUsersBookingsByStatus(bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 

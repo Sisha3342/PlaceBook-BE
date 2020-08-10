@@ -1,20 +1,18 @@
 package com.exadel.placebook.model.enums;
 
-public enum BookingSortEnum {
-    PLACE_NAME("placeName"),
-    DATE_START("timeStart"),
-    DATE_END("timeEnd"),
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public enum OfficeSortEnum {
+    @JsonProperty("country")
     COUNTRY("country"),
+    @JsonProperty("city")
     CITY("city"),
+    @JsonProperty(value = "address")
     ADDRESS("address");
 
     private String sortingOption;
 
-    public void setSortingOption(String sortingOption) {
-        this.sortingOption = sortingOption;
-    }
-
-    BookingSortEnum(String sortingOption) {
+    OfficeSortEnum(String sortingOption) {
         this.sortingOption = sortingOption;
     }
 

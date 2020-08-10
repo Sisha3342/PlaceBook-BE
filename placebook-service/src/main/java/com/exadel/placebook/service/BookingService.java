@@ -13,11 +13,11 @@ public interface BookingService {
 
     List<BookingDto> findByStatus(Long id, BookingSorting bookingSorting);
 
-    List<BookingDto> employeesBookingsByStatusAndHrId(Status status);
+    List<BookingDto> employeesBookingsByStatusAndHrId(BookingSorting bookingSorting);
 
-    List<BookingDto> employeesBookingsByStatus(Status status);
+    List<BookingDto> employeesBookingsByStatus(BookingSorting bookingSorting);
 
-    List<BookingDto> findBookings(Long userId);
+    List<BookingDto> findBookings(Long userId, BookingSorting bookingSorting);
 
     List<PlaceHistoryDto> findPlaceHistory(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd);
 

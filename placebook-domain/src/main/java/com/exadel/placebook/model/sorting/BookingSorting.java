@@ -6,11 +6,11 @@ import com.exadel.placebook.model.enums.Status;
 import lombok.Builder;
 
 public class BookingSorting extends PaginationParameters {
-    @Builder.Default
+    //@Builder.Default
     private Order order = Order.ASC;
 
-    @Builder.Default
-    private BookingSortEnum bookingSortEnum = BookingSortEnum.DATE_START;
+    //@Builder.Default
+    private BookingSortEnum bookingSort = BookingSortEnum.DATE_START;
 
     private Status status;
 
@@ -23,8 +23,18 @@ public class BookingSorting extends PaginationParameters {
     }
 
     public BookingSortEnum getBookingSort() {
-        return bookingSortEnum;
+        return bookingSort;
     }
 
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
+    public void setBookingSort(BookingSortEnum bookingSort) {
+        this.bookingSort = bookingSort;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
