@@ -6,6 +6,7 @@ import com.exadel.placebook.service.SendMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -19,11 +20,10 @@ public class SendMailServiceImpl implements SendMailService {
     @Autowired
     public JavaMailSender emailSender;
 
-
+    @Async
     public void sendEmail(MailMessageDto messageDto) {
 
         try {
-
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setTo(messageDto.getEmail());
