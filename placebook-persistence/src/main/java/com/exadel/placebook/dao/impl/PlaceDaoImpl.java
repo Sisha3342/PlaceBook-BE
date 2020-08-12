@@ -61,15 +61,14 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
 
     @Override
     public Map<Place, Boolean> getPlacesWithOccupation(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd) {
-        return getSession().createQuery("select p, count(b) from Place p left join p.bookings b " +
-                "where p.floor.id = :floorId and " +
-                "b.timeEnd > :timeStart and " +
-                "b.timeStart < :timeEnd " +
-                "group by p.id", Object[].class)
+        return getSession().createQuery("select p, (select count(b) from " +
+                "Booking b where b.place.id = p.id and b.timeEnd > :timeStart and b.timeStart < :timeEnd and b.status = 'ACTIVE') " +
+                "from Place p " +
+                "where p.floor.id = :floorId and p.placeStatus = 'ACTIVE'", Object[].class)
                 .setParameter("floorId", floorId)
                 .setParameter("timeStart", timeStart)
                 .setParameter("timeEnd", timeEnd)
                 .stream()
-                .collect(Collectors.toMap(o -> (Place) o[0], o -> (Long)o[1] != 0));
+                .collect(Collectors.toMap(o -> (Place) o[0], o -> (Long) o[1] != 0));
     }
 }
