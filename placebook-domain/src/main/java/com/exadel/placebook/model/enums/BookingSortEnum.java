@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum BookingSortEnum {
     @JsonProperty(value = "placeName")
-    PLACE_NAME("placeName"),
+    PLACE_NUMBER("placeNumber"),
     @JsonProperty(value = "timeStart")
     DATE_START("timeStart"),
     @JsonProperty(value = "timeEnd")

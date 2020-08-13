@@ -27,9 +27,6 @@ public class PlaceController {
     @Autowired
     private MarkService markService;
 
-    @Autowired
-    private PlaceConverter placeConverter;
-
     @GetMapping("/place/{placeId}/marks")
     public MarkDto getPlaceMarksById(@PathVariable("placeId") Long placeId) {
         return bookingService.getAverageMarks(placeId);
