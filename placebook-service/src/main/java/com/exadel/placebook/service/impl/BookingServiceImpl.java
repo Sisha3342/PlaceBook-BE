@@ -13,6 +13,7 @@ import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.model.security.UserContext;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.MarkService;
@@ -50,14 +51,11 @@ public class BookingServiceImpl implements BookingService {
     private PlaceDao placeDao;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private MarkService markService;
 
     @Override
-    public List<BookingDto> findBookings(Long userId) {
-        List<Booking> list = bookingDao.findBookings(userId);
+    public List<BookingDto> findBookings(Long userId, BookingSorting bookingSorting) {
+        List<Booking> list = bookingDao.findBookings(userId, bookingSorting);
         return list.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
@@ -78,24 +76,23 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> employeesBookingsByStatusAndHrId(Status status) {
+    public List<BookingDto> employeesBookingsByStatusAndHrId(BookingSorting bookingSorting) {
         UserContext context = (UserContext) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Booking> bookingList = bookingDao.findUsersBookingsByHrIdAndStatus(context.getUserDto().getId(), status);
+        List<Booking> bookingList = bookingDao.findUsersBookingsByHrIdAndStatus(context.getUserDto().getId(), bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
     @Override
-    public List<BookingDto> employeesBookingsByStatus(Status status) {
-        List<Booking> bookingList = bookingDao.findUsersBookingsByStatus(status);
+    public List<BookingDto> employeesBookingsByStatus(BookingSorting bookingSorting) {
+        List<Booking> bookingList = bookingDao.findUsersBookingsByStatus(bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
 
     @Override
-    public List<BookingDto> findByStatus(Long id, Status status) {
-        List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, status);
+    public List<BookingDto> findByStatus(Long id, BookingSorting bookingSorting) {
+        List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
-
     @Override
     public Map<Status, Long> getStatistics(Long id) {
         return bookingDao.getStatistics(id);
@@ -155,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
             throw new EntityNotFoundException(Place.class, bookingRequest.getPlaceId());
         }
 
-        if(place.getPlaceStatus().equals(PlaceStatus.INACTIVE)) {
+        if (place.getPlaceStatus().equals(PlaceStatus.INACTIVE)) {
             throw new BookingException(String.format("place %s is inactive", place.getPlaceNumber()));
         }
 
@@ -163,7 +160,7 @@ public class BookingServiceImpl implements BookingService {
                 bookingRequest.getTimeStart(),
                 bookingRequest.getTimeEnd());
 
-        if(placeBookingsNumber != 0) {
+        if (placeBookingsNumber != 0) {
             throw new BookingException(String.format("place %d is occupied", bookingRequest.getPlaceId()));
         }
 

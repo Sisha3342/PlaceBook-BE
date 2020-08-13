@@ -2,6 +2,7 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.enums.Status;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,12 @@ public class HrController {
     private BookingService bookingService;
 
     @GetMapping("/employees/bookings/all")
-    public List<BookingDto> findAllUsersBookings(@RequestParam("status") Status status) {
-        return bookingService.employeesBookingsByStatus(status);
+    public List<BookingDto> findAllUsersBookings(BookingSorting bookingSorting) {
+        return bookingService.employeesBookingsByStatus(bookingSorting);
     }
 
     @GetMapping("/employees/bookings")
-    public List<BookingDto> findUsersBookingsByHrId(@RequestParam("status") Status status) {
-        return bookingService.employeesBookingsByStatusAndHrId(status);
+    public List<BookingDto> findUsersBookingsByHrId(BookingSorting bookingSorting) {
+        return bookingService.employeesBookingsByStatusAndHrId(bookingSorting);
     }
 }

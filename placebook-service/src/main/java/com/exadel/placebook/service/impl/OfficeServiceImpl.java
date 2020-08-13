@@ -15,6 +15,7 @@ import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
+import com.exadel.placebook.model.sorting.OfficeSorting;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,8 +72,8 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
-    public List<OfficeDto> getOfficesByCityAndCountry(String city, String country) {
-        List<Office> list = officeDao.findOfficesByCityAndCountry(city, country);
+    public List<OfficeDto> getOfficesByCityAndCountry(String city, String country, OfficeSorting officeSorting) {
+        List<Office> list = officeDao.findOfficesByCityAndCountry(city, country, officeSorting);
         return list.stream().map(officeConverter::convert).collect(Collectors.toList());
     }
 

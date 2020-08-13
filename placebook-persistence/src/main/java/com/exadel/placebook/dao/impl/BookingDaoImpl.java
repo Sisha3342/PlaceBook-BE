@@ -2,6 +2,7 @@ package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.BookingDao;
 import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
 import org.hibernate.Session;
@@ -19,56 +20,105 @@ import java.util.stream.Collectors;
 @Repository
 public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
 
+    private String getSortingParameter(BookingSorting bookingSorting) {
+        String table;
+        switch (bookingSorting.getBookingSort()) {
+            case PLACE_NAME:
+                table = "p." + bookingSorting.getBookingSort().getSortingOption();
+                break;
+            case CITY:
+            case ADDRESS:
+            case COUNTRY:
+                table = "a." + bookingSorting.getBookingSort().getSortingOption();
+                break;
+            case DATE_START:
+            case DATE_END:
+            default:
+                table = "b." + bookingSorting.getBookingSort().getSortingOption();
+                break;
+        }
+        return table;
+    }
+
     @Override
-    public List<Booking> findUserBookingsByStatus(Long userId, Status status) {
+    @SuppressWarnings({"unchecked", "deprecation"})
+    public List<Booking> findUserBookingsByStatus(Long userId, BookingSorting bookingSorting) {
         Session session = getSession();
-        Query<Booking> query = session
-                .createQuery("from Booking b where b.user.id = :user_id and status = :status", Booking.class)
+        String order = bookingSorting.getOrder().getOrderOption();
+        String table = getSortingParameter(bookingSorting);
+        String queryStr = "from Booking b " +
+                "left join fetch b.user u " +
+                "left join fetch b.place p " +
+                "left join fetch p.floor f " +
+                "left join fetch f.office o " +
+                "left join fetch o.address a " +
+                "where u.id = :user_id and " +
+                "b.status = :status order by " + table + " " + order;
+        return session
+                .createQuery(queryStr, Booking.class)
                 .setParameter("user_id", userId)
-                .setParameter("status", status);
-        return query.list();
+                .setParameter("status", bookingSorting.getStatus())
+                .setMaxResults(bookingSorting.getLimit())
+                .setFirstResult(bookingSorting.getOffset())
+                .list();
     }
 
     @Override
-    public List<Booking> findUsersBookingsByStatus(Status status) {
+    public List<Booking> findUsersBookingsByStatus(BookingSorting bookingSorting) {
         Session session = getSession();
-        Query<Booking> query = session
-                .createQuery("from Booking b " +
-                        "left join fetch b.place p "+
-                        "left join fetch b.user u " +
-                        "left join fetch p.floor f " +
-                        "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.status = :status", Booking.class)
-                .setParameter("status", status);
-        return query.list();
-    }
-
-    @Override
-    public List<Booking> findUsersBookingsByHrIdAndStatus(Long id, Status status) {
-        Session session = getSession();
+        String order = bookingSorting.getOrder().getOrderOption();
+        String table = getSortingParameter(bookingSorting);
         Query<Booking> query = session
                 .createQuery("from Booking b " +
                         "left join fetch b.place p " +
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.hrId = :hrId and b.status = :status", Booking.class)
+                        "left join fetch off.address ad where b.status = :status " +
+                        "order by " + table + " " + order, Booking.class)
+                .setParameter("status", bookingSorting.getStatus())
+                .setMaxResults(bookingSorting.getLimit())
+                .setFirstResult(bookingSorting.getOffset());
+        return query.list();
+    }
+
+    @Override
+    public List<Booking> findUsersBookingsByHrIdAndStatus(Long id, BookingSorting bookingSorting) {
+        Session session = getSession();
+        String order = bookingSorting.getOrder().getOrderOption();
+        String table = getSortingParameter(bookingSorting);
+        Query<Booking> query = session
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p " +
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where u.hrId = :hrId " +
+                        "and b.status = :status" +
+                        "order by " + table + " " + order, Booking.class)
                 .setParameter("hrId", id)
-                .setParameter("status", status);
+                .setParameter("status", bookingSorting.getStatus())
+                .setMaxResults(bookingSorting.getLimit())
+                .setFirstResult(bookingSorting.getOffset());
         return query.list();
     }
 
     @Override
-    public List<Booking> findBookings(Long userId) {
+    public List<Booking> findBookings(Long userId, BookingSorting bookingSorting) {
         Session session = getSession();
+        String order = bookingSorting.getOrder().getOrderOption();
+        String table = getSortingParameter(bookingSorting);
         Query<Booking> query = session
                 .createQuery("from Booking b " +
                         "left join fetch b.place p " +
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.id = :user_id", Booking.class)
-                .setParameter("user_id", userId);
+                        "left join fetch off.address ad where u.id = :user_id " +
+                        "order by " + table + " " + order, Booking.class)
+                .setParameter("user_id", userId)
+                .setMaxResults(bookingSorting.getLimit())
+                .setFirstResult(bookingSorting.getOffset());
         return query.list();
     }
 
