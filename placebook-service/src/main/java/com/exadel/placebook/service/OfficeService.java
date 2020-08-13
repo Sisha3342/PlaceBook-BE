@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OfficeService {
-    List<PlaceDto> getPlacesByFloorId(Long floorId);
+    List<PlaceResponse> getPlacesByFloorId(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd);
 
     List<String> getAllCountries();
 
@@ -18,13 +18,13 @@ public interface OfficeService {
 
     OfficeDto editOffice(Long officeId, OfficeParams officeParams);
 
+    OfficeDto getOffice(Long officeId);
+
     List<PlaceDto> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
 
     List<FloorDto> getFloorsByOfficeId(Long officeId);
 
     boolean deleteOffice(Long officeId);
 
-    OfficeDto saveOfficeConfiguration(List<FloorRequest> floors, Long officeId);
-
-    OfficeDto editOfficeConfiguration(List<FloorRequest> floors, Long officeId);
+    OfficeDto saveOfficeConfiguration(List<FloorDto> floors, Long officeId);
 }

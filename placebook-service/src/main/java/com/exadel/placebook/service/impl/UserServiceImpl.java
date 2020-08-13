@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<AdminUserDto> findUsers(AdminUserFilter adminUserFilter) {
-        List<User> users = userDao.findUsers(adminUserFilter);
-        users.remove(userDao.find(userService.getUserStatus().getId()));
+
+        List<User> users = userDao.findUsers(adminUserFilter, userService.getUserStatus().getId());
         return users.stream().map(adminUserConverter::convert).collect(Collectors.toList());
     }
 
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
             user.setHrId(1L);
             user = userDao.save(user);
             user.setHrId(user.getId());
-            userDao.update(user);
+            return userConverter.convert(userDao.update(user));
         }
 
         return userConverter.convert(userDao.save(user));

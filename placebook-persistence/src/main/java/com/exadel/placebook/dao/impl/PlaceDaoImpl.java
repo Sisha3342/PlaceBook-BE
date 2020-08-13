@@ -1,6 +1,7 @@
 package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.PlaceDao;
+import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.PlaceSearchDto;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.enums.Status;
@@ -9,7 +10,11 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
@@ -40,20 +45,6 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
     }
 
     @Override
-    public long countBookingsByPlaceIdAndTime(Long placeId, LocalDateTime start, LocalDateTime end, Long userId) {
-        Session session = getSession();
-        return session.createQuery("select count (b) from Booking b " +
-                "where b.place.id = :id and " +
-                "b.timeEnd > :timeStart and b.timeStart < :timeEnd and " +
-                "b.user.id <> :userId", Long.class)
-                .setParameter("id", placeId)
-                .setParameter("timeStart", start)
-                .setParameter("timeEnd", end)
-                .setParameter("userId", userId)
-                .getSingleResult();
-    }
-
-    @Override
     public List<Place> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end) {
         Session session = getSession();
         return session.createQuery("select p from Place p " +
@@ -66,5 +57,19 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
                 .setParameter("timeStart", start)
                 .setParameter("timeEnd", end)
                 .list();
+    }
+
+    @Override
+    public Map<Place, Boolean> getPlacesWithOccupation(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        return getSession().createQuery("select p, count(b) from Place p left join p.bookings b " +
+                "where p.floor.id = :floorId and " +
+                "b.timeEnd > :timeStart and " +
+                "b.timeStart < :timeEnd " +
+                "group by p.id", Object[].class)
+                .setParameter("floorId", floorId)
+                .setParameter("timeStart", timeStart)
+                .setParameter("timeEnd", timeEnd)
+                .stream()
+                .collect(Collectors.toMap(o -> (Place) o[0], o -> (Long)o[1] != 0));
     }
 }

@@ -1,9 +1,10 @@
 package com.exadel.placebook.controller;
 
 import com.exadel.placebook.converter.PlaceConverter;
-import com.exadel.placebook.model.dto.*;
-import com.exadel.placebook.model.entity.Place;
-import com.exadel.placebook.model.entity.Subscribe;
+import com.exadel.placebook.model.dto.MarkDto;
+import com.exadel.placebook.model.dto.MarkParams;
+import com.exadel.placebook.model.dto.MarkSubmitDto;
+import com.exadel.placebook.model.dto.PlaceSearchDto;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.MarkService;
 import com.exadel.placebook.service.PlaceService;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 public class PlaceController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class PlaceController {
 
     @GetMapping("/place/{placeId}/marks")
     public MarkDto getPlaceMarksById(@PathVariable("placeId") Long placeId) {
-        return bookingService.getMarksByPlaceId(placeId);
+        return bookingService.getAverageMarks(placeId);
     }
 
     @GetMapping("/user/{userId}/places")
@@ -39,6 +40,10 @@ public class PlaceController {
         return placeService.getPlaceByUserNow(userId);
     }
 
+    @GetMapping("/booking/{bookingId}/mark")
+    public MarkSubmitDto getMark(@PathVariable("bookingId") Long bookingId) {
+        return markService.getMarksByBookingId(bookingId);
+    }
     @PostMapping("/booking/{bookingId}/mark")
     public MarkSubmitDto submitMark(@PathVariable("bookingId") Long bookingId,
                                     @Valid @RequestBody MarkParams markParams, BindingResult result) {

@@ -1,17 +1,21 @@
 package com.exadel.placebook.model.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "floors")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Floor extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "office_id")
     private Office office;
 
@@ -23,6 +27,12 @@ public class Floor extends BaseEntity {
 
     @Column(name="deleted")
     private boolean deleted;
+
+    @Column(name = "width")
+    private Long width;
+
+    @Column(name = "height")
+    private Long height;
 
     @OneToMany(mappedBy = "floor",
             fetch = FetchType.LAZY,

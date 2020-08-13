@@ -1,14 +1,13 @@
 package com.exadel.placebook.builder;
 
+import com.exadel.placebook.dao.BookingDao;
+import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.dto.BookingDto;
 import com.exadel.placebook.model.dto.BookingRequest;
 import com.exadel.placebook.model.dto.MailMessageDto;
-import com.exadel.placebook.model.entity.Address;
-import com.exadel.placebook.model.entity.Place;
-import com.exadel.placebook.model.entity.Subscribe;
-import com.exadel.placebook.model.entity.User;
+import com.exadel.placebook.model.entity.*;
 import com.exadel.placebook.model.exception.SendMessageException;
 import com.exadel.placebook.service.UserService;
 import freemarker.template.Configuration;
@@ -27,19 +26,21 @@ import java.util.Map;
 public class MailMessageBuilder {
 
     @Autowired
-    private PlaceDao placeDao;
+    private Configuration freemarkerConfig;
 
     @Autowired
     private UserDao userDao;
 
     @Autowired
-    private UserService userService;
+    private BookingDao bookingDao;
 
     @Autowired
-    private Configuration freemarkerConfig;
+    private PlaceDao placeDao;
+
+    @Autowired
+    private UserService userService;
 
     static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
 
     public MailMessageDto convert(BookingDto bookingDto) {
         try {
@@ -47,7 +48,7 @@ public class MailMessageBuilder {
             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
             Map<String, Object> model = new HashMap<>();
             model.put("name", bookingDto.getUserName());
-            model.put("text", "Your booking is CANCELLED!");
+            model.put("text", "You have just booked your place!");
             model.put("country", bookingDto.getAddress().getCountry());
             model.put("city", bookingDto.getAddress().getCity());
             model.put("office", bookingDto.getAddress().getAddress());
@@ -63,27 +64,49 @@ public class MailMessageBuilder {
         }
     }
 
-    public MailMessageDto convert(BookingRequest bookingRequest) {
+    public MailMessageDto convert(Long bookingId){
+
         try {
             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
             Template temp = freemarkerConfig.getTemplate("email-template.ftl");
+            Booking booking = bookingDao.find(bookingId);
+            Address address = booking.getPlace().getFloor().getOffice().getAddress();
+            Map<String, Object> model = new HashMap<>();
+            model.put("name", booking.getUser().getName());
+            model.put("text", "Your booking is CANCELLED!");
+            model.put("country", address.getCountry());
+            model.put("city", address.getCity());
+            model.put("office", address.getAddress());
+            model.put("placeNumber", booking.getPlace().getPlaceNumber());
+            model.put("timeStart", booking.getTimeStart().format(formatter));
+            model.put("timeEnd", booking.getTimeEnd().format(formatter));
 
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
+            MailMessageDto message = new MailMessageDto(text, booking.getUser().getEmail());
+            return message;
+        } catch (IOException | TemplateException e) {
+            throw new SendMessageException("Send email exception!", e);
+        }
+    }
+
+    public MailMessageDto convert(BookingRequest bookingRequest, Long bookingId) {
+        try {
+            freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+            Template temp = freemarkerConfig.getTemplate("email-template.ftl");
             Place place = placeDao.find(bookingRequest.getPlaceId());
             Address address = place.getFloor().getOffice().getAddress();
 
             Map<String, Object> model = new HashMap<>();
-            model.put("name", userDao.find(userService.getUserStatus().getId()).getName());
-            model.put("text", "You have just booked your place!");
+            model.put("name", bookingDao.find(bookingId).getUser().getName());
+            model.put("text", "Your booking has been changed!");
             model.put("country", address.getCountry());
             model.put("city", address.getCity());
             model.put("office", address.getAddress());
             model.put("placeNumber", place.getPlaceNumber());
             model.put("timeStart", bookingRequest.getTimeStart().format(formatter));
             model.put("timeEnd", bookingRequest.getTimeEnd().format(formatter));
-
             String text = FreeMarkerTemplateUtils.processTemplateIntoString(temp, model);
-            MailMessageDto message = new MailMessageDto(text, userDao.find(userService.getUserStatus().getId()).getEmail());
-
+            MailMessageDto message = new MailMessageDto(text, bookingDao.find(bookingId).getUser().getEmail());
             return message;
         } catch (IOException | TemplateException e) {
             throw new SendMessageException("Send email exception!", e);

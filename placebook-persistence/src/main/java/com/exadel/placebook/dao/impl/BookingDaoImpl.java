@@ -1,7 +1,6 @@
 package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.BookingDao;
-
 import com.exadel.placebook.model.dto.MarkDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.enums.Status;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -31,10 +30,44 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     }
 
     @Override
+    public List<Booking> findUsersBookingsByStatus(Status status) {
+        Session session = getSession();
+        Query<Booking> query = session
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p "+
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where b.status = :status", Booking.class)
+                .setParameter("status", status);
+        return query.list();
+    }
+
+    @Override
+    public List<Booking> findUsersBookingsByHrIdAndStatus(Long id, Status status) {
+        Session session = getSession();
+        Query<Booking> query = session
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p " +
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where u.hrId = :hrId and b.status = :status", Booking.class)
+                .setParameter("hrId", id)
+                .setParameter("status", status);
+        return query.list();
+    }
+
+    @Override
     public List<Booking> findBookings(Long userId) {
         Session session = getSession();
         Query<Booking> query = session
-                .createQuery("from Booking b where b.user.id = :user_id", Booking.class)
+                .createQuery("from Booking b " +
+                        "left join fetch b.place p " +
+                        "left join fetch b.user u " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office off " +
+                        "left join fetch off.address ad where u.id = :user_id", Booking.class)
                 .setParameter("user_id", userId);
         return query.list();
     }
@@ -77,12 +110,30 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
 
     @Override
     public List<Booking> historyByPlaceIdAndTime(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
-        Session session =getSession();
-        Query<Booking> query = session.createQuery("from Booking b where b.place.id = :placeId and " +
-                        "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
+        Session session = getSession();
+        Query<Booking> query = session.createQuery("from Booking b " +
+                "left join fetch b.place p " +
+                "left join fetch b.user u " +
+                "left join fetch p.floor f " +
+                "left join fetch f.office off " +
+                "left join fetch off.address ad where p.id = :placeId and " +
+                "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
                 .setParameter("placeId", placeId)
                 .setParameter("timeStart", timeStart)
                 .setParameter("timeEnd", timeEnd);
         return query.list();
+    }
+
+
+    @Override
+    public Long countBookingsByPlaceIdAndTimeRange(Long placeId, LocalDateTime timeStart, LocalDateTime timeEnd) {
+        return getSession().createQuery("select count (b) from Booking b where " +
+                "b.place.id = :placeId and " +
+                "b.timeEnd > :timeStart and b.timeStart < :timeEnd and " +
+                "b.status = 'ACTIVE'", Long.class)
+                .setParameter("timeStart", timeStart)
+                .setParameter("timeEnd", timeEnd)
+                .setParameter("placeId", placeId)
+                .getSingleResult();
     }
 }

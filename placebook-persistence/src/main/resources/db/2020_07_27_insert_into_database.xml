@@ -3,8 +3,9 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet runOnChange="true" id="2020_07_15_user_table.xml" author="Alena Galygo">
+    <changeSet runOnChange="true" id="2020_07_27_insert_into_database.xml" author="Alena Galygo">
         <sql>
+            SET FOREIGN_KEY_CHECKS=0;
             INSERT INTO user ( email, password, name, surname, hr_id, role, photo_url)
             VALUES ("Alena23GL@gmail.com", "$2a$10$896fIOBUktgHHQ6ZT8qBaOxeYhkZukVMDtbQtLLVCtQlc1Kozrusy" , "Alena",
             "Alenskaya", 1, 'USER', "1111111");

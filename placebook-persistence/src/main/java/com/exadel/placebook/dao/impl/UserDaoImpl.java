@@ -25,15 +25,16 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public List<User> findUsers(AdminUserFilter adminUserFilter) {
+    public List<User> findUsers(AdminUserFilter adminUserFilter, Long id) {
         Session session = getSession();
         Query<User> query = session
                 .createQuery("from User u " +
                         "where trim(coalesce(:text, '')) = '' or " +
                         "concat_ws(' ', u.name, u.surname) " +
-                        "like :text", User.class)
+                        "like :text and u.id <> :id", User.class)
                 .setParameter("text", StringUtils
                         .wrap(adminUserFilter.getText(), "%"))
+                .setParameter("id", id)
                 .setMaxResults(adminUserFilter.getLimit())
                 .setFirstResult(adminUserFilter.getOffset());
         return query.list();

@@ -2,6 +2,9 @@ package com.exadel.placebook.dao;
 
 import com.exadel.placebook.model.entity.PlaceRate;
 
-public interface MarkDao extends BaseDao<PlaceRate>{
+import java.util.Optional;
 
+public interface MarkDao extends BaseDao<PlaceRate> {
+    Optional<PlaceRate> getMarksByBookingId(Long id);
+    PlaceRate checkMarksByBookingId(Long id);
 }
