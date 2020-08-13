@@ -23,14 +23,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /*@GetMapping("/users")
-    public List<AdminUserDto> getUsers(@RequestParam(value = "limit", defaultValue = "10") @Min(value = 1, message = "limit must be greater than 0") int limit,
-                                       @RequestParam(value = "offset", defaultValue = "0") @Min(value = 0, message = "offset must be 0 or greater") int offset,
-                                       @RequestParam(value = "text", defaultValue = "") String text) {
-
-        AdminUserFilter adminUserFilter = new AdminUserFilter(limit, offset, text);
-        return userService.findUsers(adminUserFilter);
-    }*/
     @GetMapping("/users")
     public List<AdminUserDto> getUsers(AdminUserFilter adminUserFilter) {
         return userService.findUsers(adminUserFilter);
