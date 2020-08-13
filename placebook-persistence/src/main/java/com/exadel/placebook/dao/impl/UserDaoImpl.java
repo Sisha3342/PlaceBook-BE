@@ -2,8 +2,7 @@ package com.exadel.placebook.dao.impl;
 
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.model.entity.User;
-import com.exadel.placebook.model.enums.Role;
-import com.exadel.placebook.model.filters.AdminUserFilter;
+import com.exadel.placebook.model.sorting.AdminUserFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -27,11 +26,15 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     @Override
     public List<User> findUsers(AdminUserFilter adminUserFilter, Long id) {
         Session session = getSession();
+        String table = adminUserFilter.getUserSort().getSortingOption();
+        String order = adminUserFilter.getOrder().getOrderOption();
         Query<User> query = session
                 .createQuery("from User u " +
-                        "where trim(coalesce(:text, '')) = '' or " +
+                        "where u.id <> :id and " +
+                        "trim(coalesce(:text, '')) = '' or " +
                         "concat_ws(' ', u.name, u.surname) " +
-                        "like :text and u.id <> :id", User.class)
+                        "like :text " +
+                        "order by " + table + " " + order, User.class)
                 .setParameter("text", StringUtils
                         .wrap(adminUserFilter.getText(), "%"))
                 .setParameter("id", id)

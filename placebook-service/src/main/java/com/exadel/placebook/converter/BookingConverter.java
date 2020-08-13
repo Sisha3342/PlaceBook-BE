@@ -12,7 +12,7 @@ public class BookingConverter {
     private AddressConverter addressConverter;
 
     public BookingDto convert(Booking booking) {
-        com.exadel.placebook.model.dto.BookingDto bookingDto = new com.exadel.placebook.model.dto.BookingDto();
+        BookingDto bookingDto = new BookingDto();
         bookingDto.setId(booking.getId());
         bookingDto.setUserId(booking.getUser().getId());
         bookingDto.setPhotoUrl(booking.getUser().getPhotoUrl());

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class PlaceDto {
+
     private Long placeId;
     private String placeNumber;
     private boolean active;

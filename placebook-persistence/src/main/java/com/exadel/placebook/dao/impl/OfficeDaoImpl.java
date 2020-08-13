@@ -5,6 +5,7 @@ import com.exadel.placebook.dao.OfficeDao;
 import com.exadel.placebook.model.entity.Floor;
 import com.exadel.placebook.model.entity.Office;
 import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.sorting.OfficeSorting;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -16,14 +17,19 @@ import java.util.List;
 public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
 
     @Override
-    public List<Office> findOfficesByCityAndCountry(String city, String country) {
+    public List<Office> findOfficesByCityAndCountry(String city, String country, OfficeSorting officeSorting) {
         Session session = getSession();
+        String table = officeSorting.getOfficeSort().getSortingOption();
+        String order = officeSorting.getOrder().getOrderOption();
         return session
                 .createQuery("select o from Office o join o.address a where " +
                         "(:city is null or a.city = :city) and " +
-                        "(:country is null or a.country = :country)", Office.class)
+                        "(:country is null or a.country = :country) " +
+                        "order by " + table + " " + order, Office.class)
                 .setParameter("city", city)
                 .setParameter("country", country)
+                .setMaxResults(officeSorting.getLimit())
+                .setFirstResult(officeSorting.getOffset())
                 .list();
     }
 
@@ -42,5 +48,4 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
                 .setParameter("officeId", officeId)
                 .getSingleResult();
     }
-
 }

@@ -2,6 +2,7 @@ package com.exadel.placebook.controller;
 
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.exception.ValidationException;
+import com.exadel.placebook.model.sorting.OfficeSorting;
 import com.exadel.placebook.service.OfficeParamsValidator;
 import com.exadel.placebook.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,9 @@ public class OfficeController {
 
     @GetMapping(value = {"/countries/{country}/cities/{city}/offices", "/countries/{country}/offices", "/offices"})
     public List<OfficeDto> getOfficesByCityAndCountry(@PathVariable(value = "country", required = false) String country,
-                                                      @PathVariable(value = "city", required = false) String city) {
-        return officeService.getOfficesByCityAndCountry(city, country);
+                                                      @PathVariable(value = "city", required = false) String city,
+                                                      OfficeSorting officeSorting) {
+        return officeService.getOfficesByCityAndCountry(city, country, officeSorting);
     }
 
     @PostMapping("/office")

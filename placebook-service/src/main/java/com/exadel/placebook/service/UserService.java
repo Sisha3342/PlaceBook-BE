@@ -1,7 +1,7 @@
 package com.exadel.placebook.service;
 
 import com.exadel.placebook.model.dto.*;
-import com.exadel.placebook.model.filters.AdminUserFilter;
+import com.exadel.placebook.model.sorting.AdminUserFilter;
 
 import java.util.List;
 import java.util.Optional;
