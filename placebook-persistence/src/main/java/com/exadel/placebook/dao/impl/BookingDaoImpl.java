@@ -98,7 +98,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
                         "left join fetch off.address ad where u.hrId = :hrId " +
-                        "and b.status = :status" +
+                        "and b.status = :status " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("hrId", id)
                 .setParameter("status", bookingSorting.getStatus())
