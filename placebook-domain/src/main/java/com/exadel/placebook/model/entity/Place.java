@@ -31,4 +31,7 @@ public class Place extends BaseEntity {
 
     @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
     private List<Booking> bookings;
+
+    @OneToOne(mappedBy = "place", fetch = FetchType.LAZY)
+    private PlaceBlock placeBlock;
 }

@@ -6,11 +6,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-public class BookingRequest {
+public class PlaceBlockRequest {
     @NotNull
-    private LocalDateTime timeStart;
+    private Long userId;
     @NotNull
-    private LocalDateTime timeEnd;
-    @NotNull
-    private Long placeId;
+    private LocalDateTime blockEnd;
 }

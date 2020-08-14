@@ -4,12 +4,15 @@ import com.exadel.placebook.converter.BookingConverter;
 import com.exadel.placebook.converter.BookingInfoConverter;
 import com.exadel.placebook.converter.PlaceHistoryConverter;
 import com.exadel.placebook.dao.BookingDao;
+import com.exadel.placebook.dao.PlaceBlockDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.UserDao;
 import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.Place;
+import com.exadel.placebook.model.entity.PlaceBlock;
+import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
@@ -53,6 +56,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private MarkService markService;
 
+    @Autowired
+    private PlaceBlockDao placeBlockDao;
+
     @Override
     public List<BookingDto> findBookings(Long userId, BookingSorting bookingSorting) {
         List<Booking> list = bookingDao.findBookings(userId, bookingSorting);
@@ -93,6 +99,7 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookingList = bookingDao.findUserBookingsByStatus(id, bookingSorting);
         return bookingList.stream().map(bookingConverter::convert).collect(Collectors.toList());
     }
+
     @Override
     public Map<Status, Long> getStatistics(Long id) {
         return bookingDao.getStatistics(id);
@@ -107,12 +114,24 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto addBooking(BookingRequest bookingRequest, Long userId) {
         Place place = getAvailablePlace(bookingRequest);
 
+        User user = userDao.find(userId);
+
+        PlaceBlock placeBlock = place.getPlaceBlock();
+
+        if (placeBlock.getBlockEnd().isBefore(LocalDateTime.now()) &&
+                !placeBlock.getUser().equals(user)) {
+            throw new BookingException(String.format("place is considering now by user %d", userId));
+        }
+
+        placeBlockDao.delete(placeBlock.getId());
+
         Booking booking = new Booking();
         booking.setPlace(place);
         booking.setStatus(Status.ACTIVE);
         booking.setTimeStart(bookingRequest.getTimeStart());
         booking.setTimeEnd(bookingRequest.getTimeEnd());
         booking.setUser(userDao.load(userId));
+
         return bookingConverter.convert(bookingDao.save(booking));
     }
 
