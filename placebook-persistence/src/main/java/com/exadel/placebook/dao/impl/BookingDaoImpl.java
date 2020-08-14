@@ -23,6 +23,10 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     private String getSortingParameter(BookingSorting bookingSorting) {
         String table;
         switch (bookingSorting.getBookingSort()) {
+            case USER_NAME:
+            case USER_SURNAME:
+                table = "u." + bookingSorting.getBookingSort().getSortingOption();
+                break;
             case PLACE_NUMBER:
                 table = "p." + bookingSorting.getBookingSort().getSortingOption();
                 break;
