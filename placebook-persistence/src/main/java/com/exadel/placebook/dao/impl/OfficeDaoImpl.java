@@ -24,6 +24,7 @@ public class OfficeDaoImpl extends BaseDaoImpl<Office> implements OfficeDao {
         return session
                 .createQuery("select o from Office o join o.address a where " +
                         "(:city is null or a.city = :city) and " +
+                        "o.deleted=false and " +
                         "(:country is null or a.country = :country) " +
                         "order by " + table + " " + order, Office.class)
                 .setParameter("city", city)
