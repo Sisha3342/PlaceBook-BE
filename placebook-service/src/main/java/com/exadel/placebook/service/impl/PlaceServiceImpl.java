@@ -112,6 +112,8 @@ public class PlaceServiceImpl implements PlaceService {
             }
         }
 
+        placeBlockDao.deleteByUserId(userId);
+
         PlaceBlock placeBlock = new PlaceBlock();
 
         placeBlock.setUser(user);
