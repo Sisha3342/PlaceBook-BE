@@ -166,7 +166,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private Place getAvailablePlace(BookingRequest bookingRequest) {
-        Place place = placeDao.find(bookingRequest.getPlaceId());
+        Place place = placeDao.getPlaceWithPlaceBlock(bookingRequest.getPlaceId());
 
         if (place == null) {
             throw new EntityNotFoundException(Place.class, bookingRequest.getPlaceId());

@@ -12,6 +12,8 @@ public interface PlaceDao extends BaseDao<Place> {
 
     List<Place> findPlacesByFloorId(Long floorId);
 
+    Place getPlaceWithPlaceBlock(Long id);
+
     List<Place> getFreePlacesByFloorIdAndTimeRange(Long floorId, LocalDateTime start, LocalDateTime end);
 
     Map<Place, Boolean> getPlacesWithOccupation(Long floorId, LocalDateTime timeStart, LocalDateTime timeEnd);

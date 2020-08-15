@@ -96,7 +96,7 @@ public class PlaceServiceImpl implements PlaceService {
             throw new EntityNotFoundException(User.class, userId);
         }
 
-        Place place = placeDao.find(placeId);
+        Place place = placeDao.getPlaceWithPlaceBlock(placeId);
 
         if(place == null) {
             throw new EntityNotFoundException(Place.class, placeId);
