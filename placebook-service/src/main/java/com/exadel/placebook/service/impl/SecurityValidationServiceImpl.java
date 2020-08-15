@@ -6,7 +6,6 @@ import com.exadel.placebook.model.dto.UserDto;
 import com.exadel.placebook.model.dto.UserStatusDto;
 import com.exadel.placebook.model.entity.Booking;
 import com.exadel.placebook.model.entity.User;
-import com.exadel.placebook.model.enums.Role;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
 import com.exadel.placebook.service.SecurityValidationService;
 import com.exadel.placebook.service.UserService;

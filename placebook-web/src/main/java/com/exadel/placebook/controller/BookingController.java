@@ -56,7 +56,7 @@ public class BookingController {
     @GetMapping("/user/{userId}/booking/all")
     public List<BookingDto> getAllBookingsByUserId(@PathVariable("userId") Long userId,
                                                    BookingSorting bookingSorting) {
-        return bookingService.findBookings(userId,bookingSorting);
+        return bookingService.findBookings(userId, bookingSorting);
     }
 
     @PostMapping("/user/{userId}/booking")
@@ -71,7 +71,6 @@ public class BookingController {
         sendMailService.sendEmail(mailMessageBuilder.convert(bookingDto));
         return bookingDto;
     }
-
 
     @PutMapping("/user/booking/{bookingId}")
     public BookingDto editBooking(@Valid @RequestBody BookingRequest bookingRequest,

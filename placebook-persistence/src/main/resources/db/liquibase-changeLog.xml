@@ -15,4 +15,5 @@
         <include file="db/2020_07_29_add_columns_to_floor_table.xml"/>
         <include file="db/2020_07_29_change_column_in_floor_table.xml"/>
         <include file="db/2020_07_31_add_capacity_to_place_table.xml"/>
+        <include file="db/2020_08_14_create_table_place_block.xml"/>
 </databaseChangeLog>

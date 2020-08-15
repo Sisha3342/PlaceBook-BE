@@ -1,10 +1,7 @@
 package com.exadel.placebook.controller;
 
 import com.exadel.placebook.converter.PlaceConverter;
-import com.exadel.placebook.model.dto.MarkDto;
-import com.exadel.placebook.model.dto.MarkParams;
-import com.exadel.placebook.model.dto.MarkSubmitDto;
-import com.exadel.placebook.model.dto.PlaceSearchDto;
+import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.MarkService;
 import com.exadel.placebook.service.PlaceService;
@@ -48,6 +45,16 @@ public class PlaceController {
             throw new ValidationException(result.getAllErrors().toString());
         }
         return markService.submitMark(bookingId, markParams);
+    }
+
+    @PostMapping("/place/{placeId}/block")
+    public PlaceBlockResponse blockPlaceForUser(@PathVariable("placeId") Long placeId,
+                                                @Valid @RequestBody PlaceBlockRequest request, BindingResult result) {
+        if (result.hasErrors()) {
+            throw new ValidationException(result.getAllErrors().toString());
+        }
+
+        return placeService.blockPlaceForUser(placeId, request);
     }
 
 }
