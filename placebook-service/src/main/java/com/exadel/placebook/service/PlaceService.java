@@ -1,6 +1,5 @@
 package com.exadel.placebook.service;
 
-import com.exadel.placebook.model.dto.PlaceBlockRequest;
 import com.exadel.placebook.model.dto.PlaceBlockResponse;
 import com.exadel.placebook.model.dto.PlaceDto;
 import com.exadel.placebook.model.dto.PlaceSearchDto;
@@ -12,5 +11,5 @@ public interface PlaceService {
     PlaceDto subscribeToPlace(Long placeId);
     void subscribeChecker();
 
-    PlaceBlockResponse blockPlaceForUser(Long placeId, PlaceBlockRequest request);
+    PlaceBlockResponse blockPlaceForUser(Long placeId, Long userId);
 }

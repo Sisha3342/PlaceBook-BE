@@ -8,7 +8,6 @@ import com.exadel.placebook.dao.PlaceBlockDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.SubscribeToPlaceDao;
 import com.exadel.placebook.dao.UserDao;
-import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.entity.PlaceBlock;
@@ -30,6 +29,8 @@ import java.util.List;
 @Service
 @Transactional
 public class PlaceServiceImpl implements PlaceService {
+
+    private static final long BLOCK_TIME_IN_MINUTES = 1;
 
     @Autowired
     private PlaceDao placeDao;
@@ -88,11 +89,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public PlaceBlockResponse blockPlaceForUser(Long placeId, PlaceBlockRequest request) {
-        User user = userDao.find(request.getUserId());
+    public PlaceBlockResponse blockPlaceForUser(Long placeId, Long userId) {
+        User user = userDao.find(userId);
 
         if(user == null) {
-            throw new EntityNotFoundException(User.class, request.getUserId());
+            throw new EntityNotFoundException(User.class, userId);
         }
 
         Place place = placeDao.find(placeId);
@@ -115,7 +116,7 @@ public class PlaceServiceImpl implements PlaceService {
 
         placeBlock.setUser(user);
         placeBlock.setPlace(place);
-        placeBlock.setBlockEnd(request.getBlockEnd());
+        placeBlock.setBlockEnd(LocalDateTime.now().plusMinutes(BLOCK_TIME_IN_MINUTES));
 
         return placeBlockConverter.convert(placeBlockDao.save(placeBlock));
     }
