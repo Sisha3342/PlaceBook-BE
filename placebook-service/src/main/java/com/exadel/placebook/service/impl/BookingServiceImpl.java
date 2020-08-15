@@ -16,11 +16,10 @@ import com.exadel.placebook.model.entity.User;
 import com.exadel.placebook.model.enums.PlaceStatus;
 import com.exadel.placebook.model.enums.Status;
 import com.exadel.placebook.model.exception.EntityNotFoundException;
-import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.model.security.UserContext;
+import com.exadel.placebook.model.sorting.BookingSorting;
 import com.exadel.placebook.service.BookingService;
 import com.exadel.placebook.service.MarkService;
-import com.exadel.placebook.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -118,12 +117,14 @@ public class BookingServiceImpl implements BookingService {
 
         PlaceBlock placeBlock = place.getPlaceBlock();
 
-        if (placeBlock.getBlockEnd().isBefore(LocalDateTime.now()) &&
-                !placeBlock.getUser().equals(user)) {
-            throw new BookingException(String.format("place is considering now by user %d", userId));
+        if(placeBlock != null) {
+            if (placeBlock.getBlockEnd().isBefore(LocalDateTime.now()) &&
+                    !placeBlock.getUser().equals(user)) {
+                throw new BookingException(String.format("place is considering now by user %d", userId));
+            } else {
+                placeBlockDao.delete(placeBlock.getId());
+            }
         }
-
-        placeBlockDao.delete(placeBlock.getId());
 
         Booking booking = new Booking();
         booking.setPlace(place);

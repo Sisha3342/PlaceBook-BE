@@ -9,7 +9,6 @@
             `id` INT NOT NULL AUTO_INCREMENT,
             `place_id` INT NOT NULL,
             `user_id` INT NOT NULL,
-            `block_start` TIMESTAMP NOT NULL,
             `block_end` TIMESTAMP NOT NULL,
             PRIMARY KEY (`id`)
             );

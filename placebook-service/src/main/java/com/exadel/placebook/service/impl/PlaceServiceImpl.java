@@ -8,6 +8,7 @@ import com.exadel.placebook.dao.PlaceBlockDao;
 import com.exadel.placebook.dao.PlaceDao;
 import com.exadel.placebook.dao.SubscribeToPlaceDao;
 import com.exadel.placebook.dao.UserDao;
+import com.exadel.placebook.exception.BookingException;
 import com.exadel.placebook.model.dto.*;
 import com.exadel.placebook.model.entity.Place;
 import com.exadel.placebook.model.entity.PlaceBlock;
@@ -22,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +89,6 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public PlaceBlockResponse blockPlaceForUser(Long placeId, PlaceBlockRequest request) {
-        PlaceBlock placeBlock = new PlaceBlock();
-
         User user = userDao.find(request.getUserId());
 
         if(user == null) {
@@ -100,6 +100,18 @@ public class PlaceServiceImpl implements PlaceService {
         if(place == null) {
             throw new EntityNotFoundException(Place.class, placeId);
         }
+
+        PlaceBlock existing = place.getPlaceBlock();
+
+        if(existing != null) {
+            if (existing.getBlockEnd().isBefore(LocalDateTime.now())) {
+                placeBlockDao.delete(existing.getId());
+            } else {
+                return placeBlockConverter.convert(existing);
+            }
+        }
+
+        PlaceBlock placeBlock = new PlaceBlock();
 
         placeBlock.setUser(user);
         placeBlock.setPlace(place);
