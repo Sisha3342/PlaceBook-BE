@@ -118,9 +118,9 @@ public class BookingServiceImpl implements BookingService {
         PlaceBlock placeBlock = place.getPlaceBlock();
 
         if(placeBlock != null) {
-            if (placeBlock.getBlockEnd().isBefore(LocalDateTime.now()) &&
+            if (placeBlock.getBlockEnd().isAfter(LocalDateTime.now()) &&
                     !placeBlock.getUser().equals(user)) {
-                throw new BookingException(String.format("place is considering now by user %d", userId));
+                throw new BookingException(String.format("place is considering now by user %d", placeBlock.getUser().getId()));
             } else {
                 placeBlockDao.delete(placeBlock.getId());
             }
