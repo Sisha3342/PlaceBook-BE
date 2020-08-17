@@ -58,7 +58,8 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                 "left join fetch o.address a " +
                 "where u.id = :user_id and " +
                 "b.status = :status and " +
-                "o.deleted = false order by " + table + " " + order;
+                "o.deleted = false " +
+                "order by " + table + " " + order;
         return session
                 .createQuery(queryStr, Booking.class)
                 .setParameter("user_id", userId)
@@ -78,8 +79,10 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.place p " +
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
-                        "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.status = :status and off.deleted = false " +
+                        "left join fetch f.office o " +
+                        "left join fetch o.address a " +
+                        "where b.status = :status " +
+                        "and o.deleted = false " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("status", bookingSorting.getStatus())
                 .setMaxResults(bookingSorting.getLimit())
@@ -97,8 +100,10 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.place p " +
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
-                        "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.hrId = :hrId and off.deleted = false " +
+                        "left join fetch f.office o " +
+                        "left join fetch o.address a " +
+                        "where u.hrId = :hrId " +
+                        "and o.deleted = false " +
                         "and b.status = :status " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("hrId", id)
@@ -118,8 +123,10 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.place p " +
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
-                        "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.id = :user_id and off.deleted = false " +
+                        "left join fetch f.office o " +
+                        "left join fetch o.address a " +
+                        "where u.id = :user_id " +
+                        "and o.deleted = false " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("user_id", userId)
                 .setMaxResults(bookingSorting.getLimit())
@@ -131,7 +138,14 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
     public Map<Status, Long> getStatistics(Long userId) {
         Session session = getSession();
         return session.createQuery(
-                "select b.status as status, count(b.id) from Booking b where b.user.id = :userId group by b.status", Object[].class)
+                "select b.status as status, count(b.id) " +
+                        "from Booking b " +
+                        "left join fetch b.place p " +
+                        "left join fetch p.floor f " +
+                        "left join fetch f.office o " +
+                        "where b.user.id = :userId " +
+                        "and o.deleted = false " +
+                        "group by b.status", Object[].class)
                 .setParameter("userId", userId)
                 .stream().collect(Collectors.toMap(o -> (Status) o[0], o -> (Long) o[1]));
     }
@@ -170,8 +184,8 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                 "left join fetch b.place p " +
                 "left join fetch b.user u " +
                 "left join fetch p.floor f " +
-                "left join fetch f.office off " +
-                "left join fetch off.address ad where p.id = :placeId and " +
+                "left join fetch f.office o " +
+                "left join fetch o.address a where p.id = :placeId and " +
                 "b.timeEnd > :timeStart and b.timeStart < :timeEnd", Booking.class)
                 .setParameter("placeId", placeId)
                 .setParameter("timeStart", timeStart)
