@@ -29,4 +29,5 @@ public class AddressDaoImpl extends BaseDaoImpl<Address> implements AddressDao {
                 .setParameter("country", country);
         return query.list();
     }
+
 }
