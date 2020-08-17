@@ -102,4 +102,5 @@ public class OfficeController {
                                              @PathVariable("officeId") Long officeId) {
         return officeService.saveOfficeConfiguration(floors, officeId);
     }
+
 }
