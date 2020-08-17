@@ -140,9 +140,9 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
         return session.createQuery(
                 "select b.status as status, count(b.id) " +
                         "from Booking b " +
-                        "left join fetch b.place p " +
-                        "left join fetch p.floor f " +
-                        "left join fetch f.office o " +
+                        "join b.place p " +
+                        "join p.floor f " +
+                        "join f.office o " +
                         "where b.user.id = :userId " +
                         "and o.deleted = false " +
                         "group by b.status", Object[].class)
