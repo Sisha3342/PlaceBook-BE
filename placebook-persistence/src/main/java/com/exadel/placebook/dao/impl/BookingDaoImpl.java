@@ -53,7 +53,8 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                 "left join fetch f.office o " +
                 "left join fetch o.address a " +
                 "where u.id = :user_id and " +
-                "b.status = :status order by " + table + " " + order;
+                "b.status = :status and " +
+                "o.deleted = false order by " + table + " " + order;
         return session
                 .createQuery(queryStr, Booking.class)
                 .setParameter("user_id", userId)
@@ -74,7 +75,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.status = :status " +
+                        "left join fetch off.address ad where b.status = :status and o.deleted = false " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("status", bookingSorting.getStatus())
                 .setMaxResults(bookingSorting.getLimit())
@@ -93,8 +94,8 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.hrId = :hrId " +
-                        "and b.status = :status" +
+                        "left join fetch off.address ad where u.hrId = :hrId and o.deleted = false " +
+                        "and b.status = :status " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("hrId", id)
                 .setParameter("status", bookingSorting.getStatus())
@@ -114,7 +115,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.id = :user_id " +
+                        "left join fetch off.address ad where u.id = :user_id and o.deleted = false " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("user_id", userId)
                 .setMaxResults(bookingSorting.getLimit())
