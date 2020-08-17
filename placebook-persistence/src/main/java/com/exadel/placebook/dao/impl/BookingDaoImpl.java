@@ -75,7 +75,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where b.status = :status and o.deleted = false " +
+                        "left join fetch off.address ad where b.status = :status and off.deleted = false " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("status", bookingSorting.getStatus())
                 .setMaxResults(bookingSorting.getLimit())
@@ -94,7 +94,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.hrId = :hrId and o.deleted = false " +
+                        "left join fetch off.address ad where u.hrId = :hrId and off.deleted = false " +
                         "and b.status = :status " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("hrId", id)
@@ -115,7 +115,7 @@ public class BookingDaoImpl extends BaseDaoImpl<Booking> implements BookingDao {
                         "left join fetch b.user u " +
                         "left join fetch p.floor f " +
                         "left join fetch f.office off " +
-                        "left join fetch off.address ad where u.id = :user_id and o.deleted = false " +
+                        "left join fetch off.address ad where u.id = :user_id and off.deleted = false " +
                         "order by " + table + " " + order, Booking.class)
                 .setParameter("user_id", userId)
                 .setMaxResults(bookingSorting.getLimit())
