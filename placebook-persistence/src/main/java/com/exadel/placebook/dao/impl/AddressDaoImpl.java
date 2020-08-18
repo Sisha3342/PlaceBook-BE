@@ -15,7 +15,9 @@ public class AddressDaoImpl extends BaseDaoImpl<Address> implements AddressDao {
     public List<String> findAllCountries() {
         Session session = getSession();
         Query<String> query = session
-                .createQuery("select distinct a.country from Address a", String.class);
+                .createQuery("select distinct a.country from Address a " +
+                        "join Office o on o.address = a " +
+                        "where o.deleted = false ", String.class);
         return query.list();
     }
 
@@ -23,8 +25,11 @@ public class AddressDaoImpl extends BaseDaoImpl<Address> implements AddressDao {
     public List<String> findCitiesByCountry(String country) {
         Session session = getSession();
         Query<String> query = session
-                .createQuery("select distinct a.city from Address a where a.country = :country", String.class)
+                .createQuery("select distinct a.city from Address a " +
+                        "join Office o on o.address = a " +
+                        "where a.country = :country and o.deleted = false ", String.class)
                 .setParameter("country", country);
         return query.list();
     }
+
 }

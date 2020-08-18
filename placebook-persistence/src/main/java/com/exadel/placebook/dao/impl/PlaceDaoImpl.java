@@ -71,4 +71,11 @@ public class PlaceDaoImpl extends BaseDaoImpl<Place> implements PlaceDao {
                 .stream()
                 .collect(Collectors.toMap(o -> (Place) o[0], o -> (Long) o[1] != 0));
     }
+
+    @Override
+    public Place getPlaceWithPlaceBlock(Long id) {
+        return getSession().createQuery("select p from Place p left join fetch p.placeBlock where p.id = :id", Place.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }
